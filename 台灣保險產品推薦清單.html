@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>台灣保險產品推薦清單</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;scroll-padding-top:70px}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Microsoft JhengHei","PingFang TC",sans-serif;background:#f0f4f8;color:#1a2332;line-height:1.7;font-size:15px}
+.top-bar{position:fixed;top:0;left:0;right:0;z-index:1000;background:linear-gradient(135deg,#0a1628,#1a3a5c);box-shadow:0 2px 12px rgba(0,0,0,.3);display:flex;align-items:center;padding:0 24px;gap:16px}
+.top-bar h1{color:#fff;font-size:17px;font-weight:700;padding:14px 0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.search-box{margin-left:auto;position:relative;flex-shrink:0}
+.search-box input{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);color:#fff;padding:7px 14px 7px 34px;border-radius:20px;font-size:13px;width:200px;outline:none;transition:all .2s;font-family:inherit}
+.search-box input::placeholder{color:rgba(255,255,255,.4)}
+.search-box input:focus{background:rgba(255,255,255,.15);border-color:#4fc3f7;width:260px}
+.search-box svg{position:absolute;left:10px;top:50%;transform:translateY(-50%);width:16px;height:16px;fill:rgba(255,255,255,.4)}
+.search-count{color:rgba(255,255,255,.5);font-size:11px;position:absolute;right:12px;top:50%;transform:translateY(-50%)}
+.layout{display:flex;max-width:1200px;margin:66px auto 0;padding:20px;gap:24px}
+.sidebar{width:250px;flex-shrink:0;position:sticky;top:86px;height:calc(100vh - 106px);overflow-y:auto;padding-right:8px}
+.sidebar::-webkit-scrollbar{width:4px}
+.sidebar::-webkit-scrollbar-thumb{background:#c0c8d4;border-radius:4px}
+.toc-title{font-size:12px;font-weight:700;color:#8494a7;text-transform:uppercase;letter-spacing:1px;padding:8px 12px;margin-bottom:4px}
+.toc-list{list-style:none}
+.toc-list li a{display:block;padding:5px 12px;font-size:13px;color:#5a6a7e;text-decoration:none;border-left:2px solid transparent;transition:all .15s;border-radius:0 4px 4px 0}
+.toc-list li a:hover{color:#1a3a5c;background:rgba(26,58,92,.05)}
+.toc-list li a.active{color:#1a3a5c;font-weight:600;border-left-color:#1a3a5c;background:rgba(26,58,92,.08)}
+.toc-list li.toc-h3 a{padding-left:24px;font-size:12px}
+.main{flex:1;min-width:0}
+.card{background:#fff;border-radius:12px;box-shadow:0 1px 4px rgba(0,0,0,.06);padding:36px 40px;margin-bottom:20px}
+.card h2{font-size:22px;color:#0a1628;margin:32px 0 16px;padding-bottom:8px;border-bottom:2px solid #e8edf2;cursor:pointer;position:relative;padding-right:28px}
+.card h2:first-child{margin-top:0}
+.card h2::after{content:'';position:absolute;right:0;top:50%;width:8px;height:8px;border-right:2px solid #8494a7;border-bottom:2px solid #8494a7;transform:translateY(-70%) rotate(45deg);transition:transform .2s}
+.card h2.collapsed::after{transform:translateY(-30%) rotate(-135deg)}
+.card h3{font-size:17px;color:#1a3a5c;margin:24px 0 12px}
+.card h4{font-size:15px;color:#2c5282;margin:18px 0 10px}
+.card p{margin:10px 0}
+.card ul,.card ol{margin:10px 0 10px 20px}
+.card li{margin:4px 0}
+.section-content{overflow:hidden;transition:max-height .3s ease}
+.section-content.collapsed{max-height:0!important}
+.tw{overflow-x:auto;margin:14px 0;border-radius:8px;border:1px solid #e2e8f0}
+table{width:100%;border-collapse:collapse;font-size:13.5px;min-width:480px}
+thead{background:#1a3a5c}
+thead th{color:#fff;font-weight:600;padding:10px 14px;text-align:left;white-space:nowrap}
+tbody td{padding:9px 14px;border-bottom:1px solid #edf2f7}
+tbody tr:nth-child(even){background:#f7fafc}
+tbody tr:hover{background:#ebf4ff}
+.callout{border-radius:8px;padding:16px 20px;margin:16px 0;border-left:4px solid}
+.callout-info{background:#ebf8ff;border-color:#3182ce;color:#2a4365}
+.callout-warn{background:#fffbeb;border-color:#d69e2e;color:#744210}
+.callout-success{background:#f0fff4;border-color:#38a169;color:#22543d}
+.callout-danger{background:#fff5f5;border-color:#e53e3e;color:#742a2a}
+.callout-title{font-weight:700;margin-bottom:6px;font-size:14px}
+.kn{color:#e53e3e;font-weight:700}
+.km{color:#2b6cb0;font-weight:700}
+.kp{color:#38a169;font-weight:700}
+.code-block{background:#1a2332;color:#e2e8f0;padding:16px 20px;border-radius:8px;overflow-x:auto;font-family:"SF Mono","Fira Code",monospace;font-size:13px;line-height:1.6;margin:14px 0;white-space:pre}
+.bq{border-left:3px solid #cbd5e0;padding:8px 16px;color:#5a6a7e;margin:12px 0;font-size:14px;background:#f7fafc;border-radius:0 6px 6px 0}
+.cl{list-style:none;margin-left:0!important}
+.cl li{position:relative;padding-left:26px;margin:6px 0}
+.cl li::before{content:'';position:absolute;left:0;top:6px;width:16px;height:16px;border:2px solid #cbd5e0;border-radius:3px}
+.src a{color:#3182ce;text-decoration:none;font-size:13px}
+.src a:hover{text-decoration:underline}
+.search-highlight{background:#fefcbf;border-radius:2px;box-shadow:0 0 0 1px #ecc94b}
+.disclaimer{text-align:center;padding:24px;color:#8494a7;font-size:13px;border-top:1px solid #e2e8f0;margin-top:20px}
+.sidebar-toggle{display:none;position:fixed;bottom:20px;right:20px;width:48px;height:48px;border-radius:50%;background:#1a3a5c;color:#fff;border:none;box-shadow:0 4px 12px rgba(0,0,0,.3);cursor:pointer;font-size:20px;z-index:999;align-items:center;justify-content:center}
+.star{color:#d69e2e;letter-spacing:1px}
+@media(max-width:900px){
+.sidebar{display:none}
+.layout{padding:12px}
+.card{padding:20px 18px}
+.top-bar h1{font-size:15px}
+.search-box input{width:130px}
+.search-box input:focus{width:170px}
+table{font-size:12.5px}
+thead th,tbody td{padding:7px 10px}
+.sidebar-toggle{display:flex}
+.sidebar.mobile-show{display:block;position:fixed;top:56px;left:0;bottom:0;width:280px;background:#fff;z-index:998;box-shadow:4px 0 20px rgba(0,0,0,.15);padding:16px 8px;height:auto}
+}
+</style>
+</head>
+<body>
+
+<nav class="top-bar">
+<h1>台灣保險產品推薦清單</h1>
+<div class="search-box">
+<svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+<input type="text" id="searchInput" placeholder="搜尋內容...">
+<span class="search-count" id="searchCount"></span>
+</div>
+</nav>
+
+<div class="layout">
+<aside class="sidebar" id="sidebar">
+<div class="toc-title">目錄</div>
+<ul class="toc-list" id="tocList"></ul>
+</aside>
+
+<main class="main">
+<div class="card">
+
+<div class="bq">
+最後更新：2026 年 3 月｜適用對象：大誠保險經紀人從業人員（可跨公司銷售）<br><br>
+本文件為各險種推薦產品、客群組合建議、社群口碑整理，搭配《台灣保險產品全景圖》使用。<br><br>
+<strong>重要聲明</strong>：保費會因年齡、性別、職業類別、計畫別而異，本文列出的保費為概估參考值（多以 30 歲男性 1 類職業為基準）。實際費率請以各保險公司最新費率表為準。部分商品可能因市場變動而調整或停售，投保前請確認商品狀態。
+</div>
+
+<!-- ===== 第一部分 ===== -->
+
+<h2 id="p1">第一部分：各險種推薦產品</h2>
+<div class="section-content">
+
+<h3 id="p1-1">1. 定期壽險</h3>
+<p><strong>市場前 3 名推薦產品：</strong></p>
+<div class="tw"><table>
+<thead><tr><th>排名</th><th>公司</th><th>產品名稱</th><th>年繳保費範圍</th><th>推薦理由</th><th>注意事項</th></tr></thead>
+<tbody>
+<tr><td>1</td><td>台灣人壽</td><td>新平準型定期壽險附約（NTTL）</td><td>100 萬保額約 <span class="km">2,800~4,200 元</span></td><td>費率市場最低等級，平準保費穩定不調漲，保證續保至 80 歲</td><td>為附約，須搭配主約投保</td></tr>
+<tr><td>2</td><td>新光人壽</td><td>好時光定期壽險（8RA）</td><td>100 萬保額約 <span class="km">3,000~4,500 元</span></td><td>主約型可獨立投保，保障期間可選 10/20/30 年，費率具競爭力</td><td>非一年期，無法逐年調整</td></tr>
+<tr><td>3</td><td>遠雄人壽</td><td>千禧一年期定期壽險（CSD）</td><td>100 萬保額約 <span class="km">1,500~2,500 元</span></td><td>一年期自然費率，年輕時保費極低，適合短期高保障需求</td><td>自然費率隨年齡增長保費會大幅上升</td></tr>
+</tbody></table></div>
+<div class="callout callout-info"><div class="callout-title">選購要點</div><p>家庭經濟支柱建議保額至少為年收入 10 倍或覆蓋房貸餘額。有房貸者可考慮「遞減型」定期壽險，保額隨貸款餘額遞減、保費更省。</p></div>
+
+<h3 id="p1-2">2. 終身壽險</h3>
+<p><strong>市場前 3 名推薦產品：</strong></p>
+<div class="tw"><table>
+<thead><tr><th>排名</th><th>公司</th><th>產品名稱</th><th>年繳保費範圍</th><th>推薦理由</th><th>注意事項</th></tr></thead>
+<tbody>
+<tr><td>1</td><td>國泰人壽</td><td>溫馨守護終身壽險</td><td>100 萬保額 20 年期繳約 <span class="km">25,000~35,000 元</span></td><td>國泰品牌信賴度高，財務穩健，解約金回收率佳</td><td>保費為定期壽險的 5~10 倍，不適合預算有限者</td></tr>
+<tr><td>2</td><td>富邦人壽</td><td>富利人生終身壽險</td><td>100 萬保額 20 年期繳約 <span class="km">26,000~36,000 元</span></td><td>數位化服務完善，保單管理方便，可線上查詢和變更</td><td>提前解約損失大，建議確認繳費能力後再投保</td></tr>
+<tr><td>3</td><td>台灣人壽</td><td>新住我好終身壽險</td><td>100 萬保額 20 年期繳約 <span class="km">23,000~32,000 元</span></td><td>費率具競爭力，可作為附約的主約壁壘，一石二鳥</td><td>保額不宜過高，避免壓縮其他險種預算</td></tr>
+</tbody></table></div>
+<div class="callout callout-info"><div class="callout-title">選購要點</div><p>終身壽險適合有資產傳承需求或想作為附約主約的客戶。建議保額控制在 50~200 萬即可，主要保障用定期壽險補足。</p></div>
+
+<h3 id="p1-3">3. 實支實付醫療險（最重要）</h3>
+<p><strong>市場前 3 名推薦產品：</strong></p>
+<div class="tw"><table>
+<thead><tr><th>排名</th><th>公司</th><th>產品名稱</th><th>年繳保費範圍</th><th>推薦理由</th><th>注意事項</th></tr></thead>
+<tbody>
+<tr><td>1</td><td>全球人壽</td><td>實足滿意醫療費用健康保險附約（XHC）</td><td>30 歲計畫 30 約 <span class="km">7,000~10,000 元</span></td><td>雜費額度最高可達 40 萬/次，概括式條款，門診手術有理賠，保證續保至 80 歲，網路口碑第一</td><td>為附約須搭配全球主約；正本理賠</td></tr>
+<tr><td>2</td><td>富邦人壽</td><td>佳實在一年期住院醫療健康保險附約（HSV）</td><td>30 歲計畫 30 約 <span class="km">6,500~9,500 元</span></td><td>雜費額度高（最高 30 萬/次），門診手術理賠優秀，理賠速度快，富邦品牌服務佳</td><td>正本理賠；年度有理賠次數上限</td></tr>
+<tr><td>3</td><td>新光人壽</td><td>新呵護安心住院醫療健康保險附約（U5）</td><td>30 歲計畫 30 約 <span class="km">6,000~9,000 元</span></td><td>雜費無年度上限（業界罕見），住院 31 天以上病房費加倍，可轉換日額給付，彈性高</td><td>正本理賠；須搭配新光主約</td></tr>
+</tbody></table></div>
+
+<p><strong>補充推薦（第二實支選擇）：</strong></p>
+<div class="tw"><table>
+<thead><tr><th>公司</th><th>產品名稱</th><th>特色</th></tr></thead>
+<tbody>
+<tr><td>全球人壽</td><td>全心全意自負額醫療費用健康保險附約（XHO）</td><td>自負額設計，保費較低，適合搭配第一張實支作為加強</td></tr>
+<tr><td>新光人壽</td><td>增呵護自負額住院醫療健康保險附約（A2A3）</td><td>自負額型，可與 U5 搭配做新光雙實支</td></tr>
+</tbody></table></div>
+
+<div class="callout callout-danger"><div class="callout-title">選購要點（極重要）</div>
+<ol>
+<li><strong>概括式條款優先</strong>：超過健保給付的住院醫療費用均理賠，未來新型醫材也涵蓋</li>
+<li><strong>門診手術必備</strong>：現代醫療趨勢，許多手術已免住院（如白內障、腸胃鏡息肉切除）</li>
+<li><strong>雜費額度至少 20 萬</strong>：達文西手術自費 15~25 萬、標靶藥物一年動輒數十萬</li>
+<li><strong>2024 年起正本理賠為原則</strong>：副本理賠商品已逐漸退場，規劃時以單張高額度為主</li>
+<li><strong>保證續保年齡越高越好</strong>：建議至少保證續保至 75~80 歲</li>
+</ol></div>
+
+<h3 id="p1-4">4. 癌症險（一次金型）</h3>
+<p><strong>市場前 3 名推薦產品：</strong></p>
+<div class="tw"><table>
+<thead><tr><th>排名</th><th>公司</th><th>產品名稱</th><th>年繳保費範圍</th><th>推薦理由</th><th>注意事項</th></tr></thead>
+<tbody>
+<tr><td>1</td><td>遠雄人壽</td><td>愛家守護五年定期癌症健康保險附約（CJ2）</td><td>100 萬保額 30 歲約 <span class="km">2,500~4,000 元</span></td><td>費率每 5 年調整（漲幅較緩），重度癌症一次給付 100% 保額，初期/輕度另外給付不扣減重度額度</td><td>5 年期附約，須搭配主約；可續保至 84 歲</td></tr>
+<tr><td>2</td><td>新光人壽</td><td>新一年期防癌健康保險附約（C2）</td><td>100 萬保額 30 歲約 <span class="km">2,000~3,500 元</span></td><td>保費便宜，一年期靈活，原位癌有理賠（保額 5%），可續保至 80 歲</td><td>自然費率，中年後保費上升較快</td></tr>
+<tr><td>3</td><td>台灣人壽</td><td>一定罩一年期癌症健康保險附約（YCC）</td><td>100 萬保額 30 歲約 <span class="km">2,200~3,800 元</span></td><td>一次金設計簡潔，初次罹癌即整筆給付，台壽產品線可與其他附約完整搭配</td><td>等待期 90 天；低侵襲性癌症給付比例較低</td></tr>
+</tbody></table></div>
+<div class="callout callout-info"><div class="callout-title">選購要點</div>
+<ul>
+<li>優先選「一次金型」，確診即整筆給付，使用靈活度最高</li>
+<li>建議搭配重大傷病險，形成「癌症險（涵蓋原位癌）+ 重大傷病險（涵蓋侵襲性癌症及 300+ 疾病）」組合</li>
+<li>保額建議至少 100 萬，理想 150~200 萬（癌症治療費用 3 年平均 100~300 萬）</li>
+</ul></div>
+
+<h3 id="p1-5">5. 重大傷病險</h3>
+<p><strong>市場前 3 名推薦產品：</strong></p>
+<div class="tw"><table>
+<thead><tr><th>排名</th><th>公司</th><th>產品名稱</th><th>年繳保費範圍</th><th>推薦理由</th><th>注意事項</th></tr></thead>
+<tbody>
+<tr><td>1</td><td>台灣人壽</td><td>金卡安心一年定期重大傷病健康保險附約（NYCI0405）</td><td>100 萬保額 30 歲約 <span class="km">3,500~5,500 元</span></td><td>涵蓋 22 大類 300+ 項重大傷病，特定重大傷病額外加給 20%，保證續保至 85 歲，費率合理</td><td>附約型須搭配台壽主約</td></tr>
+<tr><td>2</td><td>全球人壽</td><td>醫卡讚重大傷病一年定期健康保險附約（XDE）</td><td>100 萬保額 30 歲約 <span class="km">3,800~5,800 元</span></td><td>理賠認定明確（持重大傷病證明即賠），可搭配全球實支做完整方案，全球口碑佳</td><td>附約型；注意 8 項排除疾病</td></tr>
+<tr><td>3</td><td>遠雄人壽</td><td>保安康重大傷病一年定期健康保險附約（RN1）</td><td>100 萬保額 30 歲約 <span class="km">3,200~5,200 元</span></td><td>費率具競爭力，可搭配遠雄癌症險 CJ2 做重疾+癌症完整組合</td><td>附約型；一年期自然費率</td></tr>
+</tbody></table></div>
+<div class="callout callout-info"><div class="callout-title">選購要點</div>
+<ul>
+<li>重大傷病險是 CP 值最高的重病險種，理賠標準最明確（持健保重大傷病證明即可）</li>
+<li>建議保額至少 100 萬，覆蓋治療期間的醫療費+收入損失</li>
+<li>優先於重大疾病險（僅 7 項）和特定傷病險（範圍有限）</li>
+</ul></div>
+
+<h3 id="p1-6">6. 重大疾病險</h3>
+<p><strong>市場前 3 名推薦產品：</strong></p>
+<div class="tw"><table>
+<thead><tr><th>排名</th><th>公司</th><th>產品名稱</th><th>年繳保費範圍</th><th>推薦理由</th><th>注意事項</th></tr></thead>
+<tbody>
+<tr><td>1</td><td>國泰人壽</td><td>鐵衛真愛重大疾病險</td><td>100 萬保額 30 歲約 <span class="km">5,000~10,000 元</span></td><td>國泰品牌，甲型含嚴重+輕度 7 項疾病理賠，理賠經驗豐富</td><td>僅保 7 項，保障範圍遠不如重大傷病險</td></tr>
+<tr><td>2</td><td>富邦人壽</td><td>醫保安心重大傷病終身健康保險</td><td>100 萬保額 20 年期繳約 <span class="km">8,000~15,000 元</span></td><td>終身型保障，一次繳清鎖定費率，適合預算充裕者長期規劃</td><td>終身型保費較高；建議先有定期型再考慮終身</td></tr>
+<tr><td>3</td><td>凱基人壽</td><td>醫卡新安重大傷病終身健康保險</td><td>100 萬保額 20 年期繳約 <span class="km">7,500~14,000 元</span></td><td>終身保障 + 重大傷病範圍，結合重大疾病+重大傷病優點</td><td>保費偏高，適合有預算的中年客群</td></tr>
+</tbody></table></div>
+<div class="callout callout-warn"><div class="callout-title">選購要點</div><p>若預算有限，建議優先買「重大傷病險」（保 300+ 項）而非「重大疾病險」（僅保 7 項）。重大疾病險適合作為已有重大傷病險後的額外補強。</p></div>
+
+<h3 id="p1-7">7. 失能險/長照險</h3>
+
+<h4>7-1 失能險（失能扶助險）</h4>
+<p><strong>市場前 3 名推薦產品：</strong></p>
+<div class="tw"><table>
+<thead><tr><th>排名</th><th>公司</th><th>產品名稱</th><th>年繳保費範圍</th><th>推薦理由</th><th>注意事項</th></tr></thead>
+<tbody>
+<tr><td>1</td><td>台灣人壽</td><td>好心 200 失能照護附約</td><td>月領 3 萬約年繳 <span class="km">8,000~12,000 元</span></td><td>等級給付型，1~6 級失能依比例給付，費率合理，台壽產品線搭配方便</td><td>保證給付型已停售，此為等級給付型附約</td></tr>
+<tr><td>2</td><td>全球人壽</td><td>失扶好照失能扶助附約</td><td>月領 3 萬約年繳 <span class="km">9,000~14,000 元</span></td><td>口碑佳，理賠經驗正面，可搭配全球實支做完整方案</td><td>須附掛在壽險主約下</td></tr>
+<tr><td>3</td><td>遠雄人壽</td><td>超好心失能照護附約</td><td>月領 3 萬約年繳 <span class="km">7,500~11,000 元</span></td><td>費率市場較低，保障內容完整，適合預算導向客戶</td><td>須留意理賠時的失能等級認定</td></tr>
+</tbody></table></div>
+
+<h4>7-2 長照險</h4>
+<p><strong>市場前 3 名推薦產品：</strong></p>
+<div class="tw"><table>
+<thead><tr><th>排名</th><th>公司</th><th>產品名稱</th><th>年繳保費範圍</th><th>推薦理由</th><th>注意事項</th></tr></thead>
+<tbody>
+<tr><td>1</td><td>全球人壽</td><td>鑫享照長期照顧終身健康保險（LCE）</td><td>月領 3 萬 30 歲約 <span class="km">15,000~25,000 元</span></td><td>2026 新商品，涵蓋生理障礙+認知障礙+完全失能三重保障，理賠面向最廣</td><td>終身型保費較高</td></tr>
+<tr><td>2</td><td>新光人壽</td><td>新依靠 A 型長期照顧終身保險（D3A）</td><td>月領 3 萬 30 歲約 <span class="km">14,000~22,000 元</span></td><td>同時提供一次金+分期給付+保費豁免，保障結構完整</td><td>理賠需每年重新評估</td></tr>
+<tr><td>3</td><td>凱基人壽</td><td>享放心長期照顧終身健康保險（MAJIYB）</td><td>月領 3 萬 30 歲約 <span class="km">13,000~21,000 元</span></td><td>費率具競爭力，銀行通路取得方便</td><td>注意巴氏量表認定標準</td></tr>
+</tbody></table></div>
+<div class="callout callout-info"><div class="callout-title">選購要點</div>
+<ul>
+<li>2024~2025 年保證給付型失能主險已全面停售，目前僅剩等級給付型附約</li>
+<li>建議採「階梯式配置」：年輕先買失能扶助附約（便宜），40 歲後加保長照險</li>
+<li>分期給付保額建議至少月領 5 萬（2026 年看護費用已大幅上升）</li>
+<li>投保優先順序：意外險 > 實支實付 > 癌症/重大傷病 > 長照險/失能險</li>
+</ul></div>
+
+<h3 id="p1-8">8. 意外險（死殘+醫療）</h3>
+<p><strong>市場前 3 名推薦產品：</strong></p>
+<div class="tw"><table>
+<thead><tr><th>排名</th><th>公司</th><th>產品名稱</th><th>年繳保費範圍</th><th>推薦理由</th><th>注意事項</th></tr></thead>
+<tbody>
+<tr><td>1</td><td>富邦產險</td><td>新十全大補增安心專案</td><td>100 萬 1 類職約 <span class="km">2,000~3,500 元</span></td><td>全能型方案，涵蓋身故失能+意外實支+骨折+住院日額+大眾運輸增額+海外增額+居家責任險，一張搞定所有意外保障</td><td>產險一年一約不保證續保；最高承保至 75 歲</td></tr>
+<tr><td>2</td><td>華南產險</td><td>滿福保 3.0 個人傷害險專案</td><td>100 萬 1 類職約 <span class="km">1,500~2,500 元</span></td><td>平價入門首選，保障內容完整含意外住院日額，CP 值極高</td><td>一年一約；職業類別影響保費</td></tr>
+<tr><td>3</td><td>安達產險</td><td>扶氣滿堂 2.0 傷害險專案</td><td>100 萬 1 類職約 <span class="km">2,200~3,200 元</span></td><td>保障項目豐富，特定意外加倍給付，骨折理賠優秀</td><td>產險公司品牌知名度相對較低</td></tr>
+</tbody></table></div>
+
+<p><strong>壽險意外險補充推薦：</strong></p>
+<div class="tw"><table>
+<thead><tr><th>公司</th><th>產品名稱</th><th>特色</th></tr></thead>
+<tbody>
+<tr><td>全球人壽</td><td>臻愛意外傷害保險附約</td><td>壽險附約型，可保證續保，適合長期配置</td></tr>
+<tr><td>台灣人壽</td><td>金乘意意外傷害保險附約</td><td>費率低，搭配台壽主約方便</td></tr>
+</tbody></table></div>
+<div class="callout callout-info"><div class="callout-title">選購要點</div>
+<ul>
+<li>產險意外險通常比壽險便宜且保障更豐富，建議以產險意外險為主力</li>
+<li>「意外」三要件：外來、突發、非疾病，生病住院不理賠</li>
+<li>建議保額至少 200 萬（覆蓋 2~3 年收入損失）</li>
+<li>意外實支實付 2024 年後限投保 1 張（正本理賠）</li>
+</ul></div>
+
+<h3 id="p1-9">9. 投資型保單</h3>
+<p><strong>市場前 3 名推薦產品：</strong></p>
+<div class="tw"><table>
+<thead><tr><th>排名</th><th>公司</th><th>產品名稱</th><th>年繳保費範圍</th><th>推薦理由</th><th>注意事項</th></tr></thead>
+<tbody>
+<tr><td>1</td><td>安聯人壽</td><td>變額萬能壽險</td><td>依保額和投資金額，月繳數千~數萬元</td><td>外商投資型保單專業，基金標的選擇多，投資平台穩定</td><td>投資風險自負；前置費用率高（前 5 年）</td></tr>
+<tr><td>2</td><td>國泰人壽</td><td>變額萬能壽險</td><td>依規劃彈性繳費</td><td>國泰品牌，基金選擇多元，後續服務完善，適合偏好大品牌的客戶</td><td>費用結構需仔細比較；早期解約損失大</td></tr>
+<tr><td>3</td><td>富邦人壽</td><td>變額年金保險</td><td>躉繳或彈性繳費</td><td>適合退休規劃，帳戶價值可轉年金，數位管理便利</td><td>投資績效不保證；注意帳管費和保險成本</td></tr>
+</tbody></table></div>
+<div class="callout callout-warn"><div class="callout-title">選購要點</div>
+<ul>
+<li>投資型保單適合「有投資經驗且能承受風險」的客戶，不適合保守型</li>
+<li>第一年繳的保費大部分用於費用和佣金，實際投入投資的比例偏低</li>
+<li>建議客戶先完成保障型規劃後，有餘力再考慮投資型保單</li>
+<li>提醒客戶：「保險歸保險，投資歸投資」，分開規劃效率更高</li>
+</ul></div>
+
+<h3 id="p1-10">10. 小額終老壽險</h3>
+<p><strong>市場前 3 名推薦產品：</strong></p>
+<div class="tw"><table>
+<thead><tr><th>排名</th><th>公司</th><th>產品名稱</th><th>年繳保費範圍</th><th>推薦理由</th><th>注意事項</th></tr></thead>
+<tbody>
+<tr><td>1</td><td>國泰人壽</td><td>真值保小額終身壽險</td><td>65 歲投保 30 萬約年繳 <span class="km">15,000~20,000 元</span></td><td>國泰品牌信賴度最高，據點最多服務方便，長者申請理賠流程順暢</td><td>每人限購 4 件小額終老；保額上限 90 萬</td></tr>
+<tr><td>2</td><td>富邦人壽</td><td>富足一生小額終身壽險</td><td>65 歲投保 30 萬約年繳 <span class="km">14,000~19,000 元</span></td><td>可線上投保（69 歲前），數位流程便利，費率具競爭力</td><td>繳費期+投保年齡不超過 90 歲</td></tr>
+<tr><td>3</td><td>台灣人壽</td><td>好安穩小額終身壽險</td><td>65 歲投保 30 萬約年繳 <span class="km">13,500~18,500 元</span></td><td>費率偏低，可搭配意外險附約增加保障</td><td>健康告知仍需注意據實填寫</td></tr>
+</tbody></table></div>
+<div class="callout callout-info"><div class="callout-title">選購要點</div>
+<ul>
+<li>適合 55~84 歲長者取得基本身故保障</li>
+<li>每人限購 4 件（跨公司合計）</li>
+<li>原則上免體檢但仍需健康告知</li>
+<li>年輕人不建議購買（一般壽險更有效率）</li>
+</ul></div>
+
+<h3 id="p1-11">11. 車險（強制+任意）</h3>
+<p><strong>推薦投保組合（標準配置）：</strong></p>
+<div class="tw"><table>
+<thead><tr><th>險種</th><th>推薦公司</th><th>年繳保費參考</th><th>說明</th></tr></thead>
+<tbody>
+<tr><td>強制險</td><td>各家費率相同，推薦線上投保（富邦/國泰有折扣）</td><td>自小客約 <span class="km">1,200~1,500 元</span></td><td>法定必保，差異僅在附加服務</td></tr>
+<tr><td>第三人責任險（體傷 300 萬+財損 50 萬）</td><td>富邦產險/新安東京海上/國泰產險</td><td>約 <span class="km">2,500~4,000 元</span></td><td>搭配超額責任險時可選最低額度</td></tr>
+<tr><td>超額責任險（1,000 萬）</td><td>富邦產險/國泰產險/明台產險</td><td>約 <span class="km">1,000~2,000 元</span></td><td>CP 值極高，強烈建議加保</td></tr>
+<tr><td>車體險（乙式/丙式）</td><td>富邦產險/新安東京海上</td><td>乙式 <span class="km">8,000~20,000 元</span>；丙式 <span class="km">3,000~8,000 元</span></td><td>新車建議乙式，3 年以上可降為丙式</td></tr>
+</tbody></table></div>
+
+<p><strong>車險公司申訴率排名（2023 年，越低越好）：</strong></p>
+<div class="tw"><table>
+<thead><tr><th>排名</th><th>公司</th><th>評價</th></tr></thead>
+<tbody>
+<tr><td>1</td><td>第一產險</td><td><span class="kp">申訴率最低</span></td></tr>
+<tr><td>2</td><td>新光產險</td><td><span class="kp">申訴率極低</span></td></tr>
+<tr><td>3</td><td>臺灣產險</td><td><span class="kp">申訴率低</span></td></tr>
+<tr><td>4</td><td>南山產險</td><td><span class="kp">申訴率低</span></td></tr>
+<tr><td>5</td><td>明台產險</td><td><span class="kp">申訴率低</span></td></tr>
+</tbody></table></div>
+<div class="callout callout-info"><div class="callout-title">選購要點</div>
+<ul>
+<li>最推薦組合：強制險 + 第三人（最低額度）+ 超額 1,000 萬 + 丙式車體險，保障最廣、保費最省</li>
+<li>車齡超過 5 年的老車可不保車體險</li>
+<li>經常載人建議加保乘客險（年繳約 500~1,500 元）</li>
+</ul></div>
+
+<h3 id="p1-12">12. 居家綜合險</h3>
+<p><strong>市場前 3 名推薦產品：</strong></p>
+<div class="tw"><table>
+<thead><tr><th>排名</th><th>公司</th><th>產品名稱</th><th>年繳保費範圍</th><th>推薦理由</th><th>注意事項</th></tr></thead>
+<tbody>
+<tr><td>1</td><td>臺灣產物</td><td>居家綜合保險（超值型）</td><td>約 <span class="km">2,000~3,000 元</span></td><td>涵蓋火災+地震+竊盜+水漬+颱風洪水+居家責任+玻璃破損，保障最全面</td><td>保額依建物結構和地區而異</td></tr>
+<tr><td>2</td><td>富邦產險</td><td>居家綜合保險</td><td>約 <span class="km">2,500~5,000 元</span></td><td>富邦品牌，可線上投保，方案選擇多，包含動產保障和居家責任險</td><td>注意颱風洪水是否需額外加保</td></tr>
+<tr><td>3</td><td>國泰產險</td><td>住家保戶傘綜合保險</td><td>約 <span class="km">1,687 元起</span></td><td>保費最低入門，基本保障完整，適合預算導向客戶</td><td>保障項目較前兩者少，需確認是否涵蓋所需範圍</td></tr>
+</tbody></table></div>
+<div class="callout callout-info"><div class="callout-title">選購要點</div>
+<ul>
+<li>居家綜合險比基本住宅火險保障範圍廣很多（含竊盜、水漬、居家責任等）</li>
+<li>房貸戶已有銀行要求的住宅火險，建議升級為居家綜合險</li>
+<li>租屋族也可投保（保障動產和居家責任）</li>
+</ul></div>
+
+<h3 id="p1-13">13. 旅平險</h3>
+<p><strong>市場前 3 名推薦產品：</strong></p>
+<div class="tw"><table>
+<thead><tr><th>排名</th><th>公司</th><th>產品名稱</th><th>5 天保費參考</th><th>推薦理由</th><th>注意事項</th></tr></thead>
+<tbody>
+<tr><td>1</td><td>華南產險</td><td>國外超值型旅平險+不便險</td><td>不到 <span class="km">800 元</span>/5 天</td><td>保費最低，保障高達 1,000 萬，含旅遊不便險，CP 值最高</td><td>需透過華南經易安網投保</td></tr>
+<tr><td>2</td><td>富邦產險</td><td>旅遊綜合險 C 方案</td><td>約 <span class="km">900~1,200 元</span>/5 天</td><td>涵蓋法定傳染病保障，班機延誤每滿 4 小時賠 7,000 元（最高 1.4 萬/次），保障最完善</td><td>不便險理賠需附證明文件</td></tr>
+<tr><td>3</td><td>國泰產險</td><td>旅遊綜合險</td><td>約 <span class="km">800~1,100 元</span>/5 天</td><td>國泰品牌信賴度高，海外突發疾病保障佳，24 小時海外急難救助</td><td>需確認是否含班機延誤保障</td></tr>
+</tbody></table></div>
+
+<p><strong>申根國家專用推薦：</strong></p>
+<div class="tw"><table>
+<thead><tr><th>公司</th><th>方案</th><th>特色</th></tr></thead>
+<tbody>
+<tr><td>富邦產險</td><td>D 方案（申根型）</td><td>符合申根國簽證要求，含高額海外醫療</td></tr>
+<tr><td>新光產險</td><td>頂級方案（申根型）</td><td>保障額度高，適合歐洲旅遊</td></tr>
+<tr><td>旺旺友聯產險</td><td>申根 A 型方案</td><td>專為申根國設計</td></tr>
+</tbody></table></div>
+<div class="callout callout-warn"><div class="callout-title">選購要點</div>
+<ul>
+<li>出國旅遊強烈建議投保，海外醫療費用極高（日本住院一天約 3~5 萬台幣）</li>
+<li><strong>2026 年 4 月起新規</strong>：每人最多購買 2 張旅遊不便險，同一家限 1 張</li>
+<li>班機延誤單張最高理賠 1.2 萬，2 張最高 2.4 萬</li>
+<li>建議提早至少一週投保，可享較優惠費率</li>
+</ul></div>
+
+</div>
+
+<!-- ===== 第二部分 ===== -->
+
+<h2 id="p2">第二部分：客群推薦組合</h2>
+<div class="section-content">
+
+<h3 id="p2-a">A. 社會新鮮人（22-30 歲，月薪 3~5 萬）</h3>
+<p><strong>年預算：15,000~25,000 元</strong></p>
+<div class="tw"><table>
+<thead><tr><th>險種</th><th>推薦產品</th><th>保額/計畫</th><th>預估年繳</th></tr></thead>
+<tbody>
+<tr><td>壽險主約</td><td>台灣人壽 低保額終身壽險（作主約壁壘）</td><td>10 萬</td><td>約 2,500 元</td></tr>
+<tr><td>定期壽險</td><td>台灣人壽 新平準型定期壽險附約（NTTL）</td><td>100 萬</td><td>約 2,800 元</td></tr>
+<tr><td>實支實付</td><td>全球人壽 實足滿意（XHC）計畫 20</td><td>雜費 20 萬</td><td>約 5,500 元</td></tr>
+<tr><td>重大傷病</td><td>台灣人壽 金卡安心（NYCI0405）</td><td>100 萬</td><td>約 3,500 元</td></tr>
+<tr><td>癌症一次金</td><td>遠雄人壽 愛家守護（CJ2）</td><td>100 萬</td><td>約 2,500 元</td></tr>
+<tr><td>意外險</td><td>華南產險 滿福保 3.0</td><td>100 萬+意外實支</td><td>約 1,800 元</td></tr>
+<tr><td><strong>合計</strong></td><td></td><td></td><td><strong class="km">約 18,600 元</strong></td></tr>
+</tbody></table></div>
+<div class="callout callout-success"><div class="callout-title">規劃邏輯</div><p>預算有限，優先配置「不能沒有」的保障。實支實付+重大傷病+癌症險是核心三件套，搭配低保額壽險和產險意外險，用最少預算建立最基本的防護網。</p></div>
+
+<h3 id="p2-b">B. 小家庭（30-40 歲，雙薪，有小孩）</h3>
+<p><strong>年預算：40,000~60,000 元（夫妻合計）</strong></p>
+
+<h4>經濟支柱方（以先生 35 歲為例）</h4>
+<div class="tw"><table>
+<thead><tr><th>險種</th><th>推薦產品</th><th>保額/計畫</th><th>預估年繳</th></tr></thead>
+<tbody>
+<tr><td>壽險主約</td><td>全球人壽 低保額終身壽險</td><td>10 萬</td><td>約 3,000 元</td></tr>
+<tr><td>定期壽險</td><td>台灣人壽 新平準型定期壽險附約</td><td>300 萬</td><td>約 9,000 元</td></tr>
+<tr><td>實支實付</td><td>全球人壽 實足滿意（XHC）計畫 30</td><td>雜費 30 萬</td><td>約 8,500 元</td></tr>
+<tr><td>重大傷病</td><td>全球人壽 醫卡讚（XDE）</td><td>100 萬</td><td>約 4,500 元</td></tr>
+<tr><td>癌症一次金</td><td>遠雄人壽 CJ2</td><td>150 萬</td><td>約 4,500 元</td></tr>
+<tr><td>失能扶助</td><td>台灣人壽 好心 200</td><td>月領 3 萬</td><td>約 10,000 元</td></tr>
+<tr><td>意外險</td><td>富邦產險 新十全大補增安心</td><td>200 萬</td><td>約 4,000 元</td></tr>
+<tr><td><strong>小計</strong></td><td></td><td></td><td><strong class="km">約 43,500 元</strong></td></tr>
+</tbody></table></div>
+
+<h4>配偶方（以太太 33 歲為例，較精簡版）</h4>
+<div class="tw"><table>
+<thead><tr><th>險種</th><th>推薦產品</th><th>保額/計畫</th><th>預估年繳</th></tr></thead>
+<tbody>
+<tr><td>壽險主約+定期壽險</td><td>台灣人壽主約 10 萬 + NTTL 100 萬</td><td>合計 110 萬</td><td>約 4,500 元</td></tr>
+<tr><td>實支實付</td><td>富邦人壽 佳實在（HSV）計畫 20</td><td>雜費 20 萬</td><td>約 5,000 元</td></tr>
+<tr><td>重大傷病</td><td>台灣人壽 金卡安心</td><td>100 萬</td><td>約 3,200 元</td></tr>
+<tr><td>意外險</td><td>華南產險 滿福保 3.0</td><td>100 萬</td><td>約 1,500 元</td></tr>
+<tr><td><strong>小計</strong></td><td></td><td></td><td><strong class="km">約 14,200 元</strong></td></tr>
+</tbody></table></div>
+<p><strong>夫妻合計：約 <span class="km">57,700 元</span></strong></p>
+
+<div class="callout callout-success"><div class="callout-title">規劃邏輯</div><p>經濟支柱的定期壽險保額要高（覆蓋房貸+小孩教育費+家庭 3~5 年開支），加上完整的醫療+重疾+失能保障。配偶方可精簡但實支實付和重大傷病不能省。小孩的保險另外規劃（新生兒罐頭保單）。</p></div>
+
+<h3 id="p2-c">C. 中年家庭（40-55 歲，房貸中）</h3>
+<p><strong>年預算：50,000~80,000 元</strong></p>
+<div class="tw"><table>
+<thead><tr><th>險種</th><th>推薦產品</th><th>保額/計畫</th><th>預估年繳</th></tr></thead>
+<tbody>
+<tr><td>定期壽險</td><td>台灣人壽 NTTL（覆蓋房貸餘額）</td><td>500 萬</td><td>約 15,000~25,000 元</td></tr>
+<tr><td>實支實付</td><td>新光人壽 新呵護 U5 計畫 30</td><td>雜費 30 萬（無年度上限）</td><td>約 10,000~15,000 元</td></tr>
+<tr><td>重大傷病</td><td>台灣人壽 金卡安心</td><td>150 萬</td><td>約 8,000~12,000 元</td></tr>
+<tr><td>癌症一次金</td><td>遠雄人壽 CJ2</td><td>150 萬</td><td>約 5,500~9,000 元</td></tr>
+<tr><td>長照險</td><td>全球人壽 鑫享照（LCE）</td><td>月領 3 萬</td><td>約 18,000~28,000 元</td></tr>
+<tr><td>意外險</td><td>富邦產險 新十全大補增安心</td><td>200 萬</td><td>約 4,000~6,000 元</td></tr>
+<tr><td><strong>合計</strong></td><td></td><td></td><td><strong class="km">約 60,500~95,000 元</strong></td></tr>
+</tbody></table></div>
+<div class="callout callout-success"><div class="callout-title">規劃邏輯</div><p>40~55 歲是保費最貴但風險最高的階段。定期壽險保額對齊房貸餘額（可選遞減型更省），醫療險選雜費無上限的 U5，重點加入長照險因應老年風險。若預算超出，可先省略長照險，用失能扶助附約替代。</p></div>
+
+<h3 id="p2-d">D. 退休族（55 歲以上）</h3>
+<p><strong>年預算：20,000~40,000 元</strong></p>
+<div class="tw"><table>
+<thead><tr><th>險種</th><th>推薦產品</th><th>保額/計畫</th><th>預估年繳</th></tr></thead>
+<tbody>
+<tr><td>小額終老</td><td>國泰人壽 真值保小額終身壽險</td><td>30~50 萬</td><td>約 15,000~25,000 元</td></tr>
+<tr><td>意外險</td><td>富邦產險 新十全大補增安心</td><td>100 萬</td><td>約 2,500~4,000 元</td></tr>
+<tr><td>實支實付（若仍在保證續保期內）</td><td>維持原有保單續保</td><td>—</td><td>視原保單費率</td></tr>
+<tr><td>居家綜合險</td><td>臺灣產物 居家綜合保險</td><td>—</td><td>約 2,000~3,000 元</td></tr>
+<tr><td><strong>合計</strong></td><td></td><td></td><td><strong class="km">約 19,500~32,000 元</strong></td></tr>
+</tbody></table></div>
+<div class="callout callout-success"><div class="callout-title">規劃邏輯</div><p>退休族保費貴、核保嚴格，新投保選擇有限。重點是：(1) 小額終老確保身故金 (2) 維持年輕時買的實支實付和重大傷病續保 (3) 意外險持續投保 (4) 居家綜合險保障住家。若年輕時沒有買實支實付，此時投保保費極高，建議以儲蓄+政府資源因應。</p></div>
+
+</div>
+
+<!-- ===== 第三部分 ===== -->
+
+<h2 id="p3">第三部分：社群口碑排行</h2>
+<div class="section-content">
+
+<div class="bq">資料來源：PTT Insurance 版、MY83 保險網、Finfo 保險資訊站、bobe.ai、SmartBeb 等平台 2025~2026 年討論整理</div>
+
+<h3 id="p3-1">最多人推薦的實支實付 Top 5</h3>
+<div class="tw"><table>
+<thead><tr><th>排名</th><th>產品</th><th>社群評價</th></tr></thead>
+<tbody>
+<tr><td>1</td><td>全球人壽 實足滿意（XHC）</td><td>PTT/Finfo 一致推薦，雜費額度高、概括式條款、門診手術有賠，被稱為「國民實支」</td></tr>
+<tr><td>2</td><td>新光人壽 新呵護（U5）</td><td>雜費無年度上限是最大賣點，PTT 版友稱「住院怎麼花都不怕超過」</td></tr>
+<tr><td>3</td><td>富邦人壽 佳實在（HSV）</td><td>門診手術理賠最優秀，理賠速度快，MY83 討論度高</td></tr>
+<tr><td>4</td><td>全球人壽 全心全意（XHO）</td><td>自負額型，保費便宜適合補強第二張實支</td></tr>
+<tr><td>5</td><td>台灣人壽 新住院醫療保險附約</td><td>台壽產品線搭配方便，Finfo 罐頭保單常見選擇</td></tr>
+</tbody></table></div>
+
+<h3 id="p3-2">最多人推薦的癌症險 Top 3</h3>
+<div class="tw"><table>
+<thead><tr><th>排名</th><th>產品</th><th>社群評價</th></tr></thead>
+<tbody>
+<tr><td>1</td><td>遠雄人壽 愛家守護（CJ2）</td><td>費率漲幅最緩，重度不扣減初期/輕度已領額度，PTT 版友力推「買癌症險先看這張」</td></tr>
+<tr><td>2</td><td>新光人壽 新一年期防癌（C2）</td><td>保費最便宜的一次金癌症險，MY83 小資族首選</td></tr>
+<tr><td>3</td><td>台灣人壽 一定罩（YCC）</td><td>搭配台壽主約方便，Finfo 罐頭保單常見組合</td></tr>
+</tbody></table></div>
+
+<h3 id="p3-3">最多人推薦的意外險 Top 3</h3>
+<div class="tw"><table>
+<thead><tr><th>排名</th><th>產品</th><th>社群評價</th></tr></thead>
+<tbody>
+<tr><td>1</td><td>富邦產險 新十全大補增安心</td><td>bobe.ai 和 Finfo 評為「全能型意外險」，一張涵蓋所有意外保障</td></tr>
+<tr><td>2</td><td>華南產險 滿福保 3.0</td><td>平價入門首選，PTT 版友稱「最便宜的全面意外險」</td></tr>
+<tr><td>3</td><td>安達產險 扶氣滿堂 2.0</td><td>骨折理賠優秀，保障項目豐富</td></tr>
+</tbody></table></div>
+
+<h3 id="p3-4">最多人踩雷的產品（要避開的）</h3>
+<div class="tw"><table>
+<thead><tr><th>類型</th><th>常見踩雷情境</th><th>避免方式</th></tr></thead>
+<tbody>
+<tr><td><strong>終身醫療險（日額型）</strong></td><td>手術花 46 萬只賠 4 萬，因為是按「手術等級表」固定給付而非實支實付</td><td>優先買實支實付，日額型作補充即可</td></tr>
+<tr><td><strong>還本型壽險/儲蓄險</strong></td><td>被「每年領回」吸引，但總繳保費遠高於領回金額，IRR 僅 1~2%，壓縮保障預算</td><td>先保障後儲蓄；比較 IRR 而非宣告利率</td></tr>
+<tr><td><strong>投資型保單（不懂投資的人買的）</strong></td><td>以為「保本+穩定配息」，結果帳戶價值因市場下跌大幅縮水</td><td>僅推薦給有投資經驗的客戶</td></tr>
+<tr><td><strong>高保額終身壽險（年輕人）</strong></td><td>年繳 5~8 萬買 200 萬終身壽險，導致無預算買醫療險和意外險</td><td>用定期壽險取代，省下的保費買實支實付</td></tr>
+<tr><td><strong>列舉式實支實付</strong></td><td>理賠項目有限，新型醫材可能不在列舉範圍內</td><td>選概括式條款的實支實付</td></tr>
+</tbody></table></div>
+
+</div>
+
+<!-- ===== 第四部分 ===== -->
+
+<h2 id="p4">第四部分：從業人員選品指南</h2>
+<div class="section-content">
+
+<h3 id="p4-1">一、根據客戶需求快速選產品的流程</h3>
+<div class="code-block">Step 1：確認客戶基本資料
+  → 年齡、性別、職業類別、家庭狀況、現有保單
+
+Step 2：確認預算
+  → 年收入的 6~10% 為保費預算上限
+
+Step 3：按優先順序配置（由高到低）
+  ① 實支實付醫療險（人人必備）
+  ② 重大傷病險（CP 值最高的重病險）
+  ③ 癌症一次金（台灣十大死因之首）
+  ④ 意外險（保費最低、人人需要）
+  ⑤ 定期壽險（有家庭責任者必備）
+  ⑥ 失能扶助/長照險（預算允許再加）
+  ⑦ 其他補強（日額型、特定傷病等）
+
+Step 4：選擇保險公司組合
+  → 保經優勢：跨公司挑最優商品組合
+  → 建議以 2~3 家公司為主（避免太分散增加管理難度）
+
+Step 5：確認條款細節
+  → 概括式 vs 列舉式、保證續保年齡、等待期、排除項目</div>
+
+<h3 id="p4-2">二、各家保險公司的強項和弱項</h3>
+<div class="tw"><table>
+<thead><tr><th>保險公司</th><th>強項</th><th>弱項</th><th>適合用在</th></tr></thead>
+<tbody>
+<tr><td><strong>全球人壽</strong></td><td>實支實付口碑第一（XHC/XHO）、重大傷病險優秀、整體保障型商品 CP 值高</td><td>品牌知名度不如國泰富邦、據點較少</td><td>實支實付主力、重大傷病、失能扶助</td></tr>
+<tr><td><strong>台灣人壽</strong></td><td>定期壽險費率最低、重大傷病險（金卡安心）條款優秀、附約產品線齊全</td><td>品牌辨識度一般</td><td>定期壽險、重大傷病、作為主約壁壘</td></tr>
+<tr><td><strong>遠雄人壽</strong></td><td>癌症險（CJ2）費率漲幅最緩、重大傷病險費率有競爭力</td><td>實支實付商品較弱、品牌知名度有限</td><td>癌症一次金、搭配重大傷病</td></tr>
+<tr><td><strong>新光人壽</strong></td><td>實支實付（U5）雜費無年度上限、癌症險（C2）便宜</td><td>理賠速度有時被詬病</td><td>實支實付（特別在意無上限者）、便宜癌症險</td></tr>
+<tr><td><strong>富邦人壽</strong></td><td>實支實付（HSV）門診手術理賠優、理賠速度快、品牌服務佳</td><td>保費相對略高</td><td>實支實付（重視門診手術）、品牌偏好客戶</td></tr>
+<tr><td><strong>國泰人壽</strong></td><td>品牌信賴度最高、據點最多、終身壽險/小額終老首選</td><td>保障型商品費率偏高、CP 值非最優</td><td>終身壽險、小額終老、品牌偏好客戶</td></tr>
+<tr><td><strong>富邦產險</strong></td><td>意外險保障最完整（新十全大補）、車險市佔第一、產險龍頭</td><td>車險理賠申訴率非最低</td><td>意外險主力、車險</td></tr>
+<tr><td><strong>華南產險</strong></td><td>意外險最便宜（滿福保 3.0）</td><td>保障項目不如富邦豐富</td><td>預算型意外險</td></tr>
+</tbody></table></div>
+
+<h3 id="p4-3">三、同類產品怎麼比較</h3>
+
+<h4>實支實付比較重點</h4>
+<div class="tw"><table>
+<thead><tr><th>比較項目</th><th>說明</th><th>重要性</th></tr></thead>
+<tbody>
+<tr><td>條款類型</td><td>概括式 > 列舉式</td><td><span class="star">★★★★★</span></td></tr>
+<tr><td>雜費額度</td><td>至少 20 萬/次，建議 30 萬以上</td><td><span class="star">★★★★★</span></td></tr>
+<tr><td>門診手術</td><td>有理賠 > 無理賠</td><td><span class="star">★★★★★</span></td></tr>
+<tr><td>保證續保年齡</td><td>越高越好（至少 75 歲）</td><td><span class="star">★★★★</span></td></tr>
+<tr><td>正本/副本</td><td>2024 年後新保單皆為正本理賠</td><td><span class="star">★★★★</span></td></tr>
+<tr><td>手術費給付方式</td><td>依比例表 vs 與雜費合併計算</td><td><span class="star">★★★</span></td></tr>
+<tr><td>保費</td><td>同等保障下越低越好</td><td><span class="star">★★★</span></td></tr>
+</tbody></table></div>
+
+<h4>癌症險/重大傷病險比較重點</h4>
+<div class="tw"><table>
+<thead><tr><th>比較項目</th><th>說明</th><th>重要性</th></tr></thead>
+<tbody>
+<tr><td>理賠方式</td><td>一次金 > 分項給付</td><td><span class="star">★★★★★</span></td></tr>
+<tr><td>保障範圍</td><td>重大傷病（300+項）> 重大疾病（7 項）</td><td><span class="star">★★★★★</span></td></tr>
+<tr><td>原位癌/低侵襲性癌</td><td>有理賠且比例高者為佳</td><td><span class="star">★★★★</span></td></tr>
+<tr><td>等待期</td><td>90 天為標準</td><td><span class="star">★★★</span></td></tr>
+<tr><td>費率調整機制</td><td>5 年期調整 > 1 年期調整（漲幅較緩）</td><td><span class="star">★★★</span></td></tr>
+<tr><td>續保年齡</td><td>越高越好</td><td><span class="star">★★★</span></td></tr>
+</tbody></table></div>
+
+<h4>意外險比較重點</h4>
+<div class="tw"><table>
+<thead><tr><th>比較項目</th><th>說明</th><th>重要性</th></tr></thead>
+<tbody>
+<tr><td>身故+失能保額</td><td>至少 100 萬，建議 200 萬</td><td><span class="star">★★★★★</span></td></tr>
+<tr><td>意外實支實付額度</td><td>至少 3 萬</td><td><span class="star">★★★★</span></td></tr>
+<tr><td>骨折理賠</td><td>未住院骨折也有賠者為佳</td><td><span class="star">★★★★</span></td></tr>
+<tr><td>附加保障</td><td>大眾運輸增額、海外增額、居家責任等越多越好</td><td><span class="star">★★★</span></td></tr>
+<tr><td>保費</td><td>產險通常比壽險便宜</td><td><span class="star">★★★</span></td></tr>
+</tbody></table></div>
+
+<h3 id="p4-4">四、保經從業人員的銷售策略建議</h3>
+
+<h4>開發客戶的切入點</h4>
+<ol>
+<li><strong>保單健檢</strong>：幫客戶檢視現有保單，找出保障缺口（最常見：沒有實支實付、只有終身醫療日額型）</li>
+<li><strong>轉換話術</strong>：「您目前的保費花在哪裡？」→ 引導客戶發現大量保費花在低效益的儲蓄險/終身醫療險上</li>
+<li><strong>數字說服</strong>：「達文西手術自費 20 萬、標靶藥物一年 100 萬、看護一個月 5 萬」→ 用實際數字凸顯保障缺口</li>
+<li><strong>罐頭保單入門</strong>：用 Finfo/MY83 的罐頭保單範例讓客戶理解「用 2 萬年繳就能有完整保障」</li>
+</ol>
+
+<h4>常見反對意見處理</h4>
+<div class="tw"><table>
+<thead><tr><th>客戶說法</th><th>回應方式</th></tr></thead>
+<tbody>
+<tr><td>「我已經有保險了」</td><td>「太好了！我們來做個免費保單健檢，確認保障是否完整？」</td></tr>
+<tr><td>「保險太貴了」</td><td>「其實保障型保險很便宜，一天不到 50 元就能有完整醫療+意外+重病保障」</td></tr>
+<tr><td>「我很健康不需要」</td><td>「保險就是在健康的時候買的，等生病了就來不及了。而且越年輕保費越便宜」</td></tr>
+<tr><td>「有健保就夠了」</td><td>「健保不給付的自費項目越來越多，一次住院自費動輒數萬到數十萬」</td></tr>
+<tr><td>「定期險到期拿不回錢很虧」</td><td>「定期險的本質是用最低成本換最高保障，就像租房子不虧一樣」</td></tr>
+</tbody></table></div>
+
+</div>
+
+<!-- ===== 資料來源 ===== -->
+
+<h2 id="ref">資料來源與參考</h2>
+<div class="section-content">
+<ul class="src">
+<li><a href="https://finfo.tw/popular/recommend" target="_blank">Finfo 保險資訊站 - 2026 罐頭保單推薦</a></li>
+<li><a href="https://finfo.tw/compares/%E5%AF%A6%E6%94%AF%E5%AF%A6%E4%BB%98%E9%86%AB%E7%99%82%E9%9A%AA" target="_blank">Finfo - 2026 實支實付醫療險比較表</a></li>
+<li><a href="https://finfo.tw/compares/%E4%B8%80%E5%B9%B4%E6%9C%9F%E9%87%8D%E5%A4%A7%E5%82%B7%E7%97%85%E9%9A%AA" target="_blank">Finfo - 2026 一年期重大傷病險比較表</a></li>
+<li><a href="https://finfo.tw/compares/%E6%88%90%E4%BA%BA%E6%84%8F%E5%A4%96%E9%9A%AA%E5%B0%88%E6%A1%88" target="_blank">Finfo - 2026 成人意外險專案比較表</a></li>
+<li><a href="https://finfo.tw/prod_cates/%E6%B1%BD%E8%BB%8A%E9%9A%AA" target="_blank">Finfo - 2026 汽車險推薦</a></li>
+<li><a href="https://finfo.tw/prod_cates/travel-insurance" target="_blank">Finfo - 2026 旅遊保險推薦</a></li>
+<li><a href="https://my83.com.tw/bundle/2" target="_blank">MY83 保險網 - 2025 成人罐頭保單</a></li>
+<li><a href="https://my83.com.tw/product/leaderboard" target="_blank">MY83 - 2026 熱門保險商品</a></li>
+<li><a href="https://bobe.ai/%E6%84%8F%E5%A4%96%E9%9A%AA/%E6%84%8F%E5%A4%96%E9%9A%AA%E5%95%86%E5%93%81%E5%B0%88%E5%8D%80" target="_blank">bobe.ai - 2026 意外險推薦</a></li>
+<li><a href="https://bobe.ai/travel" target="_blank">bobe.ai - 旅平險推薦</a></li>
+<li><a href="https://www.smartbeb.com.tw/article/Accident/id/1057" target="_blank">SmartBeb - 2026 意外險全攻略</a></li>
+<li><a href="https://www.smartbeb.com.tw/article/Catastrophic_illness/id/1053" target="_blank">SmartBeb - 2026 重大傷病險攻略</a></li>
+<li><a href="https://www.smartbeb.com.tw/article/Life/id/1070" target="_blank">SmartBeb - 2026 小額終老壽險攻略</a></li>
+<li><a href="https://campaign.transglobe.com.tw/?p=2517" target="_blank">全球人壽 - 2026 癌症險推薦</a></li>
+<li><a href="https://campaign.transglobe.com.tw/?p=11012" target="_blank">全球人壽 - 2026 長照險推薦</a></li>
+<li><a href="https://campaign.transglobe.com.tw/?p=7649" target="_blank">全球人壽 - 2026 重大傷病險推薦</a></li>
+<li><a href="https://www.cathay-ins.com.tw/c-insurance/personal/knowledge-blog/t55" target="_blank">國泰產險 - 2026 汽車保險推薦</a></li>
+<li><a href="https://ec.tfmi.com.tw/Active.ashx?a=b3DZe" target="_blank">臺灣產物 - 居家綜合保險</a></li>
+<li><a href="https://simpleway.com.tw/articleDetail/76" target="_blank">Simple 保險網 - 癌症險推薦</a></li>
+<li><a href="https://www.insfeel.com.tw/article/%E6%97%85%E5%B9%B3%E9%9A%AA-%E6%97%85%E9%81%8A%E4%B8%8D%E4%BE%BF%E9%9A%AA-%E6%8E%A8%E8%96%A6" target="_blank">InsFeel - 2026 旅平險推薦</a></li>
+</ul>
+</div>
+
+</div><!-- card -->
+
+<div class="disclaimer">最後更新：2026 年 3 月</div>
+</main>
+</div>
+
+<button class="sidebar-toggle" id="sidebarToggle" aria-label="目錄">&#9776;</button>
+
+<script>
+(function(){
+'use strict';
+var tocList=document.getElementById('tocList'),sidebar=document.getElementById('sidebar');
+
+// Build TOC
+function buildTOC(){
+tocList.innerHTML='';
+document.querySelectorAll('.card h2[id],.card h3[id]').forEach(function(h){
+var li=document.createElement('li');
+if(h.tagName==='H3')li.classList.add('toc-h3');
+var a=document.createElement('a');
+a.href='#'+h.id;a.textContent=h.textContent;
+a.addEventListener('click',function(){
+var sc=h.nextElementSibling;
+if(sc&&sc.classList.contains('section-content')&&sc.classList.contains('collapsed')){h.click()}
+var parent=h.closest('.section-content');
+if(parent&&parent.classList.contains('collapsed')){parent.previousElementSibling.click()}
+});
+li.appendChild(a);tocList.appendChild(li);
+});
+}
+buildTOC();
+
+// Collapsible
+document.querySelectorAll('.card h2[id]').forEach(function(h2){
+h2.addEventListener('click',function(){
+var c=this.nextElementSibling;
+if(!c||!c.classList.contains('section-content'))return;
+if(c.classList.contains('collapsed')){
+c.classList.remove('collapsed');c.style.maxHeight=c.scrollHeight+'px';this.classList.remove('collapsed');
+setTimeout(function(){c.style.maxHeight='none'},310);
+}else{
+c.style.maxHeight=c.scrollHeight+'px';
+requestAnimationFrame(function(){c.classList.add('collapsed');c.style.maxHeight='0px';h2.classList.add('collapsed')});
+}
+});
+});
+
+// Scroll spy
+var spyTick=false;
+window.addEventListener('scroll',function(){
+if(!spyTick){requestAnimationFrame(function(){
+var links=tocList.querySelectorAll('a'),hs=document.querySelectorAll('.card h2[id],.card h3[id]'),cur='';
+hs.forEach(function(h){if(h.getBoundingClientRect().top<=100)cur=h.id});
+links.forEach(function(a){a.classList.toggle('active',a.getAttribute('href')==='#'+cur)});
+spyTick=false});spyTick=true}
+});
+
+// Search
+var si=document.getElementById('searchInput'),sc=document.getElementById('searchCount'),st;
+function clearHL(){document.querySelectorAll('.search-highlight').forEach(function(el){var p=el.parentNode;p.replaceChild(document.createTextNode(el.textContent),el);p.normalize()})}
+function hl(node,term){
+if(!term)return 0;var count=0;
+if(node.nodeType===3){var idx=node.textContent.toLowerCase().indexOf(term.toLowerCase());
+if(idx>=0){var span=document.createElement('span');span.className='search-highlight';var mid=node.splitText(idx);mid.splitText(term.length);span.appendChild(mid.cloneNode(true));mid.parentNode.replaceChild(span,mid);count=1}}
+else if(node.nodeType===1&&node.childNodes.length&&!/(script|style)/i.test(node.tagName)&&!(node.classList&&node.classList.contains('search-highlight'))){
+for(var i=0;i<node.childNodes.length;i++)count+=hl(node.childNodes[i],term)}
+return count}
+si.addEventListener('input',function(){clearTimeout(st);st=setTimeout(function(){
+clearHL();var term=si.value.trim();if(term.length<2){sc.textContent='';return}
+document.querySelectorAll('.section-content.collapsed').forEach(function(s){s.classList.remove('collapsed');s.style.maxHeight='none';var h=s.previousElementSibling;if(h)h.classList.remove('collapsed')});
+var total=0;document.querySelectorAll('.card').forEach(function(card){total+=hl(card,term)});
+sc.textContent=total>0?total+' 筆':'0 筆';
+var first=document.querySelector('.search-highlight');if(first)first.scrollIntoView({behavior:'smooth',block:'center'});
+},300)});
+
+// Mobile sidebar
+document.getElementById('sidebarToggle').addEventListener('click',function(){sidebar.classList.toggle('mobile-show')});
+document.addEventListener('click',function(e){if(!sidebar.contains(e.target)&&e.target.id!=='sidebarToggle')sidebar.classList.remove('mobile-show')});
+})();
+</script>
+</body>
+</html>

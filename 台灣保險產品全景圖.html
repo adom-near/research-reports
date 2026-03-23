@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>台灣保險產品全景圖</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;scroll-padding-top:70px}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Microsoft JhengHei","PingFang TC",sans-serif;background:#f0f4f8;color:#1a2332;line-height:1.7;font-size:15px}
+.top-bar{position:fixed;top:0;left:0;right:0;z-index:1000;background:linear-gradient(135deg,#0a1628,#1a3a5c);box-shadow:0 2px 12px rgba(0,0,0,.3);display:flex;align-items:center;padding:0 24px;gap:16px}
+.top-bar h1{color:#fff;font-size:17px;font-weight:700;padding:14px 0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.search-box{margin-left:auto;position:relative;flex-shrink:0}
+.search-box input{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);color:#fff;padding:7px 14px 7px 34px;border-radius:20px;font-size:13px;width:200px;outline:none;transition:all .2s;font-family:inherit}
+.search-box input::placeholder{color:rgba(255,255,255,.4)}
+.search-box input:focus{background:rgba(255,255,255,.15);border-color:#4fc3f7;width:260px}
+.search-box svg{position:absolute;left:10px;top:50%;transform:translateY(-50%);width:16px;height:16px;fill:rgba(255,255,255,.4)}
+.search-count{color:rgba(255,255,255,.5);font-size:11px;position:absolute;right:12px;top:50%;transform:translateY(-50%)}
+.layout{display:flex;max-width:1200px;margin:66px auto 0;padding:20px;gap:24px}
+.sidebar{width:250px;flex-shrink:0;position:sticky;top:86px;height:calc(100vh - 106px);overflow-y:auto;padding-right:8px}
+.sidebar::-webkit-scrollbar{width:4px}
+.sidebar::-webkit-scrollbar-thumb{background:#c0c8d4;border-radius:4px}
+.toc-title{font-size:12px;font-weight:700;color:#8494a7;text-transform:uppercase;letter-spacing:1px;padding:8px 12px;margin-bottom:4px}
+.toc-list{list-style:none}
+.toc-list li a{display:block;padding:5px 12px;font-size:13px;color:#5a6a7e;text-decoration:none;border-left:2px solid transparent;transition:all .15s;border-radius:0 4px 4px 0}
+.toc-list li a:hover{color:#1a3a5c;background:rgba(26,58,92,.05)}
+.toc-list li a.active{color:#1a3a5c;font-weight:600;border-left-color:#1a3a5c;background:rgba(26,58,92,.08)}
+.toc-list li.toc-h3 a{padding-left:24px;font-size:12px}
+.main{flex:1;min-width:0}
+.card{background:#fff;border-radius:12px;box-shadow:0 1px 4px rgba(0,0,0,.06);padding:36px 40px;margin-bottom:20px}
+.card h2{font-size:22px;color:#0a1628;margin:32px 0 16px;padding-bottom:8px;border-bottom:2px solid #e8edf2;cursor:pointer;position:relative;padding-right:28px}
+.card h2:first-child{margin-top:0}
+.card h2::after{content:'';position:absolute;right:0;top:50%;width:8px;height:8px;border-right:2px solid #8494a7;border-bottom:2px solid #8494a7;transform:translateY(-70%) rotate(45deg);transition:transform .2s}
+.card h2.collapsed::after{transform:translateY(-30%) rotate(-135deg)}
+.card h3{font-size:17px;color:#1a3a5c;margin:24px 0 12px}
+.card h4{font-size:15px;color:#2c5282;margin:18px 0 10px}
+.card p{margin:10px 0}
+.card ul,.card ol{margin:10px 0 10px 20px}
+.card li{margin:4px 0}
+.section-content{overflow:hidden;transition:max-height .3s ease}
+.section-content.collapsed{max-height:0!important}
+.tw{overflow-x:auto;margin:14px 0;border-radius:8px;border:1px solid #e2e8f0}
+table{width:100%;border-collapse:collapse;font-size:13.5px;min-width:480px}
+thead{background:#1a3a5c}
+thead th{color:#fff;font-weight:600;padding:10px 14px;text-align:left;white-space:nowrap}
+tbody td{padding:9px 14px;border-bottom:1px solid #edf2f7}
+tbody tr:nth-child(even){background:#f7fafc}
+tbody tr:hover{background:#ebf4ff}
+.callout{border-radius:8px;padding:16px 20px;margin:16px 0;border-left:4px solid}
+.callout-info{background:#ebf8ff;border-color:#3182ce;color:#2a4365}
+.callout-warn{background:#fffbeb;border-color:#d69e2e;color:#744210}
+.callout-success{background:#f0fff4;border-color:#38a169;color:#22543d}
+.callout-danger{background:#fff5f5;border-color:#e53e3e;color:#742a2a}
+.callout-title{font-weight:700;margin-bottom:6px;font-size:14px}
+.kn{color:#e53e3e;font-weight:700}
+.km{color:#2b6cb0;font-weight:700}
+.kp{color:#38a169;font-weight:700}
+.bq{border-left:3px solid #cbd5e0;padding:8px 16px;color:#5a6a7e;margin:12px 0;font-size:14px;background:#f7fafc;border-radius:0 6px 6px 0}
+.src a{color:#3182ce;text-decoration:none;font-size:13px}
+.src a:hover{text-decoration:underline}
+.search-highlight{background:#fefcbf;border-radius:2px;box-shadow:0 0 0 1px #ecc94b}
+.disclaimer{text-align:center;padding:24px;color:#8494a7;font-size:13px;border-top:1px solid #e2e8f0;margin-top:20px}
+.sidebar-toggle{display:none;position:fixed;bottom:20px;right:20px;width:48px;height:48px;border-radius:50%;background:#1a3a5c;color:#fff;border:none;box-shadow:0 4px 12px rgba(0,0,0,.3);cursor:pointer;font-size:20px;z-index:999;align-items:center;justify-content:center}
+@media(max-width:900px){
+.sidebar{display:none}.layout{padding:12px}.card{padding:20px 18px}.top-bar h1{font-size:15px}
+.search-box input{width:130px}.search-box input:focus{width:170px}table{font-size:12.5px}thead th,tbody td{padding:7px 10px}
+.sidebar-toggle{display:flex}.sidebar.mobile-show{display:block;position:fixed;top:56px;left:0;bottom:0;width:280px;background:#fff;z-index:998;box-shadow:4px 0 20px rgba(0,0,0,.15);padding:16px 8px;height:auto}
+}
+</style>
+</head>
+<body>
+
+<nav class="top-bar">
+<h1>台灣保險產品全景圖</h1>
+<div class="search-box">
+<svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+<input type="text" id="searchInput" placeholder="搜尋內容...">
+<span class="search-count" id="searchCount"></span>
+</div>
+</nav>
+
+<div class="layout">
+<aside class="sidebar" id="sidebar">
+<div class="toc-title">目錄</div>
+<ul class="toc-list" id="tocList"></ul>
+</aside>
+
+<main class="main">
+<div class="card">
+
+<div class="bq">最後更新：2026 年 3 月｜適用對象：剛取得壽險/產險證照的新進從業人員<br>本文件旨在幫助你快速理解台灣保險市場的產品架構，每個險種都以「一看就懂」為目標。</div>
+
+<!-- ===== Part 1 ===== -->
+<h2 id="p1">第一部分：壽險（人身保險）</h2>
+<div class="section-content">
+<div class="bq">壽險公司銷售的商品涵蓋壽險、健康險、意外險、年金險等，統稱「人身保險」。</div>
+
+<h3 id="p1-1">1. 壽險</h3>
+
+<h4>1-1 定期壽險</h4>
+<div class="tw"><table><thead><tr><th>欄位</th><th>說明</th></tr></thead><tbody>
+<tr><td><strong>核心功能</strong></td><td>在約定期間內，被保險人身故或完全失能時給付保險金</td></tr>
+<tr><td><strong>適合對象</strong></td><td>家庭經濟支柱、有房貸/車貸者、預算有限但需要高額壽險保障者</td></tr>
+<tr><td><strong>保費範圍</strong></td><td>30 歲男性保額 100 萬約年繳 <span class="km">3,000~5,000 元</span>（極具CP值）</td></tr>
+<tr><td><strong>主要公司</strong></td><td>國泰人壽、富邦人壽、台灣人壽、全球人壽、新光人壽</td></tr>
+<tr><td><strong>常見迷思</strong></td><td>「到期拿不回錢很虧」——本質就是用最低成本換最高保障</td></tr>
+</tbody></table></div>
+
+<h4>1-2 終身壽險</h4>
+<div class="tw"><table><thead><tr><th>欄位</th><th>說明</th></tr></thead><tbody>
+<tr><td><strong>核心功能</strong></td><td>繳費期滿後保障終身，身故或完全失能時給付保險金</td></tr>
+<tr><td><strong>適合對象</strong></td><td>預算充裕、有資產傳承需求者</td></tr>
+<tr><td><strong>保費範圍</strong></td><td>30 歲男性保額 100 萬，20 年期繳約年繳 <span class="km">25,000~35,000 元</span></td></tr>
+<tr><td><strong>常見迷思</strong></td><td>「買終身壽險就夠了」——保額通常不高，單靠它無法涵蓋醫療、意外</td></tr>
+</tbody></table></div>
+
+<h4>1-3 投資型壽險</h4>
+<div class="tw"><table><thead><tr><th>欄位</th><th>說明</th></tr></thead><tbody>
+<tr><td><strong>核心功能</strong></td><td>結合壽險保障與投資帳戶，保單價值隨投資績效波動</td></tr>
+<tr><td><strong>適合對象</strong></td><td>有投資經驗、能承受投資風險者</td></tr>
+<tr><td><strong>注意事項</strong></td><td>投資風險由保戶自行承擔；費用結構需仔細看；早期解約損失大</td></tr>
+<tr><td><strong>常見迷思</strong></td><td>「可以穩賺不賠」——盈虧完全取決於市場，保險公司不保證收益</td></tr>
+</tbody></table></div>
+
+<h4>1-4 變額壽險</h4>
+<div class="tw"><table><thead><tr><th>欄位</th><th>說明</th></tr></thead><tbody>
+<tr><td><strong>核心功能</strong></td><td>投資型壽險的子分類，保額隨帳戶績效變動，通常有最低身故保障</td></tr>
+<tr><td><strong>適合對象</strong></td><td>願意積極管理投資標的、有中長期規劃者</td></tr>
+</tbody></table></div>
+
+<h4>1-5 萬能壽險</h4>
+<div class="tw"><table><thead><tr><th>欄位</th><th>說明</th></tr></thead><tbody>
+<tr><td><strong>核心功能</strong></td><td>繳費金額與時間有彈性，保費進入宣告利率計息帳戶，可調整保額</td></tr>
+<tr><td><strong>適合對象</strong></td><td>收入不穩定但希望有壽險保障者</td></tr>
+<tr><td><strong>常見迷思</strong></td><td>「萬能壽險很萬能」——只是繳費有彈性，不代表什麼都保</td></tr>
+</tbody></table></div>
+
+<h4>1-6 小額終老壽險</h4>
+<div class="tw"><table><thead><tr><th>欄位</th><th>說明</th></tr></thead><tbody>
+<tr><td><strong>核心功能</strong></td><td>政策性商品，讓高齡或弱勢族群以低保費取得基本壽險保障</td></tr>
+<tr><td><strong>適合對象</strong></td><td>55~84 歲長者、經濟弱勢者</td></tr>
+<tr><td><strong>保費範圍</strong></td><td>保額上限 <span class="km">90 萬</span>；65 歲投保 30 萬約年繳 15,000~25,000 元</td></tr>
+<tr><td><strong>注意事項</strong></td><td>每人限購 4 件；原則上免體檢但仍需健康告知</td></tr>
+</tbody></table></div>
+
+<h3 id="p1-2">2. 健康險</h3>
+
+<h4>2-1 實支實付醫療險</h4>
+<div class="tw"><table><thead><tr><th>欄位</th><th>說明</th></tr></thead><tbody>
+<tr><td><strong>核心功能</strong></td><td>在健保給付不足的部分，依實際醫療收據金額理賠</td></tr>
+<tr><td><strong>適合對象</strong></td><td>幾乎所有人都需要，尤其擔心自費醫療項目的人</td></tr>
+<tr><td><strong>保費範圍</strong></td><td>30 歲年繳約 <span class="km">5,000~15,000 元</span></td></tr>
+<tr><td><strong>熱門產品</strong></td><td>富邦「佳實在 HSV」（雜費 30 萬/次）、全球「實足滿意 XHC」（雜費 40 萬/次）</td></tr>
+<tr><td><strong>注意事項</strong></td><td>2024 年起改「正本理賠」；優先選「概括式條款」；保證續保年齡越高越好</td></tr>
+</tbody></table></div>
+
+<h4>2-2 日額型醫療險</h4>
+<div class="tw"><table><thead><tr><th>欄位</th><th>說明</th></tr></thead><tbody>
+<tr><td><strong>核心功能</strong></td><td>住院時依天數給付固定金額，不需收據</td></tr>
+<tr><td><strong>保費範圍</strong></td><td>30 歲日額 2,000 元約年繳 <span class="km">3,000~8,000 元</span></td></tr>
+<tr><td><strong>注意事項</strong></td><td>現代醫療趨勢縮短住院天數，效益逐年下降；建議作為第二順位補充</td></tr>
+</tbody></table></div>
+
+<h4>2-3 癌症險</h4>
+<div class="tw"><table><thead><tr><th>欄位</th><th>說明</th></tr></thead><tbody>
+<tr><td><strong>核心功能</strong></td><td>確診癌症後給付。「一次金型」確診即整筆給付；「分項給付型」按項目分別給付</td></tr>
+<tr><td><strong>保費範圍</strong></td><td>30 歲一次金型保額 100 萬約年繳 <span class="km">3,000~8,000 元</span></td></tr>
+<tr><td><strong>注意事項</strong></td><td>建議優先選「一次金型」；注意等待期通常 90 天；留意原位癌理賠比例</td></tr>
+</tbody></table></div>
+
+<h4>2-4 重大疾病險</h4>
+<div class="tw"><table><thead><tr><th>欄位</th><th>說明</th></tr></thead><tbody>
+<tr><td><strong>核心功能</strong></td><td>罹患 7 項重大疾病時一次給付保險金</td></tr>
+<tr><td><strong>保費範圍</strong></td><td>30 歲保額 100 萬約年繳 <span class="km">5,000~12,000 元</span></td></tr>
+<tr><td><strong>常見迷思</strong></td><td>「重大疾病險 = 重大傷病險」——完全不同，重大疾病只保 7 項，重大傷病涵蓋 300+ 項</td></tr>
+</tbody></table></div>
+
+<h4>2-5 重大傷病險</h4>
+<div class="tw"><table><thead><tr><th>欄位</th><th>說明</th></tr></thead><tbody>
+<tr><td><strong>核心功能</strong></td><td>取得健保署「重大傷病證明」即理賠，涵蓋 22 大類 300+ 項傷病</td></tr>
+<tr><td><strong>保費範圍</strong></td><td>30 歲保額 100 萬約年繳 <span class="km">4,000~10,000 元</span>（定期型）</td></tr>
+<tr><td><strong>注意事項</strong></td><td>理賠標準明確、爭議最少；CP 值在健康險中名列前茅</td></tr>
+</tbody></table></div>
+
+<h4>2-6 長期照顧險</h4>
+<div class="tw"><table><thead><tr><th>欄位</th><th>說明</th></tr></thead><tbody>
+<tr><td><strong>核心功能</strong></td><td>符合「長期照顧狀態」時，定期給付照顧金</td></tr>
+<tr><td><strong>保費範圍</strong></td><td>30 歲月領 3 萬約年繳 <span class="km">15,000~30,000 元</span></td></tr>
+<tr><td><strong>常見迷思</strong></td><td>「政府長照就夠了」——實際長照費用每月 3~6 萬元，政府有排擠和上限</td></tr>
+</tbody></table></div>
+
+<h4>2-7 失能險</h4>
+<div class="tw"><table><thead><tr><th>欄位</th><th>說明</th></tr></thead><tbody>
+<tr><td><strong>核心功能</strong></td><td>因疾病或意外導致失能（1~11 級），依等級給付一次金或月扶助金</td></tr>
+<tr><td><strong>保費範圍</strong></td><td>30 歲月領 3 萬附約約年繳 <span class="km">8,000~15,000 元</span></td></tr>
+<tr><td><strong>注意事項</strong></td><td>保證給付型主險已停售，目前主流為「等級給付型」附約</td></tr>
+</tbody></table></div>
+
+<h4>2-8 牙齒險</h4>
+<div class="tw"><table><thead><tr><th>欄位</th><th>說明</th></tr></thead><tbody>
+<tr><td><strong>核心功能</strong></td><td>保障牙科治療費用（洗牙、補牙、根管、假牙、植牙等）</td></tr>
+<tr><td><strong>保費範圍</strong></td><td>年繳約 <span class="km">3,000~6,000 元</span></td></tr>
+<tr><td><strong>注意事項</strong></td><td>台灣市場商品選擇有限；通常有等待期 90~180 天；植牙可能有給付上限</td></tr>
+</tbody></table></div>
+
+<h3 id="p1-3">3. 意外險</h3>
+
+<h4>3-1 意外死殘</h4>
+<div class="tw"><table><thead><tr><th>欄位</th><th>說明</th></tr></thead><tbody>
+<tr><td><strong>核心功能</strong></td><td>因意外事故身故或失能時給付保險金</td></tr>
+<tr><td><strong>保費範圍</strong></td><td>一般職業保額 100 萬約年繳 <span class="km">1,000~2,000 元</span>（CP值極高）</td></tr>
+<tr><td><strong>注意事項</strong></td><td>「意外」須符合「外來、突發、非疾病」三要件；產險公司通常比壽險便宜</td></tr>
+</tbody></table></div>
+
+<h4>3-2 意外醫療</h4>
+<div class="tw"><table><thead><tr><th>欄位</th><th>說明</th></tr></thead><tbody>
+<tr><td><strong>核心功能</strong></td><td>因意外受傷就醫時理賠醫療費用</td></tr>
+<tr><td><strong>保費範圍</strong></td><td>實支型額度 3 萬約年繳 <span class="km">500~1,500 元</span></td></tr>
+</tbody></table></div>
+
+<h4>3-3 特定意外險</h4>
+<div class="tw"><table><thead><tr><th>欄位</th><th>說明</th></tr></thead><tbody>
+<tr><td><strong>核心功能</strong></td><td>針對特定場景（交通、旅遊、職業）的加倍保障</td></tr>
+<tr><td><strong>保費範圍</strong></td><td>旅遊平安險 5 天約 <span class="km">200~500 元</span></td></tr>
+<tr><td><strong>常見迷思</strong></td><td>「刷卡送的旅平險就夠了」——信用卡附贈保障額度和範圍通常有限</td></tr>
+</tbody></table></div>
+
+<h3 id="p1-4">4. 年金險</h3>
+
+<h4>4-1 傳統年金險</h4>
+<div class="tw"><table><thead><tr><th>欄位</th><th>說明</th></tr></thead><tbody>
+<tr><td><strong>核心功能</strong></td><td>繳費期滿後定期給付年金直到身故，保障「活太久」的風險</td></tr>
+<tr><td><strong>保費範圍</strong></td><td>躉繳 <span class="km">100 萬</span>起跳</td></tr>
+<tr><td><strong>常見迷思</strong></td><td>「年金險就是儲蓄險」——核心是「活到老領到老」，不是存錢生利息</td></tr>
+</tbody></table></div>
+
+<h4>4-2 投資型年金險</h4>
+<div class="tw"><table><thead><tr><th>欄位</th><th>說明</th></tr></thead><tbody>
+<tr><td><strong>核心功能</strong></td><td>累積期間投入投資帳戶，退休後轉為年金給付</td></tr>
+<tr><td><strong>適合對象</strong></td><td>距退休 10 年以上、願意承擔投資風險者</td></tr>
+</tbody></table></div>
+
+<h4>4-3 利率變動型年金險</h4>
+<div class="tw"><table><thead><tr><th>欄位</th><th>說明</th></tr></thead><tbody>
+<tr><td><strong>核心功能</strong></td><td>以「宣告利率」計息，兼具穩定性與彈性</td></tr>
+<tr><td><strong>保費範圍</strong></td><td>躉繳 <span class="km">30 萬</span>起跳</td></tr>
+<tr><td><strong>常見迷思</strong></td><td>「宣告利率就是保證利率」——宣告利率每月公布，會隨市場變動</td></tr>
+</tbody></table></div>
+
+<h3 id="p1-5">5. 儲蓄險/還本型</h3>
+
+<h4>5-1 利率變動型壽險（類儲蓄）</h4>
+<div class="tw"><table><thead><tr><th>欄位</th><th>說明</th></tr></thead><tbody>
+<tr><td><strong>核心功能</strong></td><td>結合壽險與儲蓄，以「宣告利率」計算增值回饋分享金</td></tr>
+<tr><td><strong>注意事項</strong></td><td>IFRS 17 後高利儲蓄險趨稀少；前 6 年解約幾乎確定虧損；要看 IRR 而非宣告利率</td></tr>
+<tr><td><strong>常見迷思</strong></td><td>「利率比定存高」——6 年期 IRR 通常只有 1~2%，且鎖住資金流動性</td></tr>
+</tbody></table></div>
+
+<h4>5-2 還本型終身壽險</h4>
+<div class="tw"><table><thead><tr><th>欄位</th><th>說明</th></tr></thead><tbody>
+<tr><td><strong>核心功能</strong></td><td>每年給付「生存還本金」，同時具有身故保障</td></tr>
+<tr><td><strong>保費範圍</strong></td><td>保額 100 萬年繳約 <span class="km">40,000~80,000 元</span>（最貴的壽險類型之一）</td></tr>
+<tr><td><strong>常見迷思</strong></td><td>「每年領錢很划算」——把多繳的保費拿去投資，累積的金額通常更多</td></tr>
+</tbody></table></div>
+</div>
+
+<!-- ===== Part 2 ===== -->
+<h2 id="p2">第二部分：產險（財產保險）</h2>
+<div class="section-content">
+<div class="bq">產險公司銷售車險、火險、責任險等，保障的是「財產」和「責任」風險。</div>
+
+<h3 id="p2-1">1. 車險</h3>
+
+<h4>1-1 強制汽車責任保險</h4>
+<div class="tw"><table><thead><tr><th>欄位</th><th>說明</th></tr></thead><tbody>
+<tr><td><strong>核心功能</strong></td><td>法律強制，保障車禍中受害第三人的體傷和死亡</td></tr>
+<tr><td><strong>保費範圍</strong></td><td>自用小客車約 <span class="km">1,200~1,500 元/年</span>；機車約 600~900 元/年</td></tr>
+<tr><td><strong>注意事項</strong></td><td>每人傷害醫療 20 萬、死亡/失能 200 萬，保障有限；未投保罰款 6,000~30,000 元</td></tr>
+</tbody></table></div>
+
+<h4>1-2 第三人責任險</h4>
+<div class="tw"><table><thead><tr><th>欄位</th><th>說明</th></tr></thead><tbody>
+<tr><td><strong>核心功能</strong></td><td>補強制險不足，保障對第三人的體傷和財物損失</td></tr>
+<tr><td><strong>保費範圍</strong></td><td>體傷 300 萬 + 財損 50 萬，約年繳 <span class="km">2,500~4,000 元</span></td></tr>
+<tr><td><strong>注意事項</strong></td><td>建議體傷至少 300 萬、財損至少 50 萬</td></tr>
+</tbody></table></div>
+
+<h4>1-3 超額責任險</h4>
+<div class="tw"><table><thead><tr><th>欄位</th><th>說明</th></tr></thead><tbody>
+<tr><td><strong>核心功能</strong></td><td>強制險 + 第三人責任險不夠賠時接手</td></tr>
+<tr><td><strong>保費範圍</strong></td><td>保額 <span class="km">1,000 萬</span>約年繳 1,000~2,000 元（CP值極高）</td></tr>
+<tr><td><strong>注意事項</strong></td><td>必須先投保強制險 + 第三人責任險；建議保額至少 1,000 萬</td></tr>
+</tbody></table></div>
+
+<h4>1-4 車體險</h4>
+<div class="tw"><table><thead><tr><th>欄位</th><th>說明</th></tr></thead><tbody>
+<tr><td><strong>核心功能</strong></td><td>保障自己車輛的損壞維修費用</td></tr>
+<tr><td><strong>保費範圍</strong></td><td>甲式 <span class="km">20,000~50,000+</span>；乙式 8,000~20,000；丙式 3,000~8,000</td></tr>
+<tr><td><strong>注意事項</strong></td><td>甲式最廣最貴、丙式只保車碰車；車齡越高越不划算</td></tr>
+</tbody></table></div>
+
+<h4>1-5 乘客險</h4>
+<div class="tw"><table><thead><tr><th>欄位</th><th>說明</th></tr></thead><tbody>
+<tr><td><strong>核心功能</strong></td><td>保障車內乘客因車禍受傷的醫療和死殘給付</td></tr>
+<tr><td><strong>保費範圍</strong></td><td>年繳約 <span class="km">500~1,500 元</span></td></tr>
+<tr><td><strong>常見迷思</strong></td><td>「第三人責任險有保乘客」——第三人險保車外的人，車內要加保乘客險</td></tr>
+</tbody></table></div>
+
+<h3 id="p2-2">2. 火險/住宅險</h3>
+
+<h4>2-1 住宅火災及地震基本保險</h4>
+<div class="tw"><table><thead><tr><th>欄位</th><th>說明</th></tr></thead><tbody>
+<tr><td><strong>核心功能</strong></td><td>保障住宅因火災、地震等災害造成的建築物損失</td></tr>
+<tr><td><strong>保費範圍</strong></td><td>住宅火險約年繳 <span class="km">2,000~5,000 元</span>；地震基本保險固定 1,350 元/年</td></tr>
+<tr><td><strong>注意事項</strong></td><td>地震基本保險保額上限 <span class="km">150 萬</span>；完整保障需加保超額地震險</td></tr>
+</tbody></table></div>
+
+<h4>2-2 居家綜合險</h4>
+<div class="tw"><table><thead><tr><th>欄位</th><th>說明</th></tr></thead><tbody>
+<tr><td><strong>核心功能</strong></td><td>比基本火險更全面，涵蓋竊盜、水漬、颱風洪水、居家責任、動產等</td></tr>
+<tr><td><strong>保費範圍</strong></td><td>年繳約 <span class="km">3,000~10,000 元</span></td></tr>
+</tbody></table></div>
+
+<h3 id="p2-3">3. 責任險</h3>
+
+<h4>3-1 公共意外責任險</h4>
+<div class="tw"><table><thead><tr><th>欄位</th><th>說明</th></tr></thead><tbody>
+<tr><td><strong>核心功能</strong></td><td>保障營業場所因意外事故導致第三人體傷或財損的賠償責任</td></tr>
+<tr><td><strong>保費範圍</strong></td><td>年繳約 <span class="km">3,000~30,000 元</span></td></tr>
+<tr><td><strong>注意事項</strong></td><td>部分場所依法強制投保（補習班、KTV、電影院等）</td></tr>
+</tbody></table></div>
+
+<h4>3-2 專業責任險</h4>
+<div class="tw"><table><thead><tr><th>欄位</th><th>說明</th></tr></thead><tbody>
+<tr><td><strong>核心功能</strong></td><td>保障專業人士因執業疏失導致客戶損失的賠償責任</td></tr>
+<tr><td><strong>適合對象</strong></td><td>醫師、律師、會計師、建築師、保險經紀人等</td></tr>
+</tbody></table></div>
+
+<h4>3-3 雇主責任險</h4>
+<div class="tw"><table><thead><tr><th>欄位</th><th>說明</th></tr></thead><tbody>
+<tr><td><strong>核心功能</strong></td><td>保障雇主因員工工作中受傷而需負擔的賠償責任</td></tr>
+<tr><td><strong>常見迷思</strong></td><td>「有勞保就不需要」——勞保給付有限，員工可依民法求償差額</td></tr>
+</tbody></table></div>
+
+<h3 id="p2-4">4. 其他產險</h3>
+
+<h4>4-1 旅遊平安險</h4>
+<div class="tw"><table><thead><tr><th>欄位</th><th>說明</th></tr></thead><tbody>
+<tr><td><strong>核心功能</strong></td><td>保障旅遊期間的意外、醫療、旅程取消/延誤、行李遺失等</td></tr>
+<tr><td><strong>保費範圍</strong></td><td>國外 5 天約 <span class="km">300~800 元</span></td></tr>
+<tr><td><strong>常見迷思</strong></td><td>「跟團不需要旅平險」——旅行社責任險只保旅行社的過失責任</td></tr>
+</tbody></table></div>
+
+<h4>4-2 寵物險</h4>
+<div class="tw"><table><thead><tr><th>欄位</th><th>說明</th></tr></thead><tbody>
+<tr><td><strong>核心功能</strong></td><td>保障寵物醫療費用、手術費、第三人責任</td></tr>
+<tr><td><strong>保費範圍</strong></td><td>年繳約 <span class="km">2,000~8,000 元</span></td></tr>
+<tr><td><strong>注意事項</strong></td><td>需晶片登記；有等待期；先天疾病和預防性醫療不賠</td></tr>
+</tbody></table></div>
+
+<h4>4-3 資安險</h4>
+<div class="tw"><table><thead><tr><th>欄位</th><th>說明</th></tr></thead><tbody>
+<tr><td><strong>核心功能</strong></td><td>保障企業因駭客攻擊、資料外洩等造成的損失</td></tr>
+<tr><td><strong>適合對象</strong></td><td>電商、金融、醫療、擁有大量客戶資料的企業</td></tr>
+<tr><td><strong>常見迷思</strong></td><td>「公司太小不會被駭」——中小企業反而是常見目標</td></tr>
+</tbody></table></div>
+
+<h4>4-4 營業中斷險</h4>
+<div class="tw"><table><thead><tr><th>欄位</th><th>說明</th></tr></thead><tbody>
+<tr><td><strong>核心功能</strong></td><td>保障企業因承保事故導致營業中斷期間的收入損失</td></tr>
+<tr><td><strong>常見迷思</strong></td><td>「有火險就夠了」——火險只賠財物，營業中斷收入損失需另外投保</td></tr>
+</tbody></table></div>
+</div>
+
+<!-- ===== Part 3 ===== -->
+<h2 id="p3">第三部分：市場概況</h2>
+<div class="section-content">
+
+<h3 id="p3-1">一、台灣保險滲透率與全球排名</h3>
+<div class="tw"><table><thead><tr><th>指標</th><th>數據</th><th>說明</th></tr></thead><tbody>
+<tr><td><strong>保險滲透率</strong></td><td><span class="kp">約 14~15%</span></td><td>曾經全球第一（18.4%），近年回落至全球前五名</td></tr>
+<tr><td><strong>保險密度</strong></td><td><span class="km">約 3,300 美元/人/年</span></td><td>全球排名約第 16 名</td></tr>
+<tr><td><strong>有效契約數</strong></td><td>每人平均持有約 <span class="kn">2.5 張</span>保單</td><td>投保率高但保障型商品佔比偏低</td></tr>
+</tbody></table></div>
+<div class="callout callout-warn"><div class="callout-title">重要觀察</div><p>台灣的高滲透率主要來自儲蓄型和投資型保單的保費貢獻，實際的「保障缺口」仍然很大。許多人繳了很多保費，但真正的醫療和壽險保障卻不足。</p></div>
+
+<h3 id="p3-2">二、壽險 vs 產險市場規模</h3>
+<div class="tw"><table><thead><tr><th>項目</th><th>壽險</th><th>產險</th></tr></thead><tbody>
+<tr><td><strong>年保費收入</strong></td><td><span class="km">約 2.5~3 兆元</span></td><td><span class="km">約 2,700 億元</span></td></tr>
+<tr><td><strong>市場佔比</strong></td><td><span class="kp">約 90%</span></td><td>約 10%</td></tr>
+<tr><td><strong>公司家數</strong></td><td>21 家</td><td>19 家</td></tr>
+<tr><td><strong>從業人員</strong></td><td>約 30 萬人</td><td>約 3 萬人</td></tr>
+</tbody></table></div>
+
+<h3 id="p3-3">三、主要保險公司列表</h3>
+<h4>壽險公司（依市佔率排序）</h4>
+<div class="tw"><table><thead><tr><th>排名</th><th>公司</th><th>所屬金控</th><th>特色</th></tr></thead><tbody>
+<tr><td>1</td><td><strong>國泰人壽</strong></td><td>國泰金控</td><td>壽險龍頭，通路最廣</td></tr>
+<tr><td>2</td><td><strong>富邦人壽</strong></td><td>富邦金控</td><td>數位化程度高，產品多元</td></tr>
+<tr><td>3</td><td><strong>南山人壽</strong></td><td>潤泰集團</td><td>保戶基數大</td></tr>
+<tr><td>4</td><td><strong>新光人壽</strong></td><td>新光金控</td><td>老牌壽險，據點多</td></tr>
+<tr><td>5</td><td><strong>凱基人壽</strong></td><td>中華開發金控</td><td>銀行保險通路強</td></tr>
+<tr><td>6</td><td><strong>台灣人壽</strong></td><td>中信金控</td><td>積極發展保障型商品</td></tr>
+<tr><td>7</td><td><strong>三商美邦人壽</strong></td><td>三商集團</td><td>業務員制度完整</td></tr>
+<tr><td>8</td><td><strong>全球人壽</strong></td><td>全球金控</td><td>實支實付口碑佳</td></tr>
+<tr><td>9</td><td><strong>遠雄人壽</strong></td><td>遠雄集團</td><td>保障型商品有特色</td></tr>
+<tr><td>10</td><td><strong>安聯人壽</strong></td><td>安聯集團</td><td>外商，投資型保單主力</td></tr>
+</tbody></table></div>
+
+<h4>產險公司（依 2024 年市佔率排序）</h4>
+<div class="tw"><table><thead><tr><th>排名</th><th>公司</th><th>市佔率</th><th>保費收入（億元）</th></tr></thead><tbody>
+<tr><td>1</td><td><strong>富邦產險</strong></td><td><span class="kp">23.8%</span></td><td>647.8</td></tr>
+<tr><td>2</td><td><strong>國泰世紀產險</strong></td><td>13.5%</td><td>367.5</td></tr>
+<tr><td>3</td><td><strong>新光產險</strong></td><td>9.6%</td><td>262.8</td></tr>
+<tr><td>4</td><td><strong>新安東京海上</strong></td><td>7.7%</td><td>210.6</td></tr>
+<tr><td>5</td><td><strong>明台產險</strong></td><td>7.2%</td><td>195.9</td></tr>
+<tr><td>6</td><td><strong>和泰產險</strong></td><td>5.2%</td><td>143.3</td></tr>
+<tr><td>7</td><td><strong>華南產險</strong></td><td>5.1%</td><td>140.2</td></tr>
+<tr><td>8</td><td><strong>旺旺友聯產險</strong></td><td>5.0%</td><td>136.5</td></tr>
+<tr><td>9</td><td><strong>泰安產險</strong></td><td>4.6%</td><td>125.9</td></tr>
+<tr><td>10</td><td><strong>兆豐產險</strong></td><td>4.0%</td><td>110.2</td></tr>
+</tbody></table></div>
+<div class="bq">富邦產險穩居龍頭（2025 Q1 市佔率進一步提升至 25.4%），前三大合計市佔接近 50%。</div>
+
+<h3 id="p3-4">四、保經/保代的角色和差異</h3>
+<div class="tw"><table><thead><tr><th>項目</th><th>保經</th><th>保代</th><th>保險公司業務員</th></tr></thead><tbody>
+<tr><td><strong>代表誰</strong></td><td>被保險人（消費者）</td><td>保險公司</td><td>所屬保險公司</td></tr>
+<tr><td><strong>商品來源</strong></td><td>可銷售多家公司商品</td><td>通常代理特定幾家</td><td>僅自家商品</td></tr>
+<tr><td><strong>優勢</strong></td><td>選擇最多元，可跨公司比較</td><td>對代理公司商品較熟</td><td>對自家商品最熟悉</td></tr>
+<tr><td><strong>劣勢</strong></td><td>可能因傭金傾向特定商品</td><td>選擇不如保經多</td><td>缺乏比較</td></tr>
+</tbody></table></div>
+
+<h3 id="p3-5">五、2025~2026 年市場重要趨勢</h3>
+<div class="tw"><table><thead><tr><th>趨勢</th><th>說明</th></tr></thead><tbody>
+<tr><td><strong>IFRS 17 接軌</strong></td><td>2026 年全面實施，儲蓄型商品可能進一步調整</td></tr>
+<tr><td><strong>實支實付正本理賠</strong></td><td>2024 年起新保單以正本理賠為原則</td></tr>
+<tr><td><strong>失能險轉型</strong></td><td>保證給付型主險停售，轉向等級給付型附約</td></tr>
+<tr><td><strong>長照 3.0 上路</strong></td><td>政府長照政策升級，商業長照險定位將調整</td></tr>
+<tr><td><strong>數位化投保</strong></td><td>線上投保額度持續放寬</td></tr>
+<tr><td><strong>ESG 保險</strong></td><td>綠色保險、永續商品逐漸出現</td></tr>
+<tr><td><strong>AI 應用</strong></td><td>壽險業 AI 採用率達 <span class="kp">62%</span>，用於核保、理賠和客服</td></tr>
+</tbody></table></div>
+
+<h3 id="p3-6">六、新人必知的保險規劃基本原則</h3>
+<div class="callout callout-success"><div class="callout-title">保險規劃五大原則</div>
+<ol>
+<li><strong>先保障、後儲蓄</strong>：先把壽險、醫療險、意外險買足，有餘力再考慮儲蓄險</li>
+<li><strong>先定期、後終身</strong>：預算有限時，定期險的 CP 值遠高於終身險</li>
+<li><strong>先大人、後小孩</strong>：家庭經濟支柱的保障優先於小孩</li>
+<li><strong>先近憂、後遠慮</strong>：先處理眼前風險（醫療、意外），再規劃長遠需求（退休）</li>
+<li><strong>雙十法則參考</strong>：年繳保費不超過年收入的 10%，壽險保額為年收入的 10 倍</li>
+</ol></div>
+
+<h3 id="p3-src">資料來源</h3>
+<ul class="src">
+<li><a href="https://www.ib.gov.tw/ch/home.jsp?id=48&parentpath=0,4" target="_blank">金管會保險局統計資料</a></li>
+<li><a href="https://kpmg.com/tw/zh/home/insights/2024/11/taiwan-insurance-report-2024.html" target="_blank">KPMG 2024 臺灣保險業報告</a></li>
+<li><a href="https://kpmg.com/tw/zh/home/insights/2025/12/taiwan-insurance-report-2025.html" target="_blank">KPMG 2025 臺灣保險業報告</a></li>
+<li><a href="https://www.deloitte.com/tw/tc/about/press-room/pr20241211-2025-global-insurance-outlook.html" target="_blank">Deloitte 2025 全球保險業展望</a></li>
+<li><a href="https://www.pwc.tw/zh/publications/topic-report/insurance-in-2025.html" target="_blank">PwC 2025 保險業展望報告</a></li>
+<li><a href="https://www.rmim.com.tw/news-detail-42188" target="_blank">現代保險雜誌 2025 壽險公司排行榜</a></li>
+<li><a href="https://finfo.tw/" target="_blank">Finfo 保險資訊站</a></li>
+<li><a href="https://www.smartbeb.com.tw/article/Medical/id/1060" target="_blank">SmartBeb 2026 實支實付攻略</a></li>
+<li><a href="https://www.lia-roc.org.tw/" target="_blank">壽險公會</a></li>
+<li><a href="https://www.tii.org.tw/" target="_blank">保險事業發展中心</a></li>
+</ul>
+</div>
+
+</div><!-- card -->
+<div class="disclaimer">最後更新：2026 年 3 月 23 日</div>
+</main>
+</div>
+
+<button class="sidebar-toggle" id="sidebarToggle" aria-label="目錄">&#9776;</button>
+
+<script>
+(function(){
+'use strict';
+var tocList=document.getElementById('tocList'),sidebar=document.getElementById('sidebar');
+function buildTOC(){
+tocList.innerHTML='';
+document.querySelectorAll('.card h2[id],.card h3[id]').forEach(function(h){
+var li=document.createElement('li');
+if(h.tagName==='H3')li.classList.add('toc-h3');
+var a=document.createElement('a');a.href='#'+h.id;a.textContent=h.textContent;
+a.addEventListener('click',function(){
+var sc=h.nextElementSibling;if(sc&&sc.classList.contains('section-content')&&sc.classList.contains('collapsed'))h.click();
+var parent=h.closest('.section-content');if(parent&&parent.classList.contains('collapsed'))parent.previousElementSibling.click();
+});li.appendChild(a);tocList.appendChild(li);});}
+buildTOC();
+document.querySelectorAll('.card h2[id]').forEach(function(h2){
+h2.addEventListener('click',function(){
+var c=this.nextElementSibling;if(!c||!c.classList.contains('section-content'))return;
+if(c.classList.contains('collapsed')){c.classList.remove('collapsed');c.style.maxHeight=c.scrollHeight+'px';this.classList.remove('collapsed');setTimeout(function(){c.style.maxHeight='none'},310)}
+else{c.style.maxHeight=c.scrollHeight+'px';requestAnimationFrame(function(){c.classList.add('collapsed');c.style.maxHeight='0px';h2.classList.add('collapsed')})}});});
+var spyTick=false;
+window.addEventListener('scroll',function(){if(!spyTick){requestAnimationFrame(function(){
+var links=tocList.querySelectorAll('a'),hs=document.querySelectorAll('.card h2[id],.card h3[id]'),cur='';
+hs.forEach(function(h){if(h.getBoundingClientRect().top<=100)cur=h.id});
+links.forEach(function(a){a.classList.toggle('active',a.getAttribute('href')==='#'+cur)});spyTick=false});spyTick=true}});
+var si=document.getElementById('searchInput'),sc=document.getElementById('searchCount'),st;
+function clearHL(){document.querySelectorAll('.search-highlight').forEach(function(el){var p=el.parentNode;p.replaceChild(document.createTextNode(el.textContent),el);p.normalize()})}
+function hl(node,term){if(!term)return 0;var count=0;
+if(node.nodeType===3){var idx=node.textContent.toLowerCase().indexOf(term.toLowerCase());if(idx>=0){var span=document.createElement('span');span.className='search-highlight';var mid=node.splitText(idx);mid.splitText(term.length);span.appendChild(mid.cloneNode(true));mid.parentNode.replaceChild(span,mid);count=1}}
+else if(node.nodeType===1&&node.childNodes.length&&!/(script|style)/i.test(node.tagName)&&!(node.classList&&node.classList.contains('search-highlight'))){for(var i=0;i<node.childNodes.length;i++)count+=hl(node.childNodes[i],term)}return count}
+si.addEventListener('input',function(){clearTimeout(st);st=setTimeout(function(){clearHL();var term=si.value.trim();if(term.length<2){sc.textContent='';return}
+document.querySelectorAll('.section-content.collapsed').forEach(function(s){s.classList.remove('collapsed');s.style.maxHeight='none';var h=s.previousElementSibling;if(h)h.classList.remove('collapsed')});
+var total=0;document.querySelectorAll('.card').forEach(function(card){total+=hl(card,term)});sc.textContent=total>0?total+' 筆':'0 筆';
+var first=document.querySelector('.search-highlight');if(first)first.scrollIntoView({behavior:'smooth',block:'center'})},300)});
+document.getElementById('sidebarToggle').addEventListener('click',function(){sidebar.classList.toggle('mobile-show')});
+document.addEventListener('click',function(e){if(!sidebar.contains(e.target)&&e.target.id!=='sidebarToggle')sidebar.classList.remove('mobile-show')});
+})();
+</script>
+</body>
+</html>

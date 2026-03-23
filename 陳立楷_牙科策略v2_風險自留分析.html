@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>陳立楷 牙科策略 v2：風險自留分析</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;scroll-padding-top:70px}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Microsoft JhengHei","PingFang TC",sans-serif;background:#f0f4f8;color:#1a2332;line-height:1.7;font-size:15px}
+.top-bar{position:fixed;top:0;left:0;right:0;z-index:1000;background:linear-gradient(135deg,#0a1628,#1a3a5c);box-shadow:0 2px 12px rgba(0,0,0,.3);display:flex;align-items:center;padding:0 24px;gap:16px}
+.top-bar h1{color:#fff;font-size:17px;font-weight:700;padding:14px 0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.search-box{margin-left:auto;position:relative;flex-shrink:0}
+.search-box input{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);color:#fff;padding:7px 14px 7px 34px;border-radius:20px;font-size:13px;width:200px;outline:none;transition:all .2s;font-family:inherit}
+.search-box input::placeholder{color:rgba(255,255,255,.4)}
+.search-box input:focus{background:rgba(255,255,255,.15);border-color:#4fc3f7;width:260px}
+.search-box svg{position:absolute;left:10px;top:50%;transform:translateY(-50%);width:16px;height:16px;fill:rgba(255,255,255,.4)}
+.search-count{color:rgba(255,255,255,.5);font-size:11px;position:absolute;right:12px;top:50%;transform:translateY(-50%)}
+.layout{display:flex;max-width:1200px;margin:66px auto 0;padding:20px;gap:24px}
+.sidebar{width:250px;flex-shrink:0;position:sticky;top:86px;height:calc(100vh - 106px);overflow-y:auto;padding-right:8px}
+.sidebar::-webkit-scrollbar{width:4px}
+.sidebar::-webkit-scrollbar-thumb{background:#c0c8d4;border-radius:4px}
+.toc-title{font-size:12px;font-weight:700;color:#8494a7;text-transform:uppercase;letter-spacing:1px;padding:8px 12px;margin-bottom:4px}
+.toc-list{list-style:none}
+.toc-list li a{display:block;padding:5px 12px;font-size:13px;color:#5a6a7e;text-decoration:none;border-left:2px solid transparent;transition:all .15s;border-radius:0 4px 4px 0}
+.toc-list li a:hover{color:#1a3a5c;background:rgba(26,58,92,.05)}
+.toc-list li a.active{color:#1a3a5c;font-weight:600;border-left-color:#1a3a5c;background:rgba(26,58,92,.08)}
+.toc-list li.toc-h3 a{padding-left:24px;font-size:12px}
+.main{flex:1;min-width:0}
+.card{background:#fff;border-radius:12px;box-shadow:0 1px 4px rgba(0,0,0,.06);padding:36px 40px;margin-bottom:20px}
+.card h2{font-size:22px;color:#0a1628;margin:32px 0 16px;padding-bottom:8px;border-bottom:2px solid #e8edf2;cursor:pointer;position:relative;padding-right:28px}
+.card h2:first-child{margin-top:0}
+.card h2::after{content:'';position:absolute;right:0;top:50%;width:8px;height:8px;border-right:2px solid #8494a7;border-bottom:2px solid #8494a7;transform:translateY(-70%) rotate(45deg);transition:transform .2s}
+.card h2.collapsed::after{transform:translateY(-30%) rotate(-135deg)}
+.card h3{font-size:17px;color:#1a3a5c;margin:24px 0 12px}
+.card h4{font-size:15px;color:#2c5282;margin:18px 0 10px}
+.card p{margin:10px 0}
+.card ul,.card ol{margin:10px 0 10px 20px}
+.card li{margin:4px 0}
+.section-content{overflow:hidden;transition:max-height .3s ease}
+.section-content.collapsed{max-height:0!important}
+.tw{overflow-x:auto;margin:14px 0;border-radius:8px;border:1px solid #e2e8f0}
+table{width:100%;border-collapse:collapse;font-size:13.5px;min-width:480px}
+thead{background:#1a3a5c}
+thead th{color:#fff;font-weight:600;padding:10px 14px;text-align:left;white-space:nowrap}
+tbody td{padding:9px 14px;border-bottom:1px solid #edf2f7}
+tbody tr:nth-child(even){background:#f7fafc}
+tbody tr:hover{background:#ebf4ff}
+.callout{border-radius:8px;padding:16px 20px;margin:16px 0;border-left:4px solid}
+.callout-info{background:#ebf8ff;border-color:#3182ce;color:#2a4365}
+.callout-warn{background:#fffbeb;border-color:#d69e2e;color:#744210}
+.callout-success{background:#f0fff4;border-color:#38a169;color:#22543d}
+.callout-danger{background:#fff5f5;border-color:#e53e3e;color:#742a2a}
+.callout-title{font-weight:700;margin-bottom:6px;font-size:14px}
+.kn{color:#e53e3e;font-weight:700}
+.km{color:#2b6cb0;font-weight:700}
+.kp{color:#38a169;font-weight:700}
+.code-block{background:#1a2332;color:#e2e8f0;padding:16px 20px;border-radius:8px;overflow-x:auto;font-family:"SF Mono","Fira Code",monospace;font-size:13px;line-height:1.6;margin:14px 0;white-space:pre}
+.bq{border-left:3px solid #cbd5e0;padding:8px 16px;color:#5a6a7e;margin:12px 0;font-size:14px;background:#f7fafc;border-radius:0 6px 6px 0}
+.cl{list-style:none;margin-left:0!important}
+.cl li{position:relative;padding-left:26px;margin:6px 0}
+.cl li::before{content:'';position:absolute;left:0;top:6px;width:16px;height:16px;border:2px solid #cbd5e0;border-radius:3px}
+.src a{color:#3182ce;text-decoration:none;font-size:13px}
+.src a:hover{text-decoration:underline}
+.search-highlight{background:#fefcbf;border-radius:2px;box-shadow:0 0 0 1px #ecc94b}
+.disclaimer{text-align:center;padding:24px;color:#8494a7;font-size:13px;border-top:1px solid #e2e8f0;margin-top:20px}
+.sidebar-toggle{display:none;position:fixed;bottom:20px;right:20px;width:48px;height:48px;border-radius:50%;background:#1a3a5c;color:#fff;border:none;box-shadow:0 4px 12px rgba(0,0,0,.3);cursor:pointer;font-size:20px;z-index:999;align-items:center;justify-content:center}
+@media(max-width:900px){
+.sidebar{display:none}
+.layout{padding:12px}
+.card{padding:20px 18px}
+.top-bar h1{font-size:15px}
+.search-box input{width:130px}
+.search-box input:focus{width:170px}
+table{font-size:12.5px}
+thead th,tbody td{padding:7px 10px}
+.sidebar-toggle{display:flex}
+.sidebar.mobile-show{display:block;position:fixed;top:56px;left:0;bottom:0;width:280px;background:#fff;z-index:998;box-shadow:4px 0 20px rgba(0,0,0,.15);padding:16px 8px;height:auto}
+}
+</style>
+</head>
+<body>
+
+<nav class="top-bar">
+<h1>陳立楷 牙科策略 v2：風險自留分析</h1>
+<div class="search-box">
+<svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+<input type="text" id="searchInput" placeholder="搜尋內容...">
+<span class="search-count" id="searchCount"></span>
+</div>
+</nav>
+
+<div class="layout">
+<aside class="sidebar" id="sidebar">
+<div class="toc-title">目錄</div>
+<ul class="toc-list" id="tocList"></ul>
+</aside>
+
+<main class="main">
+<div class="card">
+
+<div class="bq">
+建立日期：2026-03-23<br>
+客戶：陳立楷（23 歲，男性，職等三）<br>
+現有年繳保費：<span class="km">75,202 元</span><br>
+狀況：非智齒阻生齒需治療，尚未正式記錄於病歷<br>
+分析框架：從風險管理角度出發，而非預設購買保險
+</div>
+
+<h2 id="s1">一、風險管理框架</h2>
+<div class="section-content">
+
+<h3 id="s1a">四象限分析法</h3>
+<p>保險的本質是「風險移轉」，但不是所有風險都適合用保險處理。風險管理的標準框架是根據<strong>發生頻率</strong>和<strong>損失金額</strong>兩個維度，將風險歸入四個象限，對應不同的最佳策略：</p>
+
+<div class="code-block">                    損失金額高
+                        │
+    【迴避風險】         │         【移轉風險】
+    低頻率 × 高損失       │         高頻率 × 高損失
+    策略：避免暴露         │         策略：買保險
+    例：極限運動致齒裂     │         例：（牙科領域幾乎不存在）
+                        │
+  ──────────────────────┼──────────────────────
+                        │
+    【自留風險】         │         【預防風險】
+    低頻率 × 低損失       │         高頻率 × 低損失
+    策略：自己承擔         │         策略：降低發生機率
+    例：偶爾補牙           │         例：蛀牙、牙結石
+                        │
+                    損失金額低</div>
+
+<h3 id="s1b">牙科風險歸類</h3>
+<div class="tw"><table>
+<thead><tr><th>牙科風險</th><th>頻率</th><th>損失</th><th>象限</th><th>最佳策略</th><th>牙齒險能賠？</th></tr></thead>
+<tbody>
+<tr><td>蛀牙補牙</td><td>高（>90%）</td><td>低（0～3,000）</td><td>預防</td><td>定期洗牙、刷牙保健</td><td><span class="kn">不賠</span></td></tr>
+<tr><td>根管治療</td><td>中（30～50%）</td><td>低（健保～10,000）</td><td>自留</td><td>自費承擔</td><td><span class="kn">不賠</span></td></tr>
+<tr><td>根管後牙冠</td><td>中（30～50%）</td><td>中（8,000～35,000）</td><td>自留</td><td>自費承擔</td><td><span class="kp">可賠 5,000～6,000/顆</span></td></tr>
+<tr><td>牙周病治療</td><td>高（>80%）</td><td>中（洗牙免費～翻瓣 50,000）</td><td>預防+自留</td><td>預防為主，嚴重時自費</td><td><span class="kn">不賠</span></td></tr>
+<tr><td>阻生齒植牙</td><td>確定（已知）</td><td>高（60,000～100,000）</td><td><strong>計畫性支出</strong></td><td>規劃財務應對</td><td><span class="kp">可賠 40,000/顆</span></td></tr>
+<tr><td>意外斷牙+植牙</td><td>低（5～10%）</td><td>高（60,000～100,000）</td><td>迴避/移轉</td><td>保險或自留</td><td><span class="kp">可賠 40,000/顆</span></td></tr>
+<tr><td>非意外植牙需求</td><td>中低（15～25%）</td><td>高（60,000～120,000）</td><td>移轉/自留</td><td>視財務能力決定</td><td><span class="kp">可賠 40,000～45,000/顆</span></td></tr>
+<tr><td>齒列矯正</td><td>中（20～30%）</td><td>高（100,000～250,000）</td><td>自留</td><td>自費承擔</td><td><span class="kn">不賠</span></td></tr>
+</tbody></table></div>
+
+<h3 id="s1c">關鍵發現：牙科風險的「反保險」特性</h3>
+<p>傳統保險適合「低頻率 × 高損失」的風險（如重大疾病、火災、車禍）。但牙科風險有三個特殊之處，讓它天然不適合保險機制：</p>
+<ol>
+<li><strong>高頻風險（蛀牙、牙周病）保險不賠</strong> — 真正常見的牙科支出，牙齒險全部排除</li>
+<li><strong>可預見的支出不是「風險」</strong> — 阻生齒治療是確定會發生的計畫性支出，用保險處理本質上是在「套利」而非「轉嫁風險」</li>
+<li><strong>低頻高損失風險的期望值太低</strong> — 意外斷牙機率僅 5～10%，期望損失不足以支撐保費</li>
+</ol>
+</div>
+
+<h2 id="s2">二、牙齒險覆蓋範圍 vs 實際牙科風險</h2>
+<div class="section-content">
+
+<h3 id="s2a">牙齒險能賠的項目</h3>
+<div class="tw"><table>
+<thead><tr><th>理賠項目</th><th>安達 DEA 給付（第3年起）</th><th>適用情境</th></tr></thead>
+<tbody>
+<tr><td>植牙</td><td><span class="km">40,000/顆</span>（年度上限 3 顆）</td><td>阻生齒拔除後重建、意外斷牙、嚴重蛀蝕致拔牙</td></tr>
+<tr><td>固定義齒（牙橋）</td><td><span class="km">20,000/顆</span>（年度上限 3 顆）</td><td>缺牙後牙橋重建</td></tr>
+<tr><td>活動義齒</td><td><span class="km">20,000/次</span>（年度上限 1 次）</td><td>多顆缺牙</td></tr>
+<tr><td>牙冠</td><td><span class="km">6,000/顆</span>（年度上限 3 顆）</td><td>根管後牙冠、植牙上部牙冠</td></tr>
+</tbody></table></div>
+
+<h3 id="s2b">牙齒險不賠的項目</h3>
+<div class="tw"><table>
+<thead><tr><th>項目</th><th>為什麼不賠</th><th>15年內發生機率</th><th>可能花費</th></tr></thead>
+<tbody>
+<tr><td>蛀牙填補</td><td>屬基礎治療，非補綴</td><td>>90%</td><td>0～15,000</td></tr>
+<tr><td>根管治療</td><td>屬基礎治療，非補綴</td><td>30～50%</td><td>0～30,000</td></tr>
+<tr><td>牙周病（洗牙、翻瓣手術）</td><td>屬基礎治療，非補綴</td><td>>80%</td><td>0～50,000</td></tr>
+<tr><td>齒列矯正</td><td>明文除外（美容性質）</td><td>20～30%</td><td>100,000～250,000</td></tr>
+<tr><td>智齒拔除</td><td>明文除外</td><td>>50%</td><td>0（健保）</td></tr>
+<tr><td>美白、貼片</td><td>明文除外（美容性質）</td><td>視個人需求</td><td>20,000～60,000</td></tr>
+</tbody></table></div>
+
+<h3 id="s2c">覆蓋率分析</h3>
+<p><strong>23 歲男性未來 15 年最可能發生的牙科支出排序：</strong></p>
+<ol>
+<li>蛀牙補牙 — <span class="kn">牙齒險不賠</span></li>
+<li>牙周病治療 — <span class="kn">牙齒險不賠</span></li>
+<li>根管治療 — <span class="kn">牙齒險不賠</span></li>
+<li>齒列矯正 — <span class="kn">牙齒險不賠</span></li>
+<li>阻生齒治療 — <span class="kp">牙齒險可賠</span>（僅限拔除後重建部分）</li>
+<li>根管後牙冠 — <span class="kp">牙齒險可賠</span>（但僅補貼 5,000～6,000/顆）</li>
+<li>意外斷牙 — <span class="kp">牙齒險可賠</span></li>
+</ol>
+
+<div class="callout callout-danger"><div class="callout-title">結論</div><p>牙齒險的覆蓋範圍與實際高頻牙科風險幾乎完全錯開。真正常見的牙科支出，牙齒險一項都不保。</p></div>
+</div>
+
+<h2 id="s3">三、三種方案精算比較</h2>
+<div class="section-content">
+
+<h3 id="s3a">方案 A：買安達 DEA + 短期持有（1～3 年）</h3>
+<p><strong>目標：利用保險理賠 cover 阻生齒治療，用完即停</strong></p>
+
+<h4>精算試算</h4>
+<div class="tw"><table>
+<thead><tr><th>治療時間點</th><th>累計保費</th><th>植牙理賠</th><th>牙冠理賠</th><th>CNHRL 門診手術</th><th>總理賠</th><th>淨損益</th></tr></thead>
+<tbody>
+<tr><td>第 1 年治療</td><td>8,000</td><td>20,000</td><td>3,000</td><td>3,000</td><td>26,000</td><td><span class="kp">+18,000</span></td></tr>
+<tr><td>第 2 年治療</td><td>16,000</td><td>20,000</td><td>6,000</td><td>3,000</td><td>29,000</td><td><span class="kp">+13,000</span></td></tr>
+<tr><td>第 3 年治療</td><td>24,000</td><td>40,000</td><td>6,000</td><td>3,000</td><td>49,000</td><td><span class="kp">+25,000</span></td></tr>
+</tbody></table></div>
+
+<div class="bq">不論哪一年治療，只要阻生齒順利理賠，保費都能回本且有盈餘。</div>
+
+<h4>帶病投保風險分析</h4>
+<p>這是方案 A 最核心的風險。必須誠實面對：<strong>以已知的阻生齒狀況去投保，本質上是帶病投保。</strong></p>
+<p><strong>保險法第 127 條（疾病保險之除外）：</strong></p>
+<div class="bq">「保險契約訂立時，被保險人已在疾病或妊娠情況中者，保險人對是項疾病或分娩，不負給付保險金額之責任。」</div>
+<p><strong>2 年除斥期（保險法第 64 條）：</strong></p>
+<div class="bq">保險公司知悉告知不實後，須於 1 個月內行使解約權，且自契約訂立起超過 2 年不得解約。</div>
+
+<p><strong>被拒賠的機率評估：</strong></p>
+<div class="tw"><table>
+<thead><tr><th>情境</th><th>拒賠機率</th><th>分析</th></tr></thead>
+<tbody>
+<tr><td>阻生齒已記錄於病歷 + 第 1 年治療</td><td><span class="kn">高（60～80%）</span></td><td>保險公司調閱病歷即可發現投保前已知</td></tr>
+<tr><td>阻生齒已記錄於病歷 + 第 3 年治療</td><td>中（30～50%）</td><td>時間拉長但病歷紀錄仍在</td></tr>
+<tr><td>阻生齒未記錄於病歷 + 第 1 年治療</td><td>中低（20～30%）</td><td>無書面證據但醫師可能被詢問</td></tr>
+<tr><td>阻生齒未記錄於病歷 + 第 3 年治療</td><td><span class="kp">低（10～15%）</span></td><td>超過 2 年除斥期，且無書面紀錄</td></tr>
+</tbody></table></div>
+
+<p><strong>「尚未正式記錄於病歷」的影響：</strong></p>
+<p>這是陳立楷目前最大的有利條件。如果阻生齒的存在僅是醫師口頭提及，未寫入正式病歷：</p>
+<ul>
+<li><strong>投保時</strong>：健康告知書通常問的是「是否曾因牙齒問題就醫或被建議治療」。若醫師只是例行洗牙時口頭提及，且客戶未因阻生齒就診，告知義務的灰色地帶較大</li>
+<li><strong>理賠時</strong>：保險公司調閱病歷，若無阻生齒相關紀錄，較難主張投保前已知</li>
+<li><strong>但仍有風險</strong>：保險公司可能要求術前 X 光，而阻生齒在任何全口 X 光中都會顯示。若保險公司比對投保前後的 X 光，仍可能質疑</li>
+</ul>
+
+<p><strong>被拒賠的後果：</strong></p>
+<ul>
+<li>最差情況：理賠被拒，累計保費全部損失（8,000～24,000 元）</li>
+<li>次差情況：保險公司以告知不實解約，退還保費但不理賠</li>
+<li>以最差情況計算，損失金額有限（最多 24,000 元），不至於造成財務危機</li>
+</ul>
+
+<h4>方案 A 結論</h4>
+<div class="callout callout-warn"><div class="callout-title">評估</div><p>短期持有策略在精算上有利，但存在道德灰色地帶和拒賠風險。如果客戶能接受「萬一被拒賠就損失 8,000～24,000 元保費」的下檔風險，這是值得嘗試的策略。</p></div>
+
+<h3 id="s3b">方案 B：差額投資 + 風險自留</h3>
+<p><strong>目標：不買牙齒險，每年將 8,000 元投入指數型基金，自行承擔所有牙科風險</strong></p>
+
+<h4>投資試算（年化報酬率 7%）</h4>
+<div class="tw"><table>
+<thead><tr><th>年數</th><th>每年投入</th><th>累計投入</th><th>帳戶價值（7%複利）</th><th>投資報酬</th></tr></thead>
+<tbody>
+<tr><td>1 年</td><td>8,000</td><td>8,000</td><td>8,560</td><td>560</td></tr>
+<tr><td>3 年</td><td>8,000</td><td>24,000</td><td>25,717</td><td>1,717</td></tr>
+<tr><td>5 年</td><td>8,000</td><td>40,000</td><td>46,007</td><td>6,007</td></tr>
+<tr><td>10 年</td><td>8,000</td><td>80,000</td><td>110,534</td><td>30,534</td></tr>
+<tr><td>15 年</td><td>8,000</td><td>120,000</td><td><span class="km">200,588</span></td><td><span class="kp">80,588</span></td></tr>
+</tbody></table></div>
+
+<div class="bq">公式：FV = PMT × [((1+r)^n - 1) / r]，其中 r = 7%，PMT = 8,000</div>
+
+<h4>各時間點可應付的牙科支出</h4>
+<div class="tw"><table>
+<thead><tr><th>時間點</th><th>帳戶價值</th><th>可應付項目</th></tr></thead>
+<tbody>
+<tr><td>第 3 年</td><td>~25,700</td><td>1 顆牙冠、根管治療、多次補牙</td></tr>
+<tr><td>第 5 年</td><td>~46,000</td><td>1 顆牙冠 + 部分植牙費用</td></tr>
+<tr><td>第 10 年</td><td>~110,500</td><td>1 顆植牙 + 數顆牙冠</td></tr>
+<tr><td>第 15 年</td><td>~200,600</td><td>2 顆植牙 + 多顆牙冠，或部分矯正費用</td></tr>
+</tbody></table></div>
+
+<h4>方案 B 的核心優勢</h4>
+<ol>
+<li><strong>覆蓋所有牙科風險</strong> — 蛀牙、根管、牙周、矯正全都可以用這筆錢支付，不受任何條款限制</li>
+<li><strong>資金完全自主</strong> — 不用就保留，可轉作其他用途</li>
+<li><strong>複利效應</strong> — 15 年後帳戶價值 200,588 元，比累計投入的 120,000 元多出 80,588 元</li>
+<li><strong>無拒賠風險</strong> — 不存在帶病投保、告知義務、除外條款等問題</li>
+<li><strong>無等待期</strong> — 第一天就可以動用</li>
+</ol>
+
+<h4>方案 B 的劣勢</h4>
+<ol>
+<li><strong>前期資金不足</strong> — 前 3 年帳戶僅 25,000 元，若阻生齒需緊急治療（植牙 80,000 元），需另外籌措差額</li>
+<li><strong>投資風險</strong> — 7% 年化報酬率並非保證，遇到市場下跌可能暫時虧損</li>
+<li><strong>紀律風險</strong> — 需要客戶有長期儲蓄/投資的自律能力</li>
+</ol>
+
+<h3 id="s3c">方案 C：混合方案（DEA 短期持有 → 轉差額投資）</h3>
+<p><strong>目標：用 DEA 的前 3 年 cover 阻生齒，之後不續保，改為差額投資</strong></p>
+
+<h4>分階段試算</h4>
+<p><strong>第一階段：DEA 持有 3 年（cover 阻生齒）</strong></p>
+<div class="tw"><table>
+<thead><tr><th>年度</th><th>保費支出</th><th>累計保費</th></tr></thead>
+<tbody>
+<tr><td>第 1 年</td><td>8,000</td><td>8,000</td></tr>
+<tr><td>第 2 年</td><td>8,000</td><td>16,000</td></tr>
+<tr><td>第 3 年</td><td>8,000</td><td>24,000</td></tr>
+</tbody></table></div>
+<ul>
+<li>第 3 年治療阻生齒：理賠植牙 40,000 + 牙冠 6,000 + CNHRL 3,000 = <span class="km">49,000 元</span></li>
+<li>3 年淨損益：49,000 - 24,000 = <span class="kp">+25,000 元</span></li>
+</ul>
+
+<p><strong>第二階段：第 4 年起轉差額投資（每年 8,000 元，年化 7%）</strong></p>
+<div class="tw"><table>
+<thead><tr><th>年數（從第4年起）</th><th>累計投入</th><th>帳戶價值</th></tr></thead>
+<tbody>
+<tr><td>3 年（=第 6 年）</td><td>24,000</td><td>25,717</td></tr>
+<tr><td>7 年（=第 10 年）</td><td>56,000</td><td>68,578</td></tr>
+<tr><td>12 年（=第 15 年）</td><td>96,000</td><td>143,271</td></tr>
+</tbody></table></div>
+
+<h4>方案 C 總帳（15 年期）</h4>
+<div class="tw"><table>
+<thead><tr><th>項目</th><th>金額</th></tr></thead>
+<tbody>
+<tr><td>DEA 保費支出（3 年）</td><td>-24,000</td></tr>
+<tr><td>DEA 理賠收入</td><td>+49,000</td></tr>
+<tr><td>差額投資帳戶（第 4～15 年）</td><td>+143,271</td></tr>
+<tr><td><strong>15 年淨資產</strong></td><td><strong class="km">+168,271</strong></td></tr>
+</tbody></table></div>
+
+<p>相比方案 B（純差額投資 15 年）的 200,588 元，方案 C 的投資部分少了 57,317 元（因為前 3 年錢進了保費而非投資），但多了 25,000 元的保險淨理賠收益。</p>
+
+<p><strong>方案 C 淨效果 vs 方案 B：</strong></p>
+<ul>
+<li>方案 B：15 年帳戶價值 <span class="km">200,588 元</span></li>
+<li>方案 C：15 年淨資產 <span class="km">168,271 元</span>（投資 143,271 + 保險淨賺 25,000 + 前 3 年差額投資損失的複利）</li>
+<li><strong>方案 B 在 15 年後總資產較高</strong>，但方案 C 在前 3 年有保險安全網</li>
+</ul>
+
+<div class="bq">差距主要來自前 3 年 24,000 元投入保費而非投資，少了 12 年的複利效應。</div>
+</div>
+
+<h2 id="s4">四、23 歲男性 15 年牙科風險期望值計算</h2>
+<div class="section-content">
+
+<h3 id="s4a">期望損失計算表</h3>
+<div class="tw"><table>
+<thead><tr><th>風險項目</th><th>發生機率</th><th>預估費用</th><th>期望損失</th><th>牙齒險可賠？</th><th>可賠金額</th></tr></thead>
+<tbody>
+<tr><td>蛀牙（多次）</td><td>>90%</td><td>5,000</td><td>4,500</td><td><span class="kn">不賠</span></td><td>0</td></tr>
+<tr><td>根管治療 + 牙冠</td><td>35%</td><td>25,000</td><td>8,750</td><td>牙冠部分可賠</td><td>~2,100（6,000×35%）</td></tr>
+<tr><td>阻生齒治療（確定）</td><td>100%</td><td>80,000</td><td>80,000</td><td><span class="kp">可賠</span> 植牙+牙冠</td><td>~46,000</td></tr>
+<tr><td>牙周病治療</td><td>80%</td><td>30,000</td><td>24,000</td><td><span class="kn">不賠</span></td><td>0</td></tr>
+<tr><td>意外斷牙 + 植牙</td><td>10%</td><td>90,000</td><td>9,000</td><td><span class="kp">可賠</span></td><td>~4,600（46,000×10%）</td></tr>
+<tr><td>其他植牙需求</td><td>20%</td><td>90,000</td><td>18,000</td><td><span class="kp">可賠</span></td><td>~9,200（46,000×20%）</td></tr>
+<tr><td>齒列矯正</td><td>25%</td><td>150,000</td><td>37,500</td><td><span class="kn">不賠</span></td><td>0</td></tr>
+<tr><td><strong>合計</strong></td><td></td><td></td><td><strong>181,750</strong></td><td></td><td><strong>~61,900</strong></td></tr>
+</tbody></table></div>
+
+<h3 id="s4b">結構分析</h3>
+<div class="tw"><table>
+<thead><tr><th>分類</th><th>期望損失</th><th>占比</th></tr></thead>
+<tbody>
+<tr><td>牙齒險可賠的項目</td><td>~61,900</td><td>34%</td></tr>
+<tr><td>牙齒險不賠的項目</td><td>~119,850</td><td><span class="kn">66%</span></td></tr>
+<tr><td><strong>總期望損失</strong></td><td><strong>~181,750</strong></td><td>100%</td></tr>
+</tbody></table></div>
+
+<h3 id="s4c">更保守的估計（排除阻生齒這個確定項目）</h3>
+<p>阻生齒是已知的計畫性支出，不是「風險」。排除後：</p>
+<div class="tw"><table>
+<thead><tr><th>分類</th><th>期望損失</th><th>占比</th></tr></thead>
+<tbody>
+<tr><td>牙齒險可賠的項目（排除阻生齒）</td><td>~15,900</td><td><span class="kn">16%</span></td></tr>
+<tr><td>牙齒險不賠的項目</td><td>~85,850</td><td>84%</td></tr>
+<tr><td><strong>總期望損失（排除阻生齒）</strong></td><td><strong>~101,750</strong></td><td>100%</td></tr>
+</tbody></table></div>
+
+<div class="callout callout-info"><div class="callout-title">關鍵數字</div>
+<p>排除阻生齒後，牙齒險對剩餘牙科風險的覆蓋率僅 <span class="kn">16%</span>。</p>
+<p>換句話說，如果不是為了阻生齒這個已知支出，單純為了「未來可能的牙科風險」去買牙齒險，每 100 元的期望損失中只有 16 元能被理賠。</p>
+</div>
+
+<h3 id="s4d">15 年保費 vs 期望理賠</h3>
+<div class="tw"><table>
+<thead><tr><th>方案</th><th>15 年總保費</th><th>期望理賠（含阻生齒）</th><th>期望理賠（排除阻生齒）</th><th>淨期望損益</th></tr></thead>
+<tbody>
+<tr><td>DEA 10 年</td><td>80,000</td><td>~61,900</td><td>~15,900</td><td><span class="kn">-18,100 ～ -64,100</span></td></tr>
+<tr><td>DRF 15 年</td><td>300,000</td><td>~53,900*</td><td>~7,900*</td><td><span class="kn">-246,100 ～ -292,100</span></td></tr>
+</tbody></table></div>
+<p style="font-size:13px;color:#8494a7">*DRF 的理賠金額略低於 DEA（牙橋、牙冠給付較少）</p>
+
+<div class="callout callout-danger"><div class="callout-title">重要結論</div><p>即使把阻生齒的理賠算進去，DEA 的期望淨損益仍為負值。</p></div>
+</div>
+
+<h2 id="s5">五、結論與建議</h2>
+<div class="section-content">
+
+<h3 id="s5a">方案比較總表</h3>
+<div class="tw"><table>
+<thead><tr><th>評估面向</th><th>方案 A：DEA 短期持有</th><th>方案 B：差額投資</th><th>方案 C：混合方案</th></tr></thead>
+<tbody>
+<tr><td>阻生齒處理</td><td><span class="kp">有保險理賠支援</span></td><td><span class="kn">全額自費</span></td><td><span class="kp">前 3 年有保險</span></td></tr>
+<tr><td>帶病投保風險</td><td>有拒賠可能</td><td><span class="kp">無此問題</span></td><td>有拒賠可能</td></tr>
+<tr><td>15 年總覆蓋範圍</td><td>僅植牙/假牙/牙冠</td><td><span class="kp">所有牙科支出</span></td><td>前 3 年有保險 + 後 12 年全覆蓋</td></tr>
+<tr><td>15 年淨資產</td><td>~-55,000（保費-理賠）</td><td><span class="kp">+200,588</span></td><td>+168,271</td></tr>
+<tr><td>前期保障</td><td><span class="kp">第 1 年即有</span></td><td><span class="kn">前 3 年資金不足</span></td><td><span class="kp">第 1 年即有</span></td></tr>
+<tr><td>操作複雜度</td><td>中（需處理投保和理賠）</td><td><span class="kp">低（定期定額即可）</span></td><td>中高（先投保後轉投資）</td></tr>
+</tbody></table></div>
+
+<h3 id="s5b">最終推薦：方案 B（差額投資 + 風險自留）</h3>
+<div class="callout callout-success"><div class="callout-title">推薦方案</div><p><strong>方案 B：差額投資 + 風險自留</strong><br>前提條件：阻生齒不需要在 1～2 年內緊急治療。</p></div>
+
+<p><strong>理由：</strong></p>
+<ol>
+<li><strong>期望值不支持買保險</strong> — 排除阻生齒後，牙齒險的期望理賠遠低於保費。即使算入阻生齒，DEA 10 年的期望淨損益仍為負</li>
+<li><strong>覆蓋範圍根本性缺陷</strong> — 牙齒險不保蛀牙、根管、牙周、矯正，而這些才是 23 歲男性未來 15 年最大的牙科支出來源</li>
+<li><strong>帶病投保風險</strong> — 已知阻生齒的情況下投保，即使未記錄於病歷，仍有被拒賠的可能。一旦拒賠，保費全部浪費</li>
+<li><strong>複利效應被低估</strong> — 每年 8,000 元投入指數型基金，15 年後可累積超過 20 萬元，足以應付絕大多數牙科需求</li>
+<li><strong>資金靈活性</strong> — 差額投資的錢可以用在任何牙科支出，甚至非牙科用途</li>
+</ol>
+
+<div class="callout callout-warn"><div class="callout-title">替代方案</div><p><strong>如果阻生齒需要 1～2 年內治療</strong> → 改選方案 C（混合方案），先用 DEA cover 阻生齒治療，再轉差額投資。</p></div>
+
+<h3 id="s5c">投保前注意事項（如果選方案 A 或 C）</h3>
+<ol>
+<li><strong>不要讓阻生齒記錄在病歷上</strong> — 在投保前避免因阻生齒問題就診，洗牙時如果醫師提到阻生齒，可以回應「先觀察」，不要要求進一步檢查或記錄</li>
+<li><strong>健康告知書仔細閱讀</strong> — 確認告知書的具體問法，若問的是「是否曾因牙齒問題就醫」，而你只是例行洗牙，醫師口頭提及阻生齒但未做任何治療或檢查，這在法律上是灰色地帶</li>
+<li><strong>治療時間至少拉到第 3 保單年度</strong> — 理賠金額最高，且超過 2 年除斥期，保險公司以告知不實解約的權利已消滅</li>
+<li><strong>診斷書措辭</strong> — 治療時確保醫師寫明「因阻生齒導致鄰牙蛀蝕/牙周病變，具醫療必要性」，避免「矯正」字眼</li>
+</ol>
+
+<h3 id="s5d">風險自留的具體做法</h3>
+<p><strong>每月建議存入牙科專用基金：667 元（= 8,000 元/年）</strong></p>
+<p>執行方式：</p>
+<ul>
+<li>開立獨立的證券帳戶或子帳戶</li>
+<li>每月定期定額 667 元投入台灣市值型 ETF（如 0050 或 006208）</li>
+<li>標記為「牙科基金」，非緊急不動用</li>
+<li>阻生齒治療費用另外從一般儲蓄支出（因為這是已知的計畫性支出，不應從風險基金中扣除）</li>
+</ul>
+
+<p><strong>阻生齒治療費用的財務規劃：</strong></p>
+<ul>
+<li>預估費用 60,000～100,000 元（拔除+植牙）</li>
+<li>建議分 12～18 個月儲蓄準備（每月 4,000～6,000 元）</li>
+<li>或利用信用卡分期 / 診所分期付款方案</li>
+<li>治療時機由口腔狀況決定，不需要配合保險等待期</li>
+</ul>
+
+<h3 id="s5e">客戶溝通話術</h3>
+<div class="bq">「立楷，我研究了牙齒險之後，老實說我不建議你買。原因很簡單：你未來 15 年最可能遇到的牙科問題 — 蛀牙、牙周病、根管治療、甚至矯正 — 牙齒險一項都不保。它只保植牙和假牙，但你 23 歲，未來 15 年需要植牙的機率其實不高。」</div>
+
+<div class="bq">「阻生齒的部分，我知道你擔心這筆費用，但這是一筆確定會花的錢，不是『風險』。用保險去處理已知的支出，本質上是在跟保險公司對賭，而且他們也不傻 — 帶病投保被拒賠的風險是存在的。」</div>
+
+<div class="bq">「我的建議是，每年把原本要繳牙齒險的 8,000 元拿去做定期定額投資。15 年後這筆錢會變成超過 20 萬，而且什麼牙科問題都能用 — 不像保險有一堆限制。阻生齒的費用另外存就好，大概存一年多就夠了。」</div>
+
+<div class="bq">「我知道大部分業務員會推你買，因為牙齒險有佣金。但我覺得真正對你好的建議，不一定是多買一張保單。你信任我，比我多賺一張保單的佣金更重要。」</div>
+</div>
+
+<h2 id="s6">六、給保險從業人員的思考</h2>
+<div class="section-content">
+
+<h3 id="s6a">什麼時候該建議客戶不買保險？</h3>
+<p>當以下任一條件成立時，建議客戶「風險自留」可能比「風險移轉」更好：</p>
+<div class="tw"><table>
+<thead><tr><th>條件</th><th>說明</th><th>牙齒險的情況</th></tr></thead>
+<tbody>
+<tr><td>損失可預測</td><td>費用可以提前規劃和儲蓄</td><td><span class="kp">阻生齒費用明確，可提前準備</span></td></tr>
+<tr><td>損失不會致命</td><td>不會影響基本生活或造成財務危機</td><td><span class="kp">單次植牙 8～10 萬，不至於破產</span></td></tr>
+<tr><td>保費 > 期望理賠</td><td>繳出去的比預期拿回來的多</td><td><span class="kp">除非確定需要多顆植牙，否則期望淨損益為負</span></td></tr>
+<tr><td>保險覆蓋範圍偏離實際風險</td><td>真正常見的風險不在保障範圍內</td><td><span class="kp">蛀牙/牙周/根管/矯正全部不保</span></td></tr>
+<tr><td>客戶有替代方案</td><td>有能力自行承擔或用其他方式處理</td><td><span class="kp">差額投資 + 計畫性儲蓄即可</span></td></tr>
+</tbody></table></div>
+
+<h3 id="s6b">風險自留 vs 風險移轉的判斷標準</h3>
+<div class="code-block">該買保險的風險：             不該買保險的風險：
+├─ 發生機率低               ├─ 發生機率高（保費必然貴）
+├─ 一旦發生損失極大          ├─ 損失可承受
+├─ 無法預測何時發生          ├─ 可以預見和規劃
+├─ 自己無法承擔              ├─ 自己可以存錢應對
+└─ 例：重大疾病、癌症        └─ 例：牙科治療、眼鏡</div>
+
+<h3 id="s6c">這對業務員的價值：建立信任 > 短期佣金</h3>
+<p>牙齒險的年繳保費約 8,000 元，佣金率假設 30～40%，首年佣金約 2,400～3,200 元。為了這筆佣金推薦一個「對客戶不是最佳方案」的產品，風險是什麼？</p>
+<ul>
+<li><strong>短期收益</strong>：2,400～3,200 元佣金</li>
+<li><strong>長期損失</strong>：客戶 3 年後發現自己繳了 24,000 元保費卻只拿到 6,000 元牙冠理賠，或更糟 — 帶病投保被拒賠、保費全部損失。客戶對你的信任歸零。</li>
+</ul>
+<p>反過來，如果你告訴客戶「這個保險不適合你，我建議你不要買」：</p>
+<ul>
+<li><strong>短期損失</strong>：少賺 2,400～3,200 元</li>
+<li><strong>長期收益</strong>：客戶認知到你是「真的在為我著想的顧問」而不是「只會推銷的業務員」。未來他的車險、壽險、醫療險加保、家人投保，全部找你。</li>
+</ul>
+
+<div class="callout callout-info"><div class="callout-title">核心觀點</div><p>一個願意說「這個不用買」的業務員，遠比一個什麼都推的業務員值得信任。</p></div>
+</div>
+
+<h2 id="s7">附錄：計算假設與資料來源</h2>
+<div class="section-content">
+
+<h3 id="s7a">計算假設</h3>
+<ul>
+<li>安達 DEA 年繳保費以 8,000 元估算（23 歲男性，10 年期）</li>
+<li>指數型基金年化報酬率以 7% 計算（台灣大盤長期平均約 8～10%，保守取 7%）</li>
+<li>牙科費用以 2026 年台灣都會區行情估算</li>
+<li>發生機率參考衛福部口腔健康調查及臨床文獻</li>
+</ul>
+
+<h3 id="s7b">資料來源</h3>
+<ul class="src">
+<li><a href="#">原版策略分析：陳立楷_牙科最佳策略.md</a></li>
+<li><a href="#">基礎研究報告：陳立楷_牙險研究報告.md</a></li>
+<li><a href="https://esales.chubblife.com.tw/pz/product/costco/dea" target="_blank">安達人壽從齒好健康定期保險（DEA）</a></li>
+<li><a href="https://www.prevail-dental.com/atc/implant/2025-implant-price/" target="_blank">品味牙醫 2026 植牙費用全攻略</a></li>
+<li><a href="https://www.mohw.gov.tw/cp-5021-63817-1.html" target="_blank">衛福部國人口腔健康調查</a></li>
+<li>保險法第 64 條（告知義務）、第 127 條（疾病保險除外）</li>
+</ul>
+
+<div class="bq">本報告僅供內部分析參考，不構成正式保險或投資建議。</div>
+</div>
+
+</div><!-- card -->
+
+<div class="disclaimer">最後更新：2026 年 3 月 23 日</div>
+</main>
+</div>
+
+<button class="sidebar-toggle" id="sidebarToggle" aria-label="目錄">&#9776;</button>
+
+<script>
+(function(){
+'use strict';
+var tocList=document.getElementById('tocList'),sidebar=document.getElementById('sidebar');
+
+// Build TOC
+function buildTOC(){
+tocList.innerHTML='';
+document.querySelectorAll('.card h2[id],.card h3[id]').forEach(function(h){
+var li=document.createElement('li');
+if(h.tagName==='H3')li.classList.add('toc-h3');
+var a=document.createElement('a');
+a.href='#'+h.id;a.textContent=h.textContent;
+a.addEventListener('click',function(){
+var sc=h.nextElementSibling;
+if(sc&&sc.classList.contains('section-content')&&sc.classList.contains('collapsed')){h.click()}
+var parent=h.closest('.section-content');
+if(parent&&parent.classList.contains('collapsed')){parent.previousElementSibling.click()}
+});
+li.appendChild(a);tocList.appendChild(li);
+});
+}
+buildTOC();
+
+// Collapsible
+document.querySelectorAll('.card h2[id]').forEach(function(h2){
+h2.addEventListener('click',function(){
+var c=this.nextElementSibling;
+if(!c||!c.classList.contains('section-content'))return;
+if(c.classList.contains('collapsed')){
+c.classList.remove('collapsed');c.style.maxHeight=c.scrollHeight+'px';this.classList.remove('collapsed');
+setTimeout(function(){c.style.maxHeight='none'},310);
+}else{
+c.style.maxHeight=c.scrollHeight+'px';
+requestAnimationFrame(function(){c.classList.add('collapsed');c.style.maxHeight='0px';h2.classList.add('collapsed')});
+}
+});
+});
+
+// Scroll spy
+var spyTick=false;
+window.addEventListener('scroll',function(){
+if(!spyTick){requestAnimationFrame(function(){
+var links=tocList.querySelectorAll('a'),hs=document.querySelectorAll('.card h2[id],.card h3[id]'),cur='';
+hs.forEach(function(h){if(h.getBoundingClientRect().top<=100)cur=h.id});
+links.forEach(function(a){a.classList.toggle('active',a.getAttribute('href')==='#'+cur)});
+spyTick=false});spyTick=true}
+});
+
+// Search
+var si=document.getElementById('searchInput'),sc=document.getElementById('searchCount'),st;
+function clearHL(){document.querySelectorAll('.search-highlight').forEach(function(el){var p=el.parentNode;p.replaceChild(document.createTextNode(el.textContent),el);p.normalize()})}
+function hl(node,term){
+if(!term)return 0;var count=0;
+if(node.nodeType===3){var idx=node.textContent.toLowerCase().indexOf(term.toLowerCase());
+if(idx>=0){var span=document.createElement('span');span.className='search-highlight';var mid=node.splitText(idx);mid.splitText(term.length);span.appendChild(mid.cloneNode(true));mid.parentNode.replaceChild(span,mid);count=1}}
+else if(node.nodeType===1&&node.childNodes.length&&!/(script|style)/i.test(node.tagName)&&!(node.classList&&node.classList.contains('search-highlight'))){
+for(var i=0;i<node.childNodes.length;i++)count+=hl(node.childNodes[i],term)}
+return count}
+si.addEventListener('input',function(){clearTimeout(st);st=setTimeout(function(){
+clearHL();var term=si.value.trim();if(term.length<2){sc.textContent='';return}
+document.querySelectorAll('.section-content.collapsed').forEach(function(s){s.classList.remove('collapsed');s.style.maxHeight='none';var h=s.previousElementSibling;if(h)h.classList.remove('collapsed')});
+var total=0;document.querySelectorAll('.card').forEach(function(card){total+=hl(card,term)});
+sc.textContent=total>0?total+' 筆':'0 筆';
+var first=document.querySelector('.search-highlight');if(first)first.scrollIntoView({behavior:'smooth',block:'center'});
+},300)});
+
+// Mobile sidebar
+document.getElementById('sidebarToggle').addEventListener('click',function(){sidebar.classList.toggle('mobile-show')});
+document.addEventListener('click',function(e){if(!sidebar.contains(e.target)&&e.target.id!=='sidebarToggle')sidebar.classList.remove('mobile-show')});
+})();
+</script>
+</body>
+</html>

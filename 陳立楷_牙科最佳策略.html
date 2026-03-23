@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>陳立楷 牙科保險最佳策略分析</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;scroll-padding-top:70px}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Microsoft JhengHei","PingFang TC",sans-serif;background:#f0f4f8;color:#1a2332;line-height:1.7;font-size:15px}
+.top-bar{position:fixed;top:0;left:0;right:0;z-index:1000;background:linear-gradient(135deg,#0a1628,#1a3a5c);box-shadow:0 2px 12px rgba(0,0,0,.3);display:flex;align-items:center;padding:0 24px;gap:16px}
+.top-bar h1{color:#fff;font-size:17px;font-weight:700;padding:14px 0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.search-box{margin-left:auto;position:relative;flex-shrink:0}
+.search-box input{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);color:#fff;padding:7px 14px 7px 34px;border-radius:20px;font-size:13px;width:200px;outline:none;transition:all .2s;font-family:inherit}
+.search-box input::placeholder{color:rgba(255,255,255,.4)}
+.search-box input:focus{background:rgba(255,255,255,.15);border-color:#4fc3f7;width:260px}
+.search-box svg{position:absolute;left:10px;top:50%;transform:translateY(-50%);width:16px;height:16px;fill:rgba(255,255,255,.4)}
+.search-count{color:rgba(255,255,255,.5);font-size:11px;position:absolute;right:12px;top:50%;transform:translateY(-50%)}
+.layout{display:flex;max-width:1200px;margin:66px auto 0;padding:20px;gap:24px}
+.sidebar{width:250px;flex-shrink:0;position:sticky;top:86px;height:calc(100vh - 106px);overflow-y:auto;padding-right:8px}
+.sidebar::-webkit-scrollbar{width:4px}
+.sidebar::-webkit-scrollbar-thumb{background:#c0c8d4;border-radius:4px}
+.toc-title{font-size:12px;font-weight:700;color:#8494a7;text-transform:uppercase;letter-spacing:1px;padding:8px 12px;margin-bottom:4px}
+.toc-list{list-style:none}
+.toc-list li a{display:block;padding:5px 12px;font-size:13px;color:#5a6a7e;text-decoration:none;border-left:2px solid transparent;transition:all .15s;border-radius:0 4px 4px 0}
+.toc-list li a:hover{color:#1a3a5c;background:rgba(26,58,92,.05)}
+.toc-list li a.active{color:#1a3a5c;font-weight:600;border-left-color:#1a3a5c;background:rgba(26,58,92,.08)}
+.toc-list li.toc-h3 a{padding-left:24px;font-size:12px}
+.main{flex:1;min-width:0}
+.card{background:#fff;border-radius:12px;box-shadow:0 1px 4px rgba(0,0,0,.06);padding:36px 40px;margin-bottom:20px}
+.card h2{font-size:22px;color:#0a1628;margin:32px 0 16px;padding-bottom:8px;border-bottom:2px solid #e8edf2;cursor:pointer;position:relative;padding-right:28px}
+.card h2:first-child{margin-top:0}
+.card h2::after{content:'';position:absolute;right:0;top:50%;width:8px;height:8px;border-right:2px solid #8494a7;border-bottom:2px solid #8494a7;transform:translateY(-70%) rotate(45deg);transition:transform .2s}
+.card h2.collapsed::after{transform:translateY(-30%) rotate(-135deg)}
+.card h3{font-size:17px;color:#1a3a5c;margin:24px 0 12px}
+.card h4{font-size:15px;color:#2c5282;margin:18px 0 10px}
+.card p{margin:10px 0}
+.card ul,.card ol{margin:10px 0 10px 20px}
+.card li{margin:4px 0}
+.section-content{overflow:hidden;transition:max-height .3s ease}
+.section-content.collapsed{max-height:0!important}
+.tw{overflow-x:auto;margin:14px 0;border-radius:8px;border:1px solid #e2e8f0}
+table{width:100%;border-collapse:collapse;font-size:13.5px;min-width:480px}
+thead{background:#1a3a5c}
+thead th{color:#fff;font-weight:600;padding:10px 14px;text-align:left;white-space:nowrap}
+tbody td{padding:9px 14px;border-bottom:1px solid #edf2f7}
+tbody tr:nth-child(even){background:#f7fafc}
+tbody tr:hover{background:#ebf4ff}
+.callout{border-radius:8px;padding:16px 20px;margin:16px 0;border-left:4px solid}
+.callout-info{background:#ebf8ff;border-color:#3182ce;color:#2a4365}
+.callout-warn{background:#fffbeb;border-color:#d69e2e;color:#744210}
+.callout-success{background:#f0fff4;border-color:#38a169;color:#22543d}
+.callout-danger{background:#fff5f5;border-color:#e53e3e;color:#742a2a}
+.callout-title{font-weight:700;margin-bottom:6px;font-size:14px}
+.kn{color:#e53e3e;font-weight:700}
+.km{color:#2b6cb0;font-weight:700}
+.kp{color:#38a169;font-weight:700}
+.code-block{background:#1a2332;color:#e2e8f0;padding:16px 20px;border-radius:8px;overflow-x:auto;font-family:"SF Mono","Fira Code",monospace;font-size:13px;line-height:1.6;margin:14px 0;white-space:pre}
+.bq{border-left:3px solid #cbd5e0;padding:8px 16px;color:#5a6a7e;margin:12px 0;font-size:14px;background:#f7fafc;border-radius:0 6px 6px 0}
+.cl{list-style:none;margin-left:0!important}
+.cl li{position:relative;padding-left:26px;margin:6px 0}
+.cl li::before{content:'';position:absolute;left:0;top:6px;width:16px;height:16px;border:2px solid #cbd5e0;border-radius:3px}
+.src a{color:#3182ce;text-decoration:none;font-size:13px}
+.src a:hover{text-decoration:underline}
+.search-highlight{background:#fefcbf;border-radius:2px;box-shadow:0 0 0 1px #ecc94b}
+.disclaimer{text-align:center;padding:24px;color:#8494a7;font-size:13px;border-top:1px solid #e2e8f0;margin-top:20px}
+.sidebar-toggle{display:none;position:fixed;bottom:20px;right:20px;width:48px;height:48px;border-radius:50%;background:#1a3a5c;color:#fff;border:none;box-shadow:0 4px 12px rgba(0,0,0,.3);cursor:pointer;font-size:20px;z-index:999;align-items:center;justify-content:center}
+@media(max-width:900px){
+.sidebar{display:none}
+.layout{padding:12px}
+.card{padding:20px 18px}
+.top-bar h1{font-size:15px}
+.search-box input{width:130px}
+.search-box input:focus{width:170px}
+table{font-size:12.5px}
+thead th,tbody td{padding:7px 10px}
+.sidebar-toggle{display:flex}
+.sidebar.mobile-show{display:block;position:fixed;top:56px;left:0;bottom:0;width:280px;background:#fff;z-index:998;box-shadow:4px 0 20px rgba(0,0,0,.15);padding:16px 8px;height:auto}
+}
+</style>
+</head>
+<body>
+
+<nav class="top-bar">
+<h1>陳立楷 牙科保險最佳策略分析</h1>
+<div class="search-box">
+<svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+<input type="text" id="searchInput" placeholder="搜尋內容...">
+<span class="search-count" id="searchCount"></span>
+</div>
+</nav>
+
+<div class="layout">
+<aside class="sidebar" id="sidebar">
+<div class="toc-title">目錄</div>
+<ul class="toc-list" id="tocList"></ul>
+</aside>
+
+<main class="main">
+<div class="card">
+
+<div class="bq">
+建立日期：2026-03-23<br>
+客戶：陳立楷（23 歲，男性，職等三）<br>
+現有年繳保費：<span class="km">75,202 元</span><br>
+狀況：非智齒阻生齒需治療，尚未記錄於病歷<br>
+目標：找出成本效益最佳的牙科風險管理方案
+</div>
+
+<h2 id="s1">一、所有可行方案列表</h2>
+<div class="section-content">
+
+<h3 id="s1a">方案 A：安達 DRF 從齒健康全面型定期保險（15 年期）</h3>
+<div class="tw"><table>
+<thead><tr><th>項目</th><th>內容</th></tr></thead>
+<tbody>
+<tr><td>產品性質</td><td>還本型牙齒險（有滿期金）</td></tr>
+<tr><td>保額</td><td>固定 <span class="km">1 萬元</span></td></tr>
+<tr><td>保障期間</td><td>15 年（23～38 歲）</td></tr>
+<tr><td>估計年繳保費</td><td>約 <span class="km">18,000～20,600 元</span>（23 歲男性）</td></tr>
+<tr><td>滿期金</td><td>壽險保額的 60%（約 6,000 元）</td></tr>
+<tr><td>投保資格</td><td>20～50 歲，無需 Costco 會員</td></tr>
+<tr><td>通路</td><td>安達人壽官網、保經代、銀行通路</td></tr>
+</tbody></table></div>
+<p><strong>理賠項目（保額 1 萬，第 3 年起）：</strong></p>
+<ul>
+<li>植牙：<span class="km">40,000 元/顆</span>（年度上限 3 顆）</li>
+<li>固定義齒（牙橋）：<span class="km">15,000 元/顆</span>（年度上限 3 顆）</li>
+<li>活動義齒：<span class="km">15,000 元/次</span>（年度上限 1 次）</li>
+<li>牙冠：<span class="km">5,000 元/顆</span>（年度上限 3 顆）</li>
+<li>意外致牙齒治療：不受年度顆數上限</li>
+</ul>
+
+<h3 id="s1b">方案 B：安達 DEA 從齒好健康定期保險（Costco 通路，10 年期）</h3>
+<div class="tw"><table>
+<thead><tr><th>項目</th><th>內容</th></tr></thead>
+<tbody>
+<tr><td>產品性質</td><td>純保障型牙齒險（無滿期金）</td></tr>
+<tr><td>保額</td><td>固定 <span class="km">1 萬元</span></td></tr>
+<tr><td>保障期間</td><td>10 年 / 20 年可選</td></tr>
+<tr><td>估計年繳保費</td><td>約 <span class="km">7,100～8,500 元</span>（10 年期，23 歲男性）</td></tr>
+<tr><td>滿期金</td><td>無</td></tr>
+<tr><td>投保資格</td><td>需 Costco 黑鑽卡會員</td></tr>
+<tr><td>通路</td><td>安達人壽 Costco 專區</td></tr>
+</tbody></table></div>
+<p><strong>理賠項目（保額 1 萬，第 3 年起）：</strong></p>
+<ul>
+<li>植牙：<span class="km">40,000 元/顆</span>（年度上限 3 顆）</li>
+<li>固定義齒（牙橋）：<span class="km">20,000 元/顆</span>（年度上限 3 顆）</li>
+<li>活動義齒：<span class="km">20,000 元/次</span>（年度上限 1 次）</li>
+<li>牙冠：<span class="km">6,000 元/顆</span>（年度上限 3 顆）</li>
+<li><strong>前 2 年理賠更高</strong>：第 1 年植牙即賠 20,000（DRF 僅 8,000）</li>
+</ul>
+
+<h3 id="s1c">方案 C：南山 TKI 溢起堅齒定期保險（15 年期）</h3>
+<div class="tw"><table>
+<thead><tr><th>項目</th><th>內容</th></tr></thead>
+<tbody>
+<tr><td>產品性質</td><td>還本型牙齒險（含外溢回饋）</td></tr>
+<tr><td>保額</td><td>1 萬 / 1.5 萬可選</td></tr>
+<tr><td>保障期間</td><td>15 年</td></tr>
+<tr><td>估計年繳保費</td><td>約 <span class="km">25,000～35,000 元</span>（23 歲男性，保額 1 萬）</td></tr>
+<tr><td>滿期金</td><td>總繳保費的 <span class="kp">70%</span></td></tr>
+<tr><td>外溢回饋</td><td>每年定期洗牙可領年繳保費 <span class="kp">2%</span></td></tr>
+<tr><td>投保資格</td><td>20～50 歲</td></tr>
+<tr><td>在售狀態</td><td>2026 年 1 月仍有條款更新，應在售，但建議電話確認</td></tr>
+</tbody></table></div>
+<p><strong>理賠項目（保額 1 萬，第 3 年起）：</strong></p>
+<ul>
+<li>植牙：<span class="km">45,000 元/顆</span>（比安達多 5,000）</li>
+<li>固定義齒（牙橋）：<span class="km">25,000 元/顆</span>（比安達多 10,000）</li>
+<li>活動義齒：<span class="km">25,000 元/次</span></li>
+<li>牙冠：<span class="km">5,000 元/顆</span></li>
+<li>2～6 級失能豁免保費</li>
+</ul>
+
+<h3 id="s1d">方案 D：升級實支實付</h3>
+<div class="tw"><table>
+<thead><tr><th>項目</th><th>內容</th></tr></thead>
+<tbody>
+<tr><td>產品性質</td><td>實支實付醫療險（附帶門診手術理賠）</td></tr>
+<tr><td>估計年繳保費</td><td>約 <span class="km">5,000～15,000 元</span>（視計畫別）</td></tr>
+<tr><td>可理賠牙科情境</td><td>僅限「門診手術」定義的牙科處置</td></tr>
+<tr><td>限制</td><td>多數產品排除牙科（健保第三部 / 跳過 23-24 手術碼）</td></tr>
+</tbody></table></div>
+<p><strong>現況分析：</strong></p>
+<ul>
+<li>陳立楷已有 2 張實支實付（NCH + 1Z），牙科理賠能力幾乎為零</li>
+<li>NCH 僅限住院手術，無門診手術</li>
+<li>1Z 刻意跳過 ICD-9-CM 23-24 碼（口腔及牙科手術）</li>
+<li>2024 年 7 月新制後，實支實付改為正本理賠，且新產品普遍限縮牙科給付</li>
+</ul>
+<div class="callout callout-danger"><div class="callout-title">結論</div><p>升級實支實付對牙科保障的邊際效益極低</p></div>
+
+<h3 id="s1e">方案 E：自費儲蓄（不買保險，自己存錢應對）</h3>
+<div class="tw"><table>
+<thead><tr><th>項目</th><th>內容</th></tr></thead>
+<tbody>
+<tr><td>做法</td><td>每月定額存入「牙齒基金」專戶</td></tr>
+<tr><td>建議月存</td><td><span class="km">2,000～3,000 元</span></td></tr>
+<tr><td>15 年累計</td><td><span class="km">360,000～540,000 元</span>（含活存利息）</td></tr>
+<tr><td>優點</td><td>完全自主、無等待期、無除外條款、用不到全額保留</td></tr>
+<tr><td>缺點</td><td>前期儲蓄不足時若遇大額需求（植牙），需自掏腰包</td></tr>
+</tbody></table></div>
+
+<h3 id="s1f">方案 F：混合方案（牙齒險 + 自費儲蓄）</h3>
+<div class="tw"><table>
+<thead><tr><th>項目</th><th>內容</th></tr></thead>
+<tbody>
+<tr><td>做法</td><td>投保低保費牙齒險 + 每月另存 1,000 元牙齒基金</td></tr>
+<tr><td>牙齒險</td><td>安達 DEA 10 年期（年繳約 7,100～8,500 元）</td></tr>
+<tr><td>自費儲蓄</td><td>月存 1,000 元</td></tr>
+<tr><td>10 年總投入</td><td>牙齒險約 71,000～85,000 + 儲蓄 120,000 = 約 <span class="km">191,000～205,000 元</span></td></tr>
+<tr><td>保障涵蓋</td><td>10 年內有保險理賠 + 10 年後有儲蓄墊底</td></tr>
+</tbody></table></div>
+</div>
+
+<h2 id="s2">二、各方案成本效益分析（15 年期比較）</h2>
+<div class="section-content">
+
+<h3 id="s2a">成本比較表</h3>
+<div class="tw"><table>
+<thead><tr><th>比較項目</th><th>方案A：DRF 15年</th><th>方案B：DEA 10年</th><th>方案C：TKI 15年</th><th>方案E：純儲蓄</th><th>方案F：混合</th></tr></thead>
+<tbody>
+<tr><td>年繳保費</td><td>~20,000</td><td>~8,000</td><td>~30,000</td><td>0</td><td>~8,000</td></tr>
+<tr><td>月存牙齒基金</td><td>0</td><td>0</td><td>0</td><td>2,500</td><td>1,000</td></tr>
+<tr><td>15 年總投入</td><td>~300,000</td><td>~80,000（10年）</td><td>~450,000</td><td>~450,000</td><td>~260,000</td></tr>
+<tr><td>滿期金回收</td><td>~6,000</td><td>0</td><td>~315,000（70%）</td><td>全額保留</td><td>儲蓄全額保留</td></tr>
+<tr><td>外溢回饋（15年）</td><td>0</td><td>0</td><td>~9,000</td><td>0</td><td>0</td></tr>
+<tr><td><strong>15 年淨成本</strong></td><td><strong class="kn">~294,000</strong></td><td><strong class="km">~80,000</strong></td><td><strong>~126,000</strong></td><td><strong class="kp">0</strong></td><td><strong class="km">~80,000</strong></td></tr>
+<tr><td>保障期結束後</td><td>無保障</td><td>無保障</td><td>無保障</td><td>持續可用</td><td>儲蓄持續可用</td></tr>
+</tbody></table></div>
+<div class="callout callout-warn"><div class="callout-title">注意</div><p>南山 TKI 的淨成本看似較低，但前提是 15 年不解約且保費總額是安達 DRF 的 1.5 倍，年度現金流壓力大。</p></div>
+
+<h3 id="s2b">理賠情境試算</h3>
+
+<h4>情境 1：最佳情境 — 第 3 年植牙 1 顆 + 牙冠 1 顆</h4>
+<div class="tw"><table>
+<thead><tr><th>項目</th><th>實際費用</th><th>方案A理賠</th><th>方案B理賠</th><th>方案C理賠</th></tr></thead>
+<tbody>
+<tr><td>植牙（含手術）</td><td>80,000</td><td>40,000</td><td>40,000</td><td>45,000</td></tr>
+<tr><td>牙冠</td><td>25,000</td><td>5,000</td><td>6,000</td><td>5,000</td></tr>
+<tr><td>CNHRL 門診手術金</td><td>—</td><td>3,000</td><td>3,000</td><td>3,000</td></tr>
+<tr><td><strong>自付額</strong></td><td><strong>105,000</strong></td><td><strong>57,000</strong></td><td><strong>56,000</strong></td><td><strong>52,000</strong></td></tr>
+<tr><td><strong>理賠總額</strong></td><td>—</td><td><strong class="km">48,000</strong></td><td><strong class="km">49,000</strong></td><td><strong class="km">53,000</strong></td></tr>
+</tbody></table></div>
+
+<h4>情境 2：中等情境 — 15 年內 1 顆植牙 + 2 顆牙冠</h4>
+<div class="tw"><table>
+<thead><tr><th>項目</th><th>實際費用</th><th>方案A理賠</th><th>方案B理賠</th><th>方案C理賠</th></tr></thead>
+<tbody>
+<tr><td>植牙 1 顆</td><td>80,000</td><td>40,000</td><td>40,000</td><td>45,000</td></tr>
+<tr><td>牙冠 2 顆</td><td>50,000</td><td>10,000</td><td>12,000</td><td>10,000</td></tr>
+<tr><td>CNHRL</td><td>—</td><td>3,000</td><td>3,000</td><td>3,000</td></tr>
+<tr><td><strong>理賠總額</strong></td><td><strong>130,000</strong></td><td><strong class="km">53,000</strong></td><td><strong class="km">55,000</strong></td><td><strong class="km">58,000</strong></td></tr>
+</tbody></table></div>
+
+<h4>情境 3：最差情境 — 15 年內 3 顆植牙 + 3 顆牙冠 + 1 副牙橋</h4>
+<div class="tw"><table>
+<thead><tr><th>項目</th><th>實際費用</th><th>方案A理賠</th><th>方案B理賠</th><th>方案C理賠</th></tr></thead>
+<tbody>
+<tr><td>植牙 3 顆</td><td>240,000</td><td>120,000</td><td>120,000</td><td>135,000</td></tr>
+<tr><td>牙冠 3 顆</td><td>75,000</td><td>15,000</td><td>18,000</td><td>15,000</td></tr>
+<tr><td>牙橋 3 單位</td><td>60,000</td><td>45,000</td><td>60,000</td><td>75,000</td></tr>
+<tr><td>CNHRL</td><td>—</td><td>3,000</td><td>3,000</td><td>3,000</td></tr>
+<tr><td><strong>理賠總額</strong></td><td><strong>375,000</strong></td><td><strong class="km">183,000</strong></td><td><strong class="km">201,000</strong></td><td><strong class="km">228,000</strong></td></tr>
+</tbody></table></div>
+
+<h3 id="s2c">損益平衡分析</h3>
+<div class="tw"><table>
+<thead><tr><th>方案</th><th>15年淨成本</th><th>損益平衡需理賠額</th><th>需幾顆植牙才回本</th><th>回本難度</th></tr></thead>
+<tbody>
+<tr><td>A：DRF 15年</td><td>~294,000</td><td>294,000</td><td>約 7.4 顆</td><td><span class="kn">極難</span></td></tr>
+<tr><td>B：DEA 10年</td><td>~80,000</td><td>80,000</td><td>約 2 顆</td><td><span class="kp">可能</span></td></tr>
+<tr><td>C：TKI 15年</td><td>~126,000</td><td>126,000</td><td>約 2.8 顆</td><td>中等</td></tr>
+<tr><td>E：純儲蓄</td><td>0</td><td>不適用</td><td>不適用</td><td>—</td></tr>
+<tr><td>F：混合</td><td>~80,000</td><td>80,000</td><td>約 2 顆</td><td><span class="kp">可能</span></td></tr>
+</tbody></table></div>
+
+<div class="callout callout-info"><div class="callout-title">關鍵發現</div>
+<ul>
+<li>安達 DRF（方案 A）的淨成本最高，需要非常多次理賠才能回本，滿期金僅 6,000 元幾乎可忽略</li>
+<li>安達 DEA（方案 B）保費最低，2 顆植牙就回本，但需要 Costco 黑鑽卡</li>
+<li>南山 TKI（方案 C）保費最高但滿期金回收比例大（70%），淨成本反而中等</li>
+<li>純儲蓄（方案 E）零風險但前期無保障</li>
+<li>混合方案（方案 F）兼顧保障與彈性</li>
+</ul></div>
+</div>
+
+<h2 id="s3">三、風險矩陣：23 歲男性未來 15 年牙科風險評估</h2>
+<div class="section-content">
+
+<h3 id="s3a">風險發生機率與費用</h3>
+<div class="tw"><table>
+<thead><tr><th>風險類型</th><th>發生機率（15年內）</th><th>單次費用</th><th>健保覆蓋</th><th>牙齒險可賠</th><th>實支實付可賠</th></tr></thead>
+<tbody>
+<tr><td><strong>蛀牙補牙</strong></td><td>極高（>90%）</td><td>0～3,000/顆</td><td>基本補牙有</td><td>不賠</td><td>不賠</td></tr>
+<tr><td><strong>根管治療</strong></td><td>中等（30～50%）</td><td>健保免費～10,000</td><td>基本有</td><td>不賠（後續牙冠可賠）</td><td>極少數可賠</td></tr>
+<tr><td><strong>根管後牙冠</strong></td><td>中等（30～50%）</td><td>8,000～35,000/顆</td><td>無</td><td><strong class="kp">可賠</strong></td><td>不賠</td></tr>
+<tr><td><strong>阻生齒治療</strong></td><td>確定（已知）</td><td>拔除：健保 / 植牙：60,000～100,000</td><td>拔除有</td><td><strong class="kp">可賠</strong></td><td>不賠</td></tr>
+<tr><td><strong>牙周病</strong></td><td>高（>80%輕度）</td><td>洗牙：健保 / 翻瓣：20,000～50,000</td><td>基本有</td><td>不賠（後續假牙可賠）</td><td>極少數可賠</td></tr>
+<tr><td><strong>意外斷牙</strong></td><td>低（5～10%）</td><td>植牙：60,000～100,000/顆</td><td>無</td><td><strong class="kp">可賠</strong>（不受年度上限）</td><td>意外險 3 萬</td></tr>
+<tr><td><strong>需要植牙</strong></td><td>中低（15～25%）</td><td>60,000～120,000/顆</td><td>無</td><td><strong class="kp">可賠</strong></td><td>不賠</td></tr>
+<tr><td><strong>需要牙橋</strong></td><td>中低（10～20%）</td><td>45,000～90,000/組</td><td>無</td><td><strong class="kp">可賠</strong></td><td>不賠</td></tr>
+<tr><td><strong>齒列矯正</strong></td><td>中（20～30%）</td><td>100,000～250,000</td><td>無</td><td><strong class="kn">不賠</strong></td><td>不賠</td></tr>
+</tbody></table></div>
+
+<h3 id="s3b">台灣口腔健康統計</h3>
+<ul>
+<li><strong>齲齒盛行率</strong>：18 歲以上成人 <span class="kp">98.6%</span>，平均口內 14 顆有齲齒經驗</li>
+<li><strong>牙周病盛行率</strong>：18 歲以上成人 <span class="kp">99%</span> 有輕重程度不一的牙周病</li>
+<li><strong>35～44 歲牙周病率</strong>：<span class="kp">>90%</span></li>
+<li><strong>終生需植牙機率</strong>：約 <span class="kp">20～30%</span></li>
+</ul>
+
+<h3 id="s3c">風險矩陣圖</h3>
+<div class="code-block">費用高 │                    ● 意外斷牙+植牙
+(>5萬)  │            ● 阻生齒植牙      ● 多顆植牙
+        │       ● 牙橋          ● 牙周翻瓣+假牙
+        │
+費用中  │                ● 根管後牙冠
+(1-5萬) │  ● 牙周翻瓣手術
+        │
+費用低  │  ● 蛀牙補牙    ● 根管治療
+(<1萬)  │  ● 洗牙
+        │
+        └──────────────────────────────────
+          低機率           中機率           高機率
+          (<10%)          (10-50%)         (>50%)</div>
+
+<div class="callout callout-info"><div class="callout-title">重點解讀</div>
+<ul>
+<li>最常見的牙科問題（蛀牙、洗牙、基本根管）健保都有覆蓋，牙齒險不賠</li>
+<li>牙齒險真正有價值的理賠集中在「需要假牙/植牙重建」的情境</li>
+<li>23 歲男性在 15 年內需要植牙的機率約 15～25%，不算高但一旦發生費用很驚人</li>
+<li>已知的阻生齒是目前最確定會用到的理賠情境</li>
+</ul></div>
+</div>
+
+<h2 id="s4">四、最終建議</h2>
+<div class="section-content">
+
+<div class="callout callout-success"><div class="callout-title">推薦方案：方案 F — 混合方案（安達 DEA + 自費儲蓄）</div></div>
+
+<h3 id="s4a">如果有 Costco 黑鑽卡</h3>
+<div class="tw"><table>
+<thead><tr><th>組成</th><th>每年投入</th><th>說明</th></tr></thead>
+<tbody>
+<tr><td>安達 DEA 10 年期</td><td>~8,000 元/年</td><td>覆蓋 23～33 歲的植牙/假牙風險</td></tr>
+<tr><td>牙齒基金月存</td><td>12,000 元/年（月存 1,000）</td><td>10 年後接續保障</td></tr>
+<tr><td><strong>年度總投入</strong></td><td><strong class="km">~20,000 元</strong></td><td>占總保費比例合理</td></tr>
+</tbody></table></div>
+
+<h3 id="s4b">如果沒有 Costco 黑鑽卡</h3>
+<div class="tw"><table>
+<thead><tr><th>組成</th><th>每年投入</th><th>說明</th></tr></thead>
+<tbody>
+<tr><td>安達 DRF 10 年期</td><td>~16,000～18,000 元/年</td><td>覆蓋 23～33 歲</td></tr>
+<tr><td>牙齒基金月存</td><td>6,000 元/年（月存 500）</td><td>補充保險外的需求</td></tr>
+<tr><td><strong>年度總投入</strong></td><td><strong class="km">~22,000～24,000 元</strong></td><td>稍高但可接受</td></tr>
+</tbody></table></div>
+
+<h3 id="s4c">為什麼這個方案最適合陳立楷？</h3>
+<p><strong>1. 預算考量</strong></p>
+<ul>
+<li>現有年繳保費已 <span class="km">75,202 元</span>，加上牙齒險後不超過 <span class="km">95,000 元</span></li>
+<li>比起南山 TKI（年繳 25,000～35,000），現金流壓力小很多</li>
+<li>DEA 月繳約 650～700 元，感覺更像「日常支出」而非沉重負擔</li>
+</ul>
+<p><strong>2. 成本效益最佳</strong></p>
+<ul>
+<li>DEA 是所有牙齒險中淨成本最低的（10 年約 <span class="km">80,000 元</span>）</li>
+<li>2 顆植牙就回本（40,000 x 2 = 80,000）</li>
+<li>前 2 年植牙即賠 20,000/顆（DRF 僅 8,000），對阻生齒治療更有利</li>
+</ul>
+<p><strong>3. 對阻生齒的針對性</strong></p>
+<ul>
+<li>阻生齒確認非智齒，牙齒險可賠</li>
+<li>等待期僅 30 天，第 1 年即可理賠（雖然金額較少）</li>
+<li>第 3 年起植牙理賠 40,000/顆，可覆蓋植牙費用的 40～65%</li>
+</ul>
+<p><strong>4. 年齡優勢</strong></p>
+<ul>
+<li>23 歲投保保費最低，比 30 歲投保省約 <span class="kp">30～40%</span></li>
+<li>23 歲通常無根管治療紀錄，不受安達「根管牙除外」影響</li>
+<li>骨質條件佳，植牙成功率最高</li>
+</ul>
+<p><strong>5. 儲蓄部分的長期價值</strong></p>
+<ul>
+<li>10 年保險到期後，儲蓄帳戶已累計 <span class="km">12～18 萬</span></li>
+<li>33 歲後牙齒基金可繼續增長，應對中年牙科需求</li>
+<li>若 10 年內牙齒健康良好，儲蓄完整保留，比保險更划算</li>
+</ul>
+
+<h3 id="s4d">不建議的方案</h3>
+<div class="tw"><table>
+<thead><tr><th>方案</th><th>不建議原因</th></tr></thead>
+<tbody>
+<tr><td>安達 DRF 15 年期</td><td>淨成本最高（~294,000），滿期金僅 6,000 元，回本需 7+ 顆植牙</td></tr>
+<tr><td>南山 TKI</td><td>年繳保費過高（25,000～35,000），雖有 70% 滿期金但需等 15 年</td></tr>
+<tr><td>升級實支實付</td><td>2026 年新制下幾乎所有實支實付都排除牙科，投入產出比極差</td></tr>
+<tr><td>純儲蓄（不投保）</td><td>若阻生齒在前 2 年需緊急處理，儲蓄不足以覆蓋植牙費用</td></tr>
+</tbody></table></div>
+</div>
+
+<h2 id="s5">五、行動步驟</h2>
+<div class="section-content">
+
+<h3 id="s5a">第 1 步：確認阻生齒狀況（本週～下週）</h3>
+<ul class="cl">
+<li>回診確認阻生齒的<strong>牙位編號</strong>（非 #18/#28/#38/#48 即可投保牙齒險理賠）</li>
+<li>請醫師說明建議治療方向：矯正牽引 or 拔除重建</li>
+<li><strong>重要：此次就診只做評估，不要開始治療</strong></li>
+<li>詢問醫師：「如果暫時不處理，是否會影響鄰牙？」</li>
+<li>請醫師出具全口 X 光，自己留存一份</li>
+</ul>
+
+<h3 id="s5b">第 2 步：確認投保條件（1 週內）</h3>
+<ul class="cl">
+<li>確認是否有 Costco 黑鑽卡（有→選安達 DEA；沒有→選安達 DRF 10 年期）</li>
+<li>致電安達人壽客服 0800-011-709，詢問 23 歲男性的確切年繳保費</li>
+<li>（備選）致電南山人壽 0800-020-060，確認 TKI 是否仍在售及確切保費</li>
+</ul>
+
+<h3 id="s5c">第 3 步：投保（確認後 1～2 週內）</h3>
+<ul class="cl">
+<li>準備投保文件（身分證、健保卡）</li>
+<li><strong>健康告知誠實填寫</strong>：阻生齒本身不是「疾病」，而是牙齒發育的位置異常</li>
+<li><strong>投保前不要開始治療</strong>（治療中或已拔除的牙位不賠）</li>
+<li>開立牙齒基金專戶，設定每月自動轉帳 1,000 元</li>
+</ul>
+
+<h3 id="s5d">第 4 步：等待期（投保後 30 天）</h3>
+<ul class="cl">
+<li>30 天疾病等待期內不要做任何牙科治療（洗牙除外）</li>
+<li>這段期間正常刷牙保健即可</li>
+</ul>
+
+<h3 id="s5e">第 5 步：治療時間規劃</h3>
+<div class="code-block">2026 年 4 月     投保
+                 ↓
+2026 年 5 月     等待期結束（30 天後）
+                 ↓
+2026 年 5～12 月  定期洗牙追蹤，不急著治療
+                 若阻生齒開始影響鄰牙，讓醫師記錄病歷
+                 ↓
+2027 年 4 月     進入第 2 保單年度
+                 植牙理賠提升至 20,000/顆（DEA）
+                 ↓
+★ 最佳治療時機 ★
+2028 年 4 月     進入第 3 保單年度
+                 植牙理賠提升至 40,000/顆
+                 ↓
+                 ├─ 醫師診斷書：「阻生齒致鄰牙病變，需手術拔除」
+                 ├─ 手術拔除阻生齒
+                 ├─ 等骨頭癒合 3～6 個月
+                 ├─ 植牙手術 → 理賠植牙保險金 40,000 元
+                 ├─ 安裝牙冠 → 理賠牙冠保險金 6,000 元（DEA）
+                 ↓
+                 理賠申請（準備診斷書、收據、X 光）</div>
+
+<h3 id="s5f">第 6 步：緊急情境處理</h3>
+<p><strong>如果阻生齒在等待期或第 1～2 年就必須治療：</strong></p>
+<ul>
+<li>DEA 第 1 年植牙仍可賠 <span class="km">20,000 元</span>（比 DRF 的 8,000 好很多）</li>
+<li>不足部分從牙齒基金支出</li>
+<li>若費用仍不足，可先選牙橋（費用較低），未來再考慮植牙</li>
+</ul>
+<p><strong>如果醫師強烈建議矯正牽引（保留原齒）：</strong></p>
+<ul>
+<li>矯正不在牙齒險理賠範圍</li>
+<li>但 23 歲矯正效果最佳，長期效益高於植牙</li>
+<li>費用 10～25 萬，可從牙齒基金 + 分期支付</li>
+<li>此情境下牙齒險的投保必要性降低，可改為純儲蓄方案</li>
+</ul>
+</div>
+
+<h2 id="s6">六、費用總覽與預算影響</h2>
+<div class="section-content">
+
+<h3 id="s6a">投保後年度保費總覽</h3>
+<div class="tw"><table>
+<thead><tr><th>險種</th><th>公司</th><th>年繳保費</th></tr></thead>
+<tbody>
+<tr><td>現有保單合計</td><td>各家</td><td>75,202 元</td></tr>
+<tr><td>安達 DEA（新增）</td><td>安達人壽</td><td>~8,000 元</td></tr>
+<tr><td>牙齒基金（新增）</td><td>自存</td><td>12,000 元</td></tr>
+<tr><td><strong>總計</strong></td><td></td><td><strong class="km">~95,202 元</strong></td></tr>
+</tbody></table></div>
+
+<h3 id="s6b">與純牙齒險方案的比較</h3>
+<div class="tw"><table>
+<thead><tr><th>方案</th><th>年度增加支出</th><th>占現有保費比例</th><th>15 年淨成本</th></tr></thead>
+<tbody>
+<tr><td>混合方案（推薦）</td><td>~20,000</td><td>26.6%</td><td>~80,000 + 儲蓄全保留</td></tr>
+<tr><td>安達 DRF 15 年</td><td>~20,000</td><td>26.6%</td><td>~294,000</td></tr>
+<tr><td>南山 TKI</td><td>~30,000</td><td>39.9%</td><td>~126,000</td></tr>
+</tbody></table></div>
+</div>
+
+<h2 id="s7">附錄：重要注意事項</h2>
+<div class="section-content">
+
+<h3 id="s7a">投保前的法律風險</h3>
+<ol>
+<li><strong>保險法第 127 條</strong>：保險公司可主張投保時已處疾病狀態而拒賠。阻生齒本身非疾病，但若已導致鄰牙蛀蝕則可能被認定投保前已發病。</li>
+<li><strong>告知義務</strong>：若告知書問及「是否曾被建議牙科治療」而隱瞞，保險公司可於 2 年內解約。</li>
+<li><strong>帶病投保疑慮</strong>：投保後短期內治療，保險公司可能調閱病歷追溯。建議至少等 1 年以上再治療。</li>
+</ol>
+
+<h3 id="s7b">理賠實務要點</h3>
+<ol>
+<li><strong>14 天間隔規則</strong>：多項治療需間隔超過 14 天才算獨立理賠案。</li>
+<li><strong>診斷書用語</strong>：應強調「因阻生齒導致鄰牙蛀蝕/牙周病變，有醫療必要性需手術拔除」，避免使用「矯正」、「美容」等字眼。</li>
+<li><strong>植牙給付時點</strong>：人工植體 + 上方義齒贗復都完成才算完整「植牙」。</li>
+<li><strong>同一牙位限制</strong>：同一顆牙不能重複申請不同理賠項目。</li>
+</ol>
+
+<h3 id="s7c">費率表資料來源說明</h3>
+<p>本報告中的保費金額為根據以下來源的估計值：</p>
+<ul>
+<li>Finfo 保險資訊站線上試算工具</li>
+<li>安達人壽官網 DM 範例</li>
+<li>保險經紀人分享的費率參考</li>
+<li>30 歲男 DRF 年繳 17,550 元（官方範例），推估 23 歲約 15,000～17,000 元</li>
+<li>20 歲男 DEA 10 年期年繳 7,140 元（官方範例），推估 23 歲約 7,500～8,500 元</li>
+</ul>
+<div class="callout callout-warn"><div class="callout-title">注意</div><p>實際保費請以安達人壽/南山人壽正式報價為準。</p></div>
+
+<h3 id="s7d">資料來源</h3>
+<ul class="src">
+<li><a href="https://life.chubb.com/tw-zh/products/protection/health-insurance/tsong-chih-jian-kang-chyuan-main-sing-term-dental.html" target="_blank">安達人壽從齒健康全面型定期保險（DRF）</a></li>
+<li><a href="https://esales.chubblife.com.tw/pz/product/costco/dea" target="_blank">安達人壽從齒好健康定期保險（DEA）Costco 專區</a></li>
+<li><a href="https://esales.chubblife.com.tw/pz/product/dental" target="_blank">安達人壽牙齒險理賠說明</a></li>
+<li><a href="https://www.nanshanlife.com.tw/nanshanlife/portal-api/File/3248" target="_blank">南山人壽溢起堅齒定期保險（TKI）DM</a></li>
+<li><a href="https://finfo.tw/" target="_blank">Finfo 保險資訊站</a></li>
+<li><a href="https://www.smartbeb.com.tw/article/Medical/id/1060" target="_blank">2026 實支實付醫療險攻略 — SmartBeb</a></li>
+<li><a href="https://www.prevail-dental.com/atc/implant/2025-implant-price/" target="_blank">2026 植牙費用全攻略 — 品味牙醫</a></li>
+</ul>
+
+<div class="bq">本報告僅供參考，不構成正式保險建議。實際投保前請與持照保險業務員或經紀人確認最新條款與費率。</div>
+</div>
+
+</div><!-- card -->
+
+<div class="disclaimer">最後更新：2026 年 3 月 23 日</div>
+</main>
+</div>
+
+<button class="sidebar-toggle" id="sidebarToggle" aria-label="目錄">&#9776;</button>
+
+<script>
+(function(){
+'use strict';
+var tocList=document.getElementById('tocList'),sidebar=document.getElementById('sidebar');
+
+// Build TOC
+function buildTOC(){
+tocList.innerHTML='';
+document.querySelectorAll('.card h2[id],.card h3[id]').forEach(function(h){
+var li=document.createElement('li');
+if(h.tagName==='H3')li.classList.add('toc-h3');
+var a=document.createElement('a');
+a.href='#'+h.id;a.textContent=h.textContent;
+a.addEventListener('click',function(){
+var sc=h.nextElementSibling;
+if(sc&&sc.classList.contains('section-content')&&sc.classList.contains('collapsed')){h.click()}
+var parent=h.closest('.section-content');
+if(parent&&parent.classList.contains('collapsed')){parent.previousElementSibling.click()}
+});
+li.appendChild(a);tocList.appendChild(li);
+});
+}
+buildTOC();
+
+// Collapsible
+document.querySelectorAll('.card h2[id]').forEach(function(h2){
+h2.addEventListener('click',function(){
+var c=this.nextElementSibling;
+if(!c||!c.classList.contains('section-content'))return;
+if(c.classList.contains('collapsed')){
+c.classList.remove('collapsed');c.style.maxHeight=c.scrollHeight+'px';this.classList.remove('collapsed');
+setTimeout(function(){c.style.maxHeight='none'},310);
+}else{
+c.style.maxHeight=c.scrollHeight+'px';
+requestAnimationFrame(function(){c.classList.add('collapsed');c.style.maxHeight='0px';h2.classList.add('collapsed')});
+}
+});
+});
+
+// Scroll spy
+var spyTick=false;
+window.addEventListener('scroll',function(){
+if(!spyTick){requestAnimationFrame(function(){
+var links=tocList.querySelectorAll('a'),hs=document.querySelectorAll('.card h2[id],.card h3[id]'),cur='';
+hs.forEach(function(h){if(h.getBoundingClientRect().top<=100)cur=h.id});
+links.forEach(function(a){a.classList.toggle('active',a.getAttribute('href')==='#'+cur)});
+spyTick=false});spyTick=true}
+});
+
+// Search
+var si=document.getElementById('searchInput'),sc=document.getElementById('searchCount'),st;
+function clearHL(){document.querySelectorAll('.search-highlight').forEach(function(el){var p=el.parentNode;p.replaceChild(document.createTextNode(el.textContent),el);p.normalize()})}
+function hl(node,term){
+if(!term)return 0;var count=0;
+if(node.nodeType===3){var idx=node.textContent.toLowerCase().indexOf(term.toLowerCase());
+if(idx>=0){var span=document.createElement('span');span.className='search-highlight';var mid=node.splitText(idx);mid.splitText(term.length);span.appendChild(mid.cloneNode(true));mid.parentNode.replaceChild(span,mid);count=1}}
+else if(node.nodeType===1&&node.childNodes.length&&!/(script|style)/i.test(node.tagName)&&!(node.classList&&node.classList.contains('search-highlight'))){
+for(var i=0;i<node.childNodes.length;i++)count+=hl(node.childNodes[i],term)}
+return count}
+si.addEventListener('input',function(){clearTimeout(st);st=setTimeout(function(){
+clearHL();var term=si.value.trim();if(term.length<2){sc.textContent='';return}
+document.querySelectorAll('.section-content.collapsed').forEach(function(s){s.classList.remove('collapsed');s.style.maxHeight='none';var h=s.previousElementSibling;if(h)h.classList.remove('collapsed')});
+var total=0;document.querySelectorAll('.card').forEach(function(card){total+=hl(card,term)});
+sc.textContent=total>0?total+' 筆':'0 筆';
+var first=document.querySelector('.search-highlight');if(first)first.scrollIntoView({behavior:'smooth',block:'center'});
+},300)});
+
+// Mobile sidebar
+document.getElementById('sidebarToggle').addEventListener('click',function(){sidebar.classList.toggle('mobile-show')});
+document.addEventListener('click',function(e){if(!sidebar.contains(e.target)&&e.target.id!=='sidebarToggle')sidebar.classList.remove('mobile-show')});
+})();
+</script>
+</body>
+</html>

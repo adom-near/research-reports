@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>投資型保單系統性知識體系</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;scroll-padding-top:70px}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Microsoft JhengHei","PingFang TC",sans-serif;background:#f0f4f8;color:#1a2332;line-height:1.7;font-size:15px}
+.top-bar{position:fixed;top:0;left:0;right:0;z-index:1000;background:linear-gradient(135deg,#0a1628,#1a3a5c);box-shadow:0 2px 12px rgba(0,0,0,.3);display:flex;align-items:center;padding:0 24px;gap:16px}
+.top-bar h1{color:#fff;font-size:17px;font-weight:700;padding:14px 0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.search-box{margin-left:auto;position:relative;flex-shrink:0}
+.search-box input{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);color:#fff;padding:7px 14px 7px 34px;border-radius:20px;font-size:13px;width:200px;outline:none;transition:all .2s;font-family:inherit}
+.search-box input::placeholder{color:rgba(255,255,255,.4)}
+.search-box input:focus{background:rgba(255,255,255,.15);border-color:#4fc3f7;width:260px}
+.search-box svg{position:absolute;left:10px;top:50%;transform:translateY(-50%);width:16px;height:16px;fill:rgba(255,255,255,.4)}
+.search-count{color:rgba(255,255,255,.5);font-size:11px;position:absolute;right:12px;top:50%;transform:translateY(-50%)}
+.layout{display:flex;max-width:1200px;margin:66px auto 0;padding:20px;gap:24px}
+.sidebar{width:250px;flex-shrink:0;position:sticky;top:86px;height:calc(100vh - 106px);overflow-y:auto;padding-right:8px}
+.sidebar::-webkit-scrollbar{width:4px}
+.sidebar::-webkit-scrollbar-thumb{background:#c0c8d4;border-radius:4px}
+.toc-title{font-size:12px;font-weight:700;color:#8494a7;text-transform:uppercase;letter-spacing:1px;padding:8px 12px;margin-bottom:4px}
+.toc-list{list-style:none}
+.toc-list li a{display:block;padding:5px 12px;font-size:13px;color:#5a6a7e;text-decoration:none;border-left:2px solid transparent;transition:all .15s;border-radius:0 4px 4px 0}
+.toc-list li a:hover{color:#1a3a5c;background:rgba(26,58,92,.05)}
+.toc-list li a.active{color:#1a3a5c;font-weight:600;border-left-color:#1a3a5c;background:rgba(26,58,92,.08)}
+.toc-list li.toc-h3 a{padding-left:24px;font-size:12px}
+.main{flex:1;min-width:0}
+.card{background:#fff;border-radius:12px;box-shadow:0 1px 4px rgba(0,0,0,.06);padding:36px 40px;margin-bottom:20px}
+.card h2{font-size:22px;color:#0a1628;margin:32px 0 16px;padding-bottom:8px;border-bottom:2px solid #e8edf2;cursor:pointer;position:relative;padding-right:28px}
+.card h2:first-child{margin-top:0}
+.card h2::after{content:'';position:absolute;right:0;top:50%;width:8px;height:8px;border-right:2px solid #8494a7;border-bottom:2px solid #8494a7;transform:translateY(-70%) rotate(45deg);transition:transform .2s}
+.card h2.collapsed::after{transform:translateY(-30%) rotate(-135deg)}
+.card h3{font-size:17px;color:#1a3a5c;margin:24px 0 12px}
+.card h4{font-size:15px;color:#2c5282;margin:18px 0 10px}
+.card p{margin:10px 0}
+.card ul,.card ol{margin:10px 0 10px 20px}
+.card li{margin:4px 0}
+.section-content{overflow:hidden;transition:max-height .3s ease}
+.section-content.collapsed{max-height:0!important}
+.tw{overflow-x:auto;margin:14px 0;border-radius:8px;border:1px solid #e2e8f0}
+table{width:100%;border-collapse:collapse;font-size:13.5px;min-width:480px}
+thead{background:#1a3a5c}
+thead th{color:#fff;font-weight:600;padding:10px 14px;text-align:left;white-space:nowrap}
+tbody td{padding:9px 14px;border-bottom:1px solid #edf2f7}
+tbody tr:nth-child(even){background:#f7fafc}
+tbody tr:hover{background:#ebf4ff}
+.callout{border-radius:8px;padding:16px 20px;margin:16px 0;border-left:4px solid}
+.callout-info{background:#ebf8ff;border-color:#3182ce;color:#2a4365}
+.callout-warn{background:#fffbeb;border-color:#d69e2e;color:#744210}
+.callout-success{background:#f0fff4;border-color:#38a169;color:#22543d}
+.callout-danger{background:#fff5f5;border-color:#e53e3e;color:#742a2a}
+.callout-title{font-weight:700;margin-bottom:6px;font-size:14px}
+.kn{color:#e53e3e;font-weight:700}
+.km{color:#2b6cb0;font-weight:700}
+.kp{color:#38a169;font-weight:700}
+.code-block{background:#1a2332;color:#e2e8f0;padding:16px 20px;border-radius:8px;overflow-x:auto;font-family:"SF Mono","Fira Code",monospace;font-size:13px;line-height:1.6;margin:14px 0;white-space:pre}
+.bq{border-left:3px solid #cbd5e0;padding:8px 16px;color:#5a6a7e;margin:12px 0;font-size:14px;background:#f7fafc;border-radius:0 6px 6px 0}
+.cl{list-style:none;margin-left:0!important}
+.cl li{position:relative;padding-left:26px;margin:6px 0}
+.cl li::before{content:'';position:absolute;left:0;top:6px;width:16px;height:16px;border:2px solid #cbd5e0;border-radius:3px}
+.search-highlight{background:#fefcbf;border-radius:2px;box-shadow:0 0 0 1px #ecc94b}
+.disclaimer{text-align:center;padding:24px;color:#8494a7;font-size:13px;border-top:1px solid #e2e8f0;margin-top:20px}
+.sidebar-toggle{display:none;position:fixed;bottom:20px;right:20px;width:48px;height:48px;border-radius:50%;background:#1a3a5c;color:#fff;border:none;box-shadow:0 4px 12px rgba(0,0,0,.3);cursor:pointer;font-size:20px;z-index:999;align-items:center;justify-content:center}
+@media(max-width:900px){
+.sidebar{display:none}.layout{padding:12px}.card{padding:20px 18px}.top-bar h1{font-size:15px}
+.search-box input{width:130px}.search-box input:focus{width:170px}table{font-size:12.5px}thead th,tbody td{padding:7px 10px}
+.sidebar-toggle{display:flex}.sidebar.mobile-show{display:block;position:fixed;top:56px;left:0;bottom:0;width:280px;background:#fff;z-index:998;box-shadow:4px 0 20px rgba(0,0,0,.15);padding:16px 8px;height:auto}
+}
+</style>
+</head>
+<body>
+
+<nav class="top-bar">
+<h1>投資型保單系統性知識體系</h1>
+<div class="search-box">
+<svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+<input type="text" id="searchInput" placeholder="搜尋內容...">
+<span class="search-count" id="searchCount"></span>
+</div>
+</nav>
+
+<div class="layout">
+<aside class="sidebar" id="sidebar">
+<div class="toc-title">目錄</div>
+<ul class="toc-list" id="tocList"></ul>
+</aside>
+
+<main class="main">
+<div class="card">
+
+<div class="bq">本文件從保險從業人員角度出發，以客觀、平衡的立場整理投資型保單的完整知識。<br>目標讀者：剛取得證照的從業人員，需要快速建立正確認知。<br>最後更新：2026-03-23</div>
+
+<h2 id="s1">1. 什麼是投資型保單</h2>
+<div class="section-content">
+
+<h3 id="s1a">1.1 定義與核心機制</h3>
+<p>投資型保單是一種將「保險保障」與「投資功能」結合的金融商品。保戶繳交的保費，扣除各項費用後，進入「分離帳戶」進行投資。</p>
+<p><strong>核心特徵：</strong></p>
+<ul>
+<li><strong>分離帳戶</strong>：客戶資金與保險公司資產嚴格分開管理，即使保險公司經營不善，客戶的投資帳戶資產受到保障。</li>
+<li><strong>盈虧自負</strong>：投資績效完全由保戶承擔，保險公司不保證收益。</li>
+<li><strong>費用透明</strong>：依法規要求，各項收費標準必須完全公開揭露。</li>
+<li><strong>保戶可自主選擇投資標的</strong>：或委由專業機構（類全委）代操。</li>
+</ul>
+
+<h3 id="s1b">1.2 與傳統保單的差異</h3>
+<div class="tw"><table>
+<thead><tr><th>比較項目</th><th>投資型保單</th><th>傳統壽險（終身/定期）</th></tr></thead>
+<tbody>
+<tr><td>保費去向</td><td>扣費後進入分離帳戶投資</td><td>全部交由保險公司運用</td></tr>
+<tr><td>投資風險</td><td>保戶自行承擔</td><td>保險公司承擔</td></tr>
+<tr><td>保單價值</td><td>隨市場波動</td><td>依預定利率穩定累積</td></tr>
+<tr><td>費用透明度</td><td>高（逐項公開）</td><td>低（內含於保費中）</td></tr>
+<tr><td>保障成本</td><td>採自然費率（隨年齡遞增）</td><td>採平準費率（年年相同）</td></tr>
+<tr><td>靈活度</td><td>可自選標的、轉換、加碼</td><td>固定條款，彈性低</td></tr>
+<tr><td>適合持有期間</td><td>中長期（6 年以上較佳）</td><td>長期</td></tr>
+</tbody></table></div>
+
+<h3 id="s1c">1.3 與直接投資的差異</h3>
+<div class="tw"><table>
+<thead><tr><th>比較項目</th><th>投資型保單</th><th>銀行申購基金</th><th>證券戶買 ETF</th></tr></thead>
+<tbody>
+<tr><td>壽險保障</td><td>有（身故保本機制）</td><td>無</td><td>無</td></tr>
+<tr><td>申購手續費</td><td>通常 0%</td><td>1.5%~3%（可打折）</td><td>券商手續費 0.1425%</td></tr>
+<tr><td>轉換標的費用</td><td>每年數次免費額度</td><td>通常收 1.5% 手續費</td><td>賣出再買入，各收一次</td></tr>
+<tr><td>管理費/經理費</td><td>含在基金內扣</td><td>含在基金內扣</td><td>ETF 內扣（通常較低）</td></tr>
+<tr><td>額外保險成本</td><td>有（危險保費、管理費）</td><td>無</td><td>無</td></tr>
+<tr><td>稅務處理</td><td>海外所得適用最低稅負制</td><td>同左（若為境外基金）</td><td>國內 ETF 配息計入所得</td></tr>
+<tr><td>二代健保補充保費</td><td>不適用</td><td>不適用（境外基金）</td><td>配息超過門檻須繳</td></tr>
+<tr><td>資產傳承</td><td>有指定受益人機制</td><td>無</td><td>無</td></tr>
+<tr><td>保單借款</td><td>可借帳戶價值 40%~60%</td><td>無</td><td>無</td></tr>
+</tbody></table></div>
+<div class="callout callout-info"><div class="callout-title">客觀結論</div><p>投資型保單的總費用率通常高於直接買 ETF，但它提供的「保障 + 稅務 + 傳承」附加價值，是純投資工具無法替代的。關鍵在於客戶是否真的需要這些附加價值。</p></div>
+</div>
+
+<h2 id="s2">2. 產品分類</h2>
+<div class="section-content">
+
+<h3 id="s2a">2.1 平台選擇：壽險平台 vs 年金平台</h3>
+<h4>壽險平台（Variable Life Insurance）</h4>
+<ul>
+<li><strong>特色</strong>：兼顧保障與帳戶價值，保單附帶壽險保障（身故給付）。</li>
+<li><strong>身故給付</strong>：取「保險金額」與「保單帳戶價值」之較高者。</li>
+<li><strong>保險成本</strong>：依年齡、性別、保額計算危險保費，每月從帳戶扣除。</li>
+<li><strong>適合客群</strong>：年輕人、小資族、新婚家庭。</li>
+<li><strong>注意事項</strong>：保額越高，危險保費越高，帳戶被吃掉的比例越大。</li>
+</ul>
+<h4>年金平台（Variable Annuity）</h4>
+<ul>
+<li><strong>特色</strong>：以累積退休金為主要目的，投保方便免體檢。</li>
+<li><strong>給付方式</strong>：遞延期後可一次領或分期領（年金化）。</li>
+<li><strong>適合客群</strong>：退休規劃、不需要高額壽險保障的人。</li>
+<li><strong>注意事項</strong>：年金化後通常不可逆轉。</li>
+</ul>
+
+<h3 id="s2b">2.2 收費模式：前收型 vs 後收型</h3>
+<h4>前收型（Front-end Load / A 型）</h4>
+<div class="tw"><table>
+<thead><tr><th>項目</th><th>說明</th></tr></thead>
+<tbody>
+<tr><td>收費時點</td><td>投資前先扣除保費費用（前置費用）</td></tr>
+<tr><td>前置費用率</td><td>第 1 年約 <span class="kp">3%~5%</span>，逐年遞減，第 6 年後通常為 0%</td></tr>
+<tr><td>解約費</td><td>大多不收取或非常低</td></tr>
+<tr><td>適合客群</td><td>資金需要靈活運用、可能中途解約的客戶</td></tr>
+<tr><td>優點</td><td>解約靈活，隨時可走</td></tr>
+<tr><td>缺點</td><td>前幾年實際投資金額較少，起步慢</td></tr>
+</tbody></table></div>
+
+<h4>後收型（Back-end Load / B 型）</h4>
+<div class="tw"><table>
+<thead><tr><th>項目</th><th>說明</th></tr></thead>
+<tbody>
+<tr><td>收費時點</td><td>100% 資金直接投入投資帳戶</td></tr>
+<tr><td>前置費用</td><td>無</td></tr>
+<tr><td>解約費</td><td>前 6 年收取，第 1 年 <span class="kn">9%</span>、逐年遞減至第 6 年起 0%</td></tr>
+<tr><td>適合客群</td><td>確定可以持有 6 年以上的中長期投資者</td></tr>
+<tr><td>優點</td><td>第一天就全額投入，複利效果較佳</td></tr>
+<tr><td>缺點</td><td>提前解約成本高昂，資金流動性受限</td></tr>
+</tbody></table></div>
+<div class="callout callout-warn"><div class="callout-title">客觀提醒</div><p>後收型表面上「100% 投入」很吸引人，但如果客戶有任何可能在 6 年內需要動用這筆資金，解約費的損失會遠超過前收型的前置費用。</p></div>
+</div>
+
+<h2 id="s3">3. 費用結構（完全透明拆解）</h2>
+<div class="section-content">
+<p>投資型保單有 4 大費用，從業人員必須能逐項向客戶解釋清楚。</p>
+
+<h3 id="s3a">3.1 保險成本（危險保費）</h3>
+<p><strong>關鍵概念：自然費率</strong> — 年輕時便宜，年老時昂貴。每月從保單帳戶中自動扣除。</p>
+<p><strong>實際數字範例（男性，保額 500 萬元）：</strong></p>
+<div class="tw"><table>
+<thead><tr><th>年齡</th><th>每月危險保費（約）</th><th>每年合計（約）</th></tr></thead>
+<tbody>
+<tr><td>35 歲</td><td>486 元</td><td><span class="km">5,832 元</span></td></tr>
+<tr><td>38 歲</td><td>820 元</td><td><span class="km">9,840 元</span></td></tr>
+<tr><td>48 歲</td><td>約 2,500 元</td><td><span class="km">約 30,000 元</span></td></tr>
+<tr><td>58 歲</td><td>約 5,800 元</td><td><span class="km">約 70,000 元</span></td></tr>
+<tr><td>68 歲</td><td>約 13,000 元</td><td><span class="kn">約 156,000 元</span></td></tr>
+<tr><td>78 歲</td><td>約 31,800 元</td><td><span class="kn">約 382,000 元</span></td></tr>
+</tbody></table></div>
+<p><strong>生命表更新</strong>：台灣壽險業已更新至第六回合經驗生命表（2024 年起適用），新版死亡率降低，保險成本比舊版更便宜。</p>
+<div class="callout callout-warn"><div class="callout-title">客觀提醒</div><p>年輕時保險成本確實極低，但 60 歲以後會急遽上升。如果帳戶價值沒有同步成長，保險成本可能會快速侵蝕帳戶價值，甚至導致保單失效。</p></div>
+
+<h3 id="s3b">3.2 保單管理費</h3>
+<ul>
+<li><strong>收取方式</strong>：每月從帳戶價值中扣取固定比例或固定金額</li>
+<li><strong>常見費率</strong>：每月 100 元，或帳戶價值的 0.1%~0.15%/月</li>
+</ul>
+
+<h3 id="s3c">3.3 轉換作業費</h3>
+<ul>
+<li><strong>免費額度</strong>：每年 6~12 次</li>
+<li><strong>比較優勢</strong>：銀行轉換基金通常需支付約 1.5% 手續費，投資型保單轉換幾乎免費</li>
+</ul>
+
+<h3 id="s3d">3.4 解約費（後收型適用）</h3>
+<div class="tw"><table>
+<thead><tr><th>保單年度</th><th>解約/部分提領費用率</th></tr></thead>
+<tbody>
+<tr><td>第 1 年</td><td><span class="kn">9%</span></td></tr>
+<tr><td>第 2 年</td><td>8%</td></tr>
+<tr><td>第 3 年</td><td>7%</td></tr>
+<tr><td>第 4 年</td><td>6%</td></tr>
+<tr><td>第 5 年</td><td>5%</td></tr>
+<tr><td>第 6 年起</td><td><span class="kp">0%</span></td></tr>
+</tbody></table></div>
+<div class="callout callout-danger"><div class="callout-title">注意</div><p>部分提領也會收取解約費。不是只有完全解約才會被收費。</p></div>
+
+<h3 id="s3e">3.5 隱藏在基金內的費用</h3>
+<div class="tw"><table>
+<thead><tr><th>費用項目</th><th>費率範圍</th></tr></thead>
+<tbody>
+<tr><td>經理費（Management Fee）</td><td>0.5%~1.5%/年</td></tr>
+<tr><td>保管費（Custody Fee）</td><td>0.1%~0.3%/年</td></tr>
+<tr><td>類全委代操費</td><td>額外 0.5%~1.2%/年</td></tr>
+<tr><td>其他雜支</td><td>約 0.1%~0.3%/年</td></tr>
+</tbody></table></div>
+
+<h3 id="s3f">3.6 總費用率比較</h3>
+<p>以投入 100 萬、持有 10 年的後收型保單（35 歲男性、保額 500 萬）為例：</p>
+<div class="tw"><table>
+<thead><tr><th>費用項目</th><th>投資型保單</th><th>銀行基金</th><th>ETF（如 0050）</th></tr></thead>
+<tbody>
+<tr><td>申購手續費</td><td>0%</td><td>1.5%~3%</td><td>約 0.14%</td></tr>
+<tr><td>帳戶管理費/年</td><td>約 1,200 元</td><td>0</td><td>0</td></tr>
+<tr><td>保險成本/年</td><td>約 6,000~15,000 元</td><td>0</td><td>0</td></tr>
+<tr><td>基金內扣/年</td><td>約 1%~2%</td><td>約 1%~2%</td><td>約 0.3%~0.5%</td></tr>
+<tr><td>轉換標的費</td><td>免費（額度內）</td><td>約 1.5%</td><td>買賣手續費</td></tr>
+<tr><td>解約費</td><td>前 5 年 9%~5%</td><td>無</td><td>無</td></tr>
+<tr><td><strong>10 年累計總費用</strong></td><td><strong>7%~15%</strong></td><td><strong>10%~20%+</strong></td><td><strong class="kp">3%~5%</strong></td></tr>
+</tbody></table></div>
+<div class="callout callout-info"><div class="callout-title">客觀結論</div>
+<ul>
+<li>若客戶會頻繁轉換標的，投資型保單的免費轉換優勢可以拉近與銀行基金的差距</li>
+<li>若客戶只買了就放著不動（Buy & Hold），ETF 的總費用率遠低於投資型保單</li>
+<li>銷售教材宣稱凱基總費用率僅 7.2%，但這通常是在特定假設條件下的計算</li>
+</ul></div>
+</div>
+
+<h2 id="s4">4. 投資標的</h2>
+<div class="section-content">
+
+<h3 id="s4a">4.1 基金標的種類</h3>
+<div class="tw"><table>
+<thead><tr><th>基金類型</th><th>風險等級</th><th>特性</th><th>適合客群</th></tr></thead>
+<tbody>
+<tr><td>股票型基金</td><td>高</td><td>追求資本增值，波動大</td><td>年輕、風險承受度高</td></tr>
+<tr><td>債券型基金</td><td>中低</td><td>相對穩定，提供利息收入</td><td>保守型、退休族</td></tr>
+<tr><td>平衡型基金</td><td>中</td><td>股債混合，攻守兼備</td><td>一般投資者</td></tr>
+<tr><td>配息型基金</td><td>中</td><td>定期配發現金（可能含本金）</td><td>需要現金流的客戶</td></tr>
+<tr><td>貨幣型基金</td><td>低</td><td>報酬率低但波動極小</td><td>暫時停泊資金</td></tr>
+<tr><td>目標日期基金</td><td>隨時間調整</td><td>隨接近目標日期自動轉保守</td><td>退休規劃</td></tr>
+</tbody></table></div>
+
+<h3 id="s4b">4.2 全權委託帳戶（類全委）</h3>
+<div class="tw"><table>
+<thead><tr><th>項目</th><th>類全委保單</th><th>一般全權委託</th></tr></thead>
+<tbody>
+<tr><td>投資門檻</td><td>約 <span class="km">10~30 萬元</span></td><td>通常 <span class="km">500 萬元</span>以上</td></tr>
+<tr><td>操作主體</td><td>投信公司</td><td>投信/投顧公司</td></tr>
+<tr><td>額外費用</td><td>0.5%~1.2%/年</td><td>1%~2%/年</td></tr>
+<tr><td>保險保障</td><td>有</td><td>無</td></tr>
+<tr><td>適合族群</td><td>不想自己研究的保戶</td><td>高資產客戶</td></tr>
+</tbody></table></div>
+
+<h3 id="s4c">4.3 配息機制的真相</h3>
+<h4>「配息可能來自本金」— 水庫機制</h4>
+<div class="tw"><table>
+<thead><tr><th>情境</th><th>當月投資獲利</th><th>配息來源</th><th>水庫變化</th></tr></thead>
+<tbody>
+<tr><td>獲利好</td><td>賺 6 元</td><td>撥 3 元配息</td><td>+3 元存入水庫</td></tr>
+<tr><td>獲利普通</td><td>賺 3 元</td><td>撥 3 元配息</td><td>水庫不變</td></tr>
+<tr><td>獲利不佳</td><td>賺 2 元</td><td>撥 3 元配息</td><td>-1 元從水庫提領</td></tr>
+<tr><td>虧損</td><td>賺 0 元</td><td>撥 3 元配息</td><td>-3 元從水庫提領</td></tr>
+</tbody></table></div>
+<div class="callout callout-info"><div class="callout-title">銷售教材觀點</div><p>水庫機制是為了吸引資本並保護客戶長期穩定現金流，而非惡意啃食保費。</p></div>
+<div class="callout callout-danger"><div class="callout-title">批評者觀點</div><p>長期配息會降低複利效果。以 10% 年化報酬、30 年期計算，有配息帳戶最終價值約 <span class="km">625 萬</span>，不配息帳戶價值約 <span class="km">1,745 萬</span>，差距達 <span class="kn">2.79 倍</span>。</p></div>
+<p><strong>從業人員應有的客觀認知：</strong></p>
+<ol>
+<li>配息本身不是壞事——退休族需要現金流時，配息有實用價值</li>
+<li>累積階段（30~50 歲），不配息讓資金完全複利成長，長期效果遠勝配息型</li>
+<li>要定期檢查基金淨值是否持續下滑，如果是，應建議轉換標的</li>
+</ol>
+</div>
+
+<h2 id="s5">5. 稅務優勢與限制</h2>
+<div class="section-content">
+
+<h3 id="s5a">5.1 最低稅負制與海外所得</h3>
+<div class="code-block">基本所得額 = 綜合所得淨額 + 海外所得 + 特定保險給付 + ...
+基本稅額 = (基本所得額 - 750 萬) x 20%
+應繳稅額 = Max(基本稅額, 一般所得稅額) - 一般所得稅額</div>
+<p><strong>關鍵門檻：</strong></p>
+<ul>
+<li>海外所得 < <span class="km">100 萬</span>：免申報</li>
+<li>基本所得額 < <span class="km">750 萬</span>：免繳基本稅額</li>
+<li>超過 750 萬的部分：稅率 <span class="kp">20%</span></li>
+</ul>
+<div class="callout callout-warn"><div class="callout-title">注意（2010 年後的保單）</div><p>自 2010/1/1 起新投保的投資型保單，連結的境外投資標的有配息、贖回或轉換時，所產生的收益需計入海外所得申報。</p></div>
+
+<h3 id="s5b">5.2 vs ETF 的稅務差異</h3>
+<div class="tw"><table>
+<thead><tr><th>稅務項目</th><th>投資型保單（境外基金）</th><th>國內 ETF</th></tr></thead>
+<tbody>
+<tr><td>配息所得分類</td><td>海外所得</td><td>國內所得（5A / 54C）</td></tr>
+<tr><td>免稅門檻</td><td>海外所得 750 萬</td><td>股利 8.5% 抵減（上限 8 萬）</td></tr>
+<tr><td>二代健保</td><td>不適用</td><td>單次配息超過 2 萬元須繳 2.11%</td></tr>
+<tr><td>資本利得稅</td><td>計入海外所得（有 750 萬門檻）</td><td>目前免稅</td></tr>
+<tr><td>遺產稅</td><td>有指定受益人機制</td><td>全額計入遺產</td></tr>
+</tbody></table></div>
+<div class="callout callout-info"><div class="callout-title">客觀結論</div>
+<ul>
+<li>年所得較高、配息金額大的客戶，投資型保單稅務優勢明顯</li>
+<li>一般小額投資者，ETF 的稅務劣勢不大，反而總費用率更低</li>
+<li>不要用「節稅」作為銷售的唯一理由</li>
+</ul></div>
+
+<h3 id="s5c">5.3 遺產稅與資產傳承</h3>
+<ul>
+<li>指定受益人：身故保險金直接給付受益人，不必經過遺產分配程序</li>
+<li>死亡給付免稅額：2024 年起，每一受益人可享 <span class="km">3,740 萬元</span>免計入遺產</li>
+<li>身故保本機制：即使帳戶價值下跌，壽險平台身故給付仍以保險金額為底</li>
+</ul>
+<div class="callout callout-danger"><div class="callout-title">注意事項</div>
+<ul>
+<li>高齡投保、躉繳大額保費、短期內身故，國稅局可能依「實質課稅原則」追稅</li>
+<li>最高法院已有多起判例認定此類保單為「蓄意避稅」，應補稅加罰</li>
+</ul></div>
+</div>
+
+<h2 id="s6">6. 各家產品比較（2025-2026 年市場）</h2>
+<div class="section-content">
+
+<h3 id="s6a">6.1 主要產品定位</h3>
+<div class="tw"><table>
+<thead><tr><th>項目</th><th>凱基人壽</th><th>台新人壽</th><th>台灣人壽</th><th>法巴/安達</th></tr></thead>
+<tbody>
+<tr><td>主打優勢</td><td>費用最低</td><td>借款成數最高</td><td>可刷卡繳費、高保費加碼</td><td>穩健標準配備</td></tr>
+<tr><td>總費用率</td><td>約 <span class="kp">7.2%</span></td><td>較高</td><td>中等</td><td>中等</td></tr>
+<tr><td>保單借款成數</td><td>約 40%</td><td>最高可達 <span class="kp">60%</span></td><td>約 40%</td><td>標準 40%</td></tr>
+<tr><td>生命表</td><td>第六回合</td><td>第六回合</td><td>第六回合</td><td>第六回合</td></tr>
+<tr><td>特殊優惠</td><td>--</td><td>--</td><td>500 萬以上加碼 1 萬</td><td>--</td></tr>
+<tr><td>繳費方式</td><td>匯款/轉帳</td><td>匯款/轉帳</td><td>可刷信用卡</td><td>匯款/轉帳</td></tr>
+</tbody></table></div>
+
+<h3 id="s6b">6.2 保單借款比較</h3>
+<div class="tw"><table>
+<thead><tr><th>項目</th><th>說明</th></tr></thead>
+<tbody>
+<tr><td>借款成數</td><td>帳戶價值的 40%~60%</td></tr>
+<tr><td>借款利率</td><td>約 3%~6.9%（台幣）</td></tr>
+<tr><td>手續費</td><td>通常免收</td></tr>
+<tr><td>借款期間配息</td><td>不中斷</td></tr>
+<tr><td>用途限制</td><td>無</td></tr>
+</tbody></table></div>
+
+<h3 id="s6c">6.3 選擇建議</h3>
+<ul>
+<li><strong>最在意費用</strong>：凱基人壽（總費用率較低）</li>
+<li><strong>最在意資金靈活度</strong>：台新人壽（借款成數較高）</li>
+<li><strong>想用信用卡繳費賺回饋</strong>：台灣人壽</li>
+<li><strong>偏好穩健</strong>：法巴/安達（標準配備）</li>
+</ul>
+</div>
+
+<h2 id="s7">7. 適合 vs 不適合的客群</h2>
+<div class="section-content">
+
+<h3 id="s7a">7.1 適合購買的客群</h3>
+<div class="tw"><table>
+<thead><tr><th>客群特徵</th><th>原因</th></tr></thead>
+<tbody>
+<tr><td>有壽險需求 + 想參與投資</td><td>一張保單同時解決兩個需求</td></tr>
+<tr><td>年所得較高、有海外投資需求</td><td>750 萬免稅額提供稅務優勢</td></tr>
+<tr><td>需要資產傳承規劃</td><td>指定受益人 + 身故保本機制</td></tr>
+<tr><td>有房貸負擔、需要被動現金流</td><td>配息可抵銷部分房貸壓力</td></tr>
+<tr><td>不想自己研究投資</td><td>類全委可代操</td></tr>
+<tr><td>有大額資金、想分散配置</td><td>保單借款功能提供靈活度</td></tr>
+<tr><td>投資紀律較差</td><td>保單架構形成「強迫長期持有」的約束</td></tr>
+</tbody></table></div>
+
+<h3 id="s7b">7.2 不適合購買的客群</h3>
+<div class="tw"><table>
+<thead><tr><th>客群特徵</th><th>原因</th><th>更好的替代方案</th></tr></thead>
+<tbody>
+<tr><td>小額投資（月繳 3,000 以下）</td><td>保險成本占比太高</td><td>定期定額買 ETF</td></tr>
+<tr><td>短期需動用資金（< 6 年）</td><td>解約費損失慘重</td><td>銀行定存、貨幣基金</td></tr>
+<tr><td>已有足夠壽險保障</td><td>多付保險成本無意義</td><td>直接買基金或 ETF</td></tr>
+<tr><td>追求最低成本長期投資</td><td>ETF 費率遠低於保單</td><td>直接買 ETF</td></tr>
+<tr><td>年齡 > 60 歲且保額高</td><td>保險成本急遽上升</td><td>降低保額或選年金平台</td></tr>
+<tr><td>完全不理解投資風險</td><td>可能恐慌解約</td><td>先建立投資觀念</td></tr>
+<tr><td>年所得不高、無稅務需求</td><td>稅務優勢用不到</td><td>ETF + 定期壽險</td></tr>
+</tbody></table></div>
+
+<h3 id="s7c">7.3 常見銷售話術 vs 客觀事實</h3>
+<div class="tw"><table>
+<thead><tr><th>銷售話術</th><th>客觀事實</th></tr></thead>
+<tbody>
+<tr><td>「保險 + 投資一舉兩得」</td><td>確實整合了兩個功能，但各自效率都不如專門工具</td></tr>
+<tr><td>「費用比銀行基金便宜」</td><td>轉換標的確實便宜，但加上保險成本後長期總費用通常更高</td></tr>
+<tr><td>「配息穩穩領，像存股一樣」</td><td>配息不保證，可能來自本金，與存股性質不同</td></tr>
+<tr><td>「節稅效果超好」</td><td>對高所得者有利，一般人年獲利很難超過 750 萬</td></tr>
+<tr><td>「可以傳承免遺產稅」</td><td>有條件限制，可能被追稅</td></tr>
+<tr><td>「100% 投入不浪費」</td><td>前 5 年解約要收 5%~9%</td></tr>
+<tr><td>「淨值下跌沒關係，身故保本」</td><td>只有「死了才保本」，活著解約虧損自負</td></tr>
+</tbody></table></div>
+</div>
+
+<h2 id="s8">8. 銷售實務</h2>
+<div class="section-content">
+
+<h3 id="s8a">8.1 KYC 重點</h3>
+<h4>財務狀況</h4>
+<ul class="cl">
+<li>年收入多少？穩定性如何？</li>
+<li>現有存款/投資部位？</li>
+<li>每月可自由運用的閒置資金？</li>
+<li>有無負債（房貸、車貸、信貸）？</li>
+<li>緊急預備金是否充足（至少 6 個月生活費）？</li>
+</ul>
+<h4>保障需求</h4>
+<ul class="cl">
+<li>現有壽險保障額度？是否足夠？</li>
+<li>家庭責任（配偶、子女、父母扶養）？</li>
+<li>有無其他保障缺口（醫療、長照、失能）？</li>
+</ul>
+<h4>投資經驗與風險承受度</h4>
+<ul class="cl">
+<li>過去有買過基金、股票、ETF 嗎？</li>
+<li>能接受帳戶價值下跌多少不會恐慌？</li>
+<li>投資目的（退休、子女教育、資產增值、現金流）？</li>
+<li>預計持有多久？</li>
+</ul>
+<h4>稅務與傳承</h4>
+<ul class="cl">
+<li>年所得稅率級距？</li>
+<li>有無海外所得？</li>
+<li>有無資產傳承需求？</li>
+<li>有無指定受益人的考量？</li>
+</ul>
+
+<h3 id="s8b">8.2 客戶常見問題與客觀回應</h3>
+
+<h4>Q1:「投資型保單是不是騙人的？」</h4>
+<div class="callout callout-info"><div class="callout-title">客觀回應</div>
+<p>投資型保單是合法金融商品。負面評價主要來自：(1) 被不當銷售 (2) 費用認知不足 (3) 選錯標的。問題不在保單外殼，而在「是否適合你」和「選了什麼標的」。</p></div>
+
+<h4>Q2:「直接買 ETF 不是更便宜？」</h4>
+<div class="callout callout-info"><div class="callout-title">客觀回應</div>
+<p>純比投資成本，ETF 確實更便宜。但投資型保單還提供壽險保障、免費轉換標的、稅務優勢、資產傳承功能。如果不需要這些附加功能，ETF 是更好的選擇。</p></div>
+
+<h4>Q3:「配息來自本金，錢不是被吃掉了？」</h4>
+<div class="callout callout-info"><div class="callout-title">客觀回應</div>
+<p>法規定義的「本金」包含保費 + 過去投資收益。配息機制類似水庫。但如果基金淨值長期低於發行價，代表配息確實在消耗原始投入，應考慮轉換標的。</p></div>
+
+<h4>Q4:「要綁很久，急用錢怎麼辦？」</h4>
+<div class="callout callout-info"><div class="callout-title">客觀回應</div>
+<p>有兩個應急管道：(1) 保單借款（可借 40%~60%，利率低於信貸）(2) 部分提領。但如果 6 年內可能需要動用，建議考慮前收型或減少投入金額。</p></div>
+
+<h4>Q5:「之前買的投資型保單虧很多怎麼辦？」</h4>
+<div class="callout callout-info"><div class="callout-title">客觀回應</div>
+<p>先別急著解約。先診斷：(1) 是保單問題還是標的問題？(2) 適用哪版生命表？(3) 帳戶價值是否足以支撐保險成本？很多時候轉換標的比解約更划算。</p></div>
+
+<h3 id="s8c">8.3 如何判斷適不適合</h3>
+<div class="callout callout-success"><div class="callout-title">適合推薦的信號</div>
+<ul>
+<li>已有充足的緊急預備金和基本保障</li>
+<li>閒置資金可投入 6 年以上不會動用</li>
+<li>有明確的投資/傳承/節稅需求</li>
+<li>理解「盈虧自負」的概念</li>
+<li>風險承受度符合所選標的</li>
+</ul></div>
+<div class="callout callout-danger"><div class="callout-title">不應推薦的信號</div>
+<ul>
+<li>把投資型保單當「保本」、「保證收益」的商品</li>
+<li>資金可能短期內需要動用</li>
+<li>沒有其他存款或緊急預備金</li>
+<li>完全不理解市場波動</li>
+<li>只是被「配息」或「節稅」的單一訴求吸引</li>
+</ul></div>
+<p><strong>從業人員的職業道德底線：</strong>不要為了業績把不適合的商品賣給客戶。誠實告訴不適合的客戶「你直接買 ETF 更適合」，反而會建立專業形象。</p>
+</div>
+
+<h2 id="s9">附錄：關鍵名詞速查</h2>
+<div class="section-content">
+<div class="tw"><table>
+<thead><tr><th>名詞</th><th>解釋</th></tr></thead>
+<tbody>
+<tr><td>分離帳戶</td><td>保戶的投資資金獨立於保險公司的一般帳戶，受到法律保護</td></tr>
+<tr><td>自然費率</td><td>保險成本隨年齡增加而遞增的計費方式（相對於平準費率）</td></tr>
+<tr><td>身故保本</td><td>壽險平台的身故給付至少等於保險金額，不會低於帳戶價值</td></tr>
+<tr><td>類全委</td><td>保險公司委託投信公司代為操作投資的機制</td></tr>
+<tr><td>水庫機制</td><td>配息基金將多餘收益存入未分配收益帳戶，不足時再從中提取</td></tr>
+<tr><td>第六回合生命表</td><td>2024 年起適用的最新經驗生命表，使保險成本下降</td></tr>
+<tr><td>最低稅負制</td><td>將海外所得納入基本所得額計算，扣除 750 萬免稅額後課 20%</td></tr>
+<tr><td>5A / 54C</td><td>稅務申報代碼，5A 為營利所得，54C 為其他所得</td></tr>
+<tr><td>二代健保補充保費</td><td>單次配息超過 2 萬元時，須額外繳納 2.11%</td></tr>
+<tr><td>實質課稅原則</td><td>國稅局可依交易實質而非形式判定是否課稅</td></tr>
+</tbody></table></div>
+<div class="bq"><strong>免責聲明：</strong>本文件僅供從業人員建立知識框架之用，不構成任何投資或稅務建議。具體商品條款、費率及法規請以各保險公司最新公告及主管機關規定為準。</div>
+</div>
+
+</div><!-- card -->
+<div class="disclaimer">最後更新：2026 年 3 月 23 日</div>
+</main>
+</div>
+
+<button class="sidebar-toggle" id="sidebarToggle" aria-label="目錄">&#9776;</button>
+
+<script>
+(function(){
+'use strict';
+var tocList=document.getElementById('tocList'),sidebar=document.getElementById('sidebar');
+function buildTOC(){
+tocList.innerHTML='';
+document.querySelectorAll('.card h2[id],.card h3[id]').forEach(function(h){
+var li=document.createElement('li');
+if(h.tagName==='H3')li.classList.add('toc-h3');
+var a=document.createElement('a');a.href='#'+h.id;a.textContent=h.textContent;
+a.addEventListener('click',function(){
+var sc=h.nextElementSibling;if(sc&&sc.classList.contains('section-content')&&sc.classList.contains('collapsed'))h.click();
+var parent=h.closest('.section-content');if(parent&&parent.classList.contains('collapsed'))parent.previousElementSibling.click();
+});li.appendChild(a);tocList.appendChild(li);});}
+buildTOC();
+document.querySelectorAll('.card h2[id]').forEach(function(h2){
+h2.addEventListener('click',function(){
+var c=this.nextElementSibling;if(!c||!c.classList.contains('section-content'))return;
+if(c.classList.contains('collapsed')){c.classList.remove('collapsed');c.style.maxHeight=c.scrollHeight+'px';this.classList.remove('collapsed');setTimeout(function(){c.style.maxHeight='none'},310)}
+else{c.style.maxHeight=c.scrollHeight+'px';requestAnimationFrame(function(){c.classList.add('collapsed');c.style.maxHeight='0px';h2.classList.add('collapsed')})}});});
+var spyTick=false;
+window.addEventListener('scroll',function(){if(!spyTick){requestAnimationFrame(function(){
+var links=tocList.querySelectorAll('a'),hs=document.querySelectorAll('.card h2[id],.card h3[id]'),cur='';
+hs.forEach(function(h){if(h.getBoundingClientRect().top<=100)cur=h.id});
+links.forEach(function(a){a.classList.toggle('active',a.getAttribute('href')==='#'+cur)});spyTick=false});spyTick=true}});
+var si=document.getElementById('searchInput'),sc=document.getElementById('searchCount'),st;
+function clearHL(){document.querySelectorAll('.search-highlight').forEach(function(el){var p=el.parentNode;p.replaceChild(document.createTextNode(el.textContent),el);p.normalize()})}
+function hl(node,term){if(!term)return 0;var count=0;
+if(node.nodeType===3){var idx=node.textContent.toLowerCase().indexOf(term.toLowerCase());if(idx>=0){var span=document.createElement('span');span.className='search-highlight';var mid=node.splitText(idx);mid.splitText(term.length);span.appendChild(mid.cloneNode(true));mid.parentNode.replaceChild(span,mid);count=1}}
+else if(node.nodeType===1&&node.childNodes.length&&!/(script|style)/i.test(node.tagName)&&!(node.classList&&node.classList.contains('search-highlight'))){for(var i=0;i<node.childNodes.length;i++)count+=hl(node.childNodes[i],term)}return count}
+si.addEventListener('input',function(){clearTimeout(st);st=setTimeout(function(){clearHL();var term=si.value.trim();if(term.length<2){sc.textContent='';return}
+document.querySelectorAll('.section-content.collapsed').forEach(function(s){s.classList.remove('collapsed');s.style.maxHeight='none';var h=s.previousElementSibling;if(h)h.classList.remove('collapsed')});
+var total=0;document.querySelectorAll('.card').forEach(function(card){total+=hl(card,term)});sc.textContent=total>0?total+' 筆':'0 筆';
+var first=document.querySelector('.search-highlight');if(first)first.scrollIntoView({behavior:'smooth',block:'center'})},300)});
+document.getElementById('sidebarToggle').addEventListener('click',function(){sidebar.classList.toggle('mobile-show')});
+document.addEventListener('click',function(e){if(!sidebar.contains(e.target)&&e.target.id!=='sidebarToggle')sidebar.classList.remove('mobile-show')});
+})();
+</script>
+</body>
+</html>
