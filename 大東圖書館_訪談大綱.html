@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>大東藝術圖書館 — 訪談大綱</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Microsoft JhengHei","PingFang TC",sans-serif;
+  background:#f5f3f0;
+  color:#2a2a2a;
+  line-height:1.8;
+  font-size:17px;
+  min-height:100vh;
+  padding-bottom:60px;
+}
+.top-bar{
+  position:fixed;top:0;left:0;right:0;z-index:1000;
+  background:linear-gradient(135deg,#0f3d3d,#1a5a5a);
+  box-shadow:0 2px 12px rgba(0,0,0,.25);
+  display:flex;align-items:center;justify-content:center;
+  padding:0 20px;
+}
+.top-bar h1{color:#fff;font-size:17px;font-weight:700;padding:14px 0;letter-spacing:.5px}
+.container{max-width:680px;margin:72px auto 0;padding:0 16px}
+
+/* 活動資訊卡 */
+.event-info{
+  background:#fff;border-radius:14px;
+  box-shadow:0 2px 8px rgba(0,0,0,.06);
+  padding:20px 22px;margin-bottom:24px;
+  border-left:5px solid #1a5a5a;
+}
+.event-info h2{font-size:15px;color:#1a5a5a;margin-bottom:10px;font-weight:700}
+.event-info dl{display:grid;grid-template-columns:auto 1fr;gap:4px 12px}
+.event-info dt{font-weight:600;color:#555;font-size:15px;white-space:nowrap}
+.event-info dd{color:#2a2a2a;font-size:15px}
+
+/* 訪談區塊 */
+.section{
+  background:#fff;border-radius:14px;
+  box-shadow:0 2px 8px rgba(0,0,0,.06);
+  margin-bottom:16px;overflow:hidden;
+}
+.section-header{
+  display:flex;align-items:center;gap:10px;
+  padding:16px 20px;cursor:pointer;
+  user-select:none;-webkit-user-select:none;
+  border-bottom:1px solid #eee;
+  transition:background .15s;
+}
+.section-header:hover{background:#faf8f5}
+.section-header:active{background:#f0ece6}
+.section-icon{
+  width:36px;height:36px;border-radius:10px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:18px;flex-shrink:0;
+}
+.section-header h3{flex:1;font-size:16px;font-weight:700;color:#1a3a3a}
+.section-toggle{
+  width:28px;height:28px;display:flex;align-items:center;justify-content:center;
+  border-radius:50%;background:#f0ece6;transition:transform .25s;
+  flex-shrink:0;
+}
+.section-toggle svg{width:14px;height:14px;fill:#555}
+.section.collapsed .section-toggle{transform:rotate(-90deg)}
+.section-body{padding:4px 20px 16px}
+.section.collapsed .section-body{display:none}
+
+/* 問題列表 */
+.question{
+  display:flex;align-items:flex-start;gap:12px;
+  padding:10px 0;border-bottom:1px solid #f0ece6;
+}
+.question:last-of-type{border-bottom:none}
+.question input[type="checkbox"]{
+  margin-top:5px;width:22px;height:22px;flex-shrink:0;
+  accent-color:#1a5a5a;cursor:pointer;
+}
+.question label{
+  font-size:17px;color:#2a2a2a;cursor:pointer;
+  line-height:1.7;flex:1;
+}
+.question input:checked + label{
+  color:#999;text-decoration:line-through;
+}
+.q-num{
+  display:inline-flex;align-items:center;justify-content:center;
+  width:22px;height:22px;border-radius:6px;
+  background:#e8f0ef;color:#1a5a5a;
+  font-size:12px;font-weight:700;margin-right:6px;
+  flex-shrink:0;vertical-align:middle;
+}
+
+/* 筆記區 */
+.notes-area{
+  margin-top:12px;padding-top:12px;border-top:1px dashed #ddd;
+}
+.notes-area label{font-size:13px;color:#888;display:block;margin-bottom:6px}
+.notes-area textarea{
+  width:100%;min-height:70px;border:1px solid #ddd;border-radius:10px;
+  padding:12px 14px;font-size:16px;font-family:inherit;
+  background:#faf8f5;color:#2a2a2a;resize:vertical;
+  line-height:1.6;
+}
+.notes-area textarea:focus{outline:none;border-color:#1a5a5a;background:#fff}
+
+/* 色塊 */
+.icon-teacher{background:#e8f0ef;color:#1a5a5a}
+.icon-parent{background:#fef3e2;color:#c77b1a}
+.icon-student{background:#e8f2e8;color:#2a7a2a}
+.icon-library{background:#eae8f5;color:#4a3a8a}
+.icon-closing{background:#fce8e8;color:#a03030}
+
+.footer{text-align:center;padding:24px 0;color:#aaa;font-size:12px}
+
+@media(max-width:600px){
+  .container{padding:0 10px;margin-top:62px}
+  .section-header{padding:14px 16px}
+  .section-body{padding:4px 16px 14px}
+  .event-info{padding:16px 18px}
+  body{font-size:16px}
+}
+</style>
+</head>
+<body>
+
+<div class="top-bar">
+  <h1>大東藝術圖書館 — 訪談大綱</h1>
+</div>
+
+<div class="container">
+
+  <!-- 活動資訊 -->
+  <div class="event-info">
+    <h2>活動資訊</h2>
+    <dl>
+      <dt>日期</dt><dd>2026/3/25（三）13:30-16:30</dd>
+      <dt>地點</dt><dd>大東藝術圖書館</dd>
+      <dt>活動</dt><dd>打開書的奇幻旅程 — 創意裝幀小書</dd>
+      <dt>講師</dt><dd>黃錦仁</dd>
+      <dt>成片</dt><dd>3-5 分鐘活動紀錄影片（宣傳+存檔）</dd>
+    </dl>
+  </div>
+
+  <!-- Section 1: 講師 -->
+  <div class="section" data-section="teacher">
+    <div class="section-header" onclick="toggleSection(this)">
+      <div class="section-icon icon-teacher">&#128218;</div>
+      <h3>講師（黃錦仁老師）</h3>
+      <div class="section-toggle"><svg viewBox="0 0 16 16"><path d="M4 6l4 4 4-4"/></svg></div>
+    </div>
+    <div class="section-body">
+      <div class="question">
+        <input type="checkbox" id="t1" onchange="saveChecks()">
+        <label for="t1"><span class="q-num">1</span>這次「打開書的奇幻旅程」活動想帶給學生什麼體驗？</label>
+      </div>
+      <div class="question">
+        <input type="checkbox" id="t2" onchange="saveChecks()">
+        <label for="t2"><span class="q-num">2</span>為什麼選擇「手作書」作為切入點來認識圖書館？</label>
+      </div>
+      <div class="question">
+        <input type="checkbox" id="t3" onchange="saveChecks()">
+        <label for="t3"><span class="q-num">3</span>今天看到學生的反應，有什麼讓您印象深刻的？</label>
+      </div>
+      <div class="question">
+        <input type="checkbox" id="t4" onchange="saveChecks()">
+        <label for="t4"><span class="q-num">4</span>您希望學生離開圖書館後，會記住什麼？</label>
+      </div>
+      <div class="notes-area">
+        <label>現場筆記</label>
+        <textarea data-note="teacher" oninput="saveNotes(this)" placeholder="記錄重點、觀察、想法..."></textarea>
+      </div>
+    </div>
+  </div>
+
+  <!-- Section 2: 家長 -->
+  <div class="section" data-section="parent">
+    <div class="section-header" onclick="toggleSection(this)">
+      <div class="section-icon icon-parent">&#128106;</div>
+      <h3>家長</h3>
+      <div class="section-toggle"><svg viewBox="0 0 16 16"><path d="M4 6l4 4 4-4"/></svg></div>
+    </div>
+    <div class="section-body">
+      <div class="question">
+        <input type="checkbox" id="p1" onchange="saveChecks()">
+        <label for="p1"><span class="q-num">1</span>今天為什麼帶孩子來參加這個活動？</label>
+      </div>
+      <div class="question">
+        <input type="checkbox" id="p2" onchange="saveChecks()">
+        <label for="p2"><span class="q-num">2</span>看到孩子在做手作書的時候，有什麼感覺？</label>
+      </div>
+      <div class="question">
+        <input type="checkbox" id="p3" onchange="saveChecks()">
+        <label for="p3"><span class="q-num">3</span>平常會帶孩子來圖書館嗎？今天的體驗跟平常有什麼不同？</label>
+      </div>
+      <div class="question">
+        <input type="checkbox" id="p4" onchange="saveChecks()">
+        <label for="p4"><span class="q-num">4</span>覺得這類活動對孩子有什麼幫助？</label>
+      </div>
+      <div class="notes-area">
+        <label>現場筆記</label>
+        <textarea data-note="parent" oninput="saveNotes(this)" placeholder="記錄重點、觀察、想法..."></textarea>
+      </div>
+    </div>
+  </div>
+
+  <!-- Section 3: 學生 -->
+  <div class="section" data-section="student">
+    <div class="section-header" onclick="toggleSection(this)">
+      <div class="section-icon icon-student">&#127891;</div>
+      <h3>學生（簡短活潑）</h3>
+      <div class="section-toggle"><svg viewBox="0 0 16 16"><path d="M4 6l4 4 4-4"/></svg></div>
+    </div>
+    <div class="section-body">
+      <div class="question">
+        <input type="checkbox" id="s1" onchange="saveChecks()">
+        <label for="s1"><span class="q-num">1</span>今天最好玩的是什麼？</label>
+      </div>
+      <div class="question">
+        <input type="checkbox" id="s2" onchange="saveChecks()">
+        <label for="s2"><span class="q-num">2</span>你做的小書是關於什麼的？可以介紹一下嗎？</label>
+      </div>
+      <div class="question">
+        <input type="checkbox" id="s3" onchange="saveChecks()">
+        <label for="s3"><span class="q-num">3</span>以後還想來圖書館嗎？為什麼？</label>
+      </div>
+      <div class="notes-area">
+        <label>現場筆記</label>
+        <textarea data-note="student" oninput="saveNotes(this)" placeholder="記錄重點、觀察、想法..."></textarea>
+      </div>
+    </div>
+  </div>
+
+  <!-- Section 4: 館方 -->
+  <div class="section" data-section="library">
+    <div class="section-header" onclick="toggleSection(this)">
+      <div class="section-icon icon-library">&#127963;</div>
+      <h3>館方／圖書館代表</h3>
+      <div class="section-toggle"><svg viewBox="0 0 16 16"><path d="M4 6l4 4 4-4"/></svg></div>
+    </div>
+    <div class="section-body">
+      <div class="question">
+        <input type="checkbox" id="l1" onchange="saveChecks()">
+        <label for="l1"><span class="q-num">1</span>圖書館辦這類教師增能研習活動的初衷是什麼？</label>
+      </div>
+      <div class="question">
+        <input type="checkbox" id="l2" onchange="saveChecks()">
+        <label for="l2"><span class="q-num">2</span>大東藝術圖書館在推廣閱讀上，有什麼特別的方向或理念？</label>
+      </div>
+      <div class="question">
+        <input type="checkbox" id="l3" onchange="saveChecks()">
+        <label for="l3"><span class="q-num">3</span>未來還會有類似的活動嗎？希望帶動什麼樣的改變？</label>
+      </div>
+      <div class="notes-area">
+        <label>現場筆記</label>
+        <textarea data-note="library" oninput="saveNotes(this)" placeholder="記錄重點、觀察、想法..."></textarea>
+      </div>
+    </div>
+  </div>
+
+  <!-- Section 5: 收尾萬能問題 -->
+  <div class="section" data-section="closing">
+    <div class="section-header" onclick="toggleSection(this)">
+      <div class="section-icon icon-closing">&#127775;</div>
+      <h3>收尾萬能問題</h3>
+      <div class="section-toggle"><svg viewBox="0 0 16 16"><path d="M4 6l4 4 4-4"/></svg></div>
+    </div>
+    <div class="section-body">
+      <div class="question">
+        <input type="checkbox" id="c1" onchange="saveChecks()">
+        <label for="c1"><span class="q-num">1</span>用一句話形容今天的體驗？</label>
+      </div>
+      <div class="question">
+        <input type="checkbox" id="c2" onchange="saveChecks()">
+        <label for="c2"><span class="q-num">2</span>如果可以把今天學到的一件事告訴朋友，你會說什麼？</label>
+      </div>
+      <div class="notes-area">
+        <label>現場筆記</label>
+        <textarea data-note="closing" oninput="saveNotes(this)" placeholder="記錄重點、觀察、想法..."></textarea>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">大東藝術圖書館 活動紀錄 — 2026-03-25</div>
+</div>
+
+<script>
+// 展開/收合
+function toggleSection(header) {
+  header.parentElement.classList.toggle('collapsed');
+}
+
+// Checkbox 持久化
+const CHECKS_KEY = 'dadong_interview_checks';
+const NOTES_KEY = 'dadong_interview_notes';
+
+function saveChecks() {
+  const checks = {};
+  document.querySelectorAll('.question input[type="checkbox"]').forEach(cb => {
+    checks[cb.id] = cb.checked;
+  });
+  localStorage.setItem(CHECKS_KEY, JSON.stringify(checks));
+}
+
+function loadChecks() {
+  try {
+    const data = JSON.parse(localStorage.getItem(CHECKS_KEY));
+    if (!data) return;
+    Object.entries(data).forEach(([id, val]) => {
+      const el = document.getElementById(id);
+      if (el) el.checked = val;
+    });
+  } catch(e) {}
+}
+
+// Notes 持久化
+function saveNotes(textarea) {
+  const notes = {};
+  document.querySelectorAll('.notes-area textarea').forEach(ta => {
+    notes[ta.dataset.note] = ta.value;
+  });
+  localStorage.setItem(NOTES_KEY, JSON.stringify(notes));
+}
+
+function loadNotes() {
+  try {
+    const data = JSON.parse(localStorage.getItem(NOTES_KEY));
+    if (!data) return;
+    document.querySelectorAll('.notes-area textarea').forEach(ta => {
+      if (data[ta.dataset.note]) ta.value = data[ta.dataset.note];
+    });
+  } catch(e) {}
+}
+
+// 初始載入
+loadChecks();
+loadNotes();
+</script>
+
+</body>
+</html>
