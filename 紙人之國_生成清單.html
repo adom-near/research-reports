@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>紙人之國 — AI 生成清單</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Microsoft JhengHei","PingFang TC",sans-serif;background:#0a0a0f;color:#c8c8d0;line-height:1.7;font-size:15px;min-height:100vh}
+
+.top-bar{position:fixed;top:0;left:0;right:0;z-index:1000;background:linear-gradient(135deg,#0a0a0f,#1a1a2e);box-shadow:0 2px 12px rgba(0,0,0,.5);padding:12px 24px;display:flex;align-items:center;justify-content:space-between}
+.top-bar h1{color:#e8e8f0;font-size:18px;font-weight:700}
+.progress-badge{background:#2a1a1a;color:#cc4444;font-size:12px;padding:4px 12px;border-radius:20px;border:1px solid #3a2020}
+
+.container{max-width:900px;margin:72px auto 40px;padding:0 16px}
+
+.act-header{margin-top:36px;margin-bottom:16px;padding:12px 16px;background:linear-gradient(90deg,#1a1020,transparent);border-left:3px solid #8b4513;border-radius:4px}
+.act-title{font-size:16px;font-weight:700;color:#d4a574}
+.act-desc{font-size:12px;color:#7a6a5a;margin-top:2px}
+
+.shot-card{background:#12121a;border:1px solid #1e1e2e;border-radius:12px;margin-bottom:16px;overflow:hidden;transition:border-color .2s}
+.shot-card.done{opacity:.6}
+.shot-card.done .shot-header{background:#0a1a0a}
+.shot-card:hover{border-color:#2a2a3e}
+
+.shot-header{display:flex;align-items:center;gap:12px;padding:14px 16px;background:#16161f;cursor:pointer;user-select:none}
+.shot-checkbox{width:22px;height:22px;border:2px solid #3a3a4e;border-radius:6px;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .2s;cursor:pointer}
+.shot-checkbox.checked{background:#2a4a2a;border-color:#4a8a4a}
+.shot-checkbox.checked::after{content:'\2713';color:#6aba6a;font-size:14px;font-weight:700}
+.shot-num{font-size:13px;font-weight:700;color:#8b4513;background:#1a1410;padding:2px 8px;border-radius:4px;flex-shrink:0}
+.shot-name{font-size:15px;font-weight:600;color:#e0e0ea;flex:1}
+.shot-time{font-size:12px;color:#5a5a6e;flex-shrink:0}
+.shot-toggle{color:#4a4a5e;font-size:18px;transition:transform .2s;flex-shrink:0}
+.shot-toggle.open{transform:rotate(180deg)}
+
+.shot-body{display:none;padding:0 16px 16px}
+.shot-body.open{display:block}
+
+.shot-desc{font-size:13px;color:#8a8a9a;padding:12px;background:#0e0e16;border-radius:8px;margin-bottom:12px;border-left:2px solid #2a2a3e}
+
+.prompt-section{margin-bottom:12px}
+.prompt-label{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px}
+.prompt-tool{font-size:12px;font-weight:700;color:#6a8aaa;background:#0e1620;padding:3px 10px;border-radius:4px}
+.prompt-tool.grok{color:#aa6a8a;background:#200e16}
+.copy-btn{font-size:11px;color:#5a5a6e;background:#1a1a24;border:1px solid #2a2a3e;border-radius:4px;padding:3px 10px;cursor:pointer;transition:all .2s}
+.copy-btn:hover{background:#2a2a3e;color:#aaa}
+.copy-btn.copied{background:#1a2a1a;color:#6a8a6a;border-color:#2a3a2a}
+
+.prompt-text{font-size:13px;color:#9a9aaa;background:#08080e;border:1px solid #1a1a24;border-radius:8px;padding:12px;font-family:"SF Mono",Monaco,monospace;line-height:1.6;word-break:break-word}
+
+.shot-note{font-size:12px;color:#6a5a4a;background:#14120e;border-radius:6px;padding:10px 12px;margin-top:8px;border-left:2px solid #3a2a1a}
+.shot-note::before{content:'TIP';font-size:10px;font-weight:700;color:#8b6530;margin-right:6px}
+
+.shot-meta{display:flex;gap:8px;margin-top:8px;flex-wrap:wrap}
+.meta-tag{font-size:11px;padding:2px 8px;border-radius:4px;background:#1a1a24;color:#6a6a7a}
+.meta-tag.core{background:#2a1a1a;color:#aa5555}
+.meta-tag.optional{background:#1a1a20;color:#5a5a7a}
+.meta-tag.post{background:#1a1a10;color:#7a7a4a}
+
+.footer{text-align:center;padding:32px 0;color:#3a3a4a;font-size:12px}
+
+@media(max-width:600px){
+  .container{padding:0 8px;margin-top:64px}
+  .shot-header{padding:12px}
+  .prompt-text{font-size:12px;padding:10px}
+  .top-bar h1{font-size:16px}
+}
+</style>
+</head>
+<body>
+
+<div class="top-bar">
+  <h1>紙人之國 — AI 生成清單</h1>
+  <div class="progress-badge" id="progressBadge">0 / 15</div>
+</div>
+
+<div class="container">
+
+<!-- 第一幕 -->
+<div class="act-header">
+  <div class="act-title">第一幕：世界觀建立</div>
+  <div class="act-desc">0:00 - 0:15 / 緩慢、沉靜、神秘</div>
+</div>
+
+<div class="shot-card" data-shot="1">
+  <div class="shot-header" onclick="toggleShot(this)">
+    <div class="shot-checkbox" onclick="event.stopPropagation();toggleCheck(this)"></div>
+    <span class="shot-num">S01</span>
+    <span class="shot-name">古籍開篇</span>
+    <span class="shot-time">0:00-0:04</span>
+    <span class="shot-toggle">&#9660;</span>
+  </div>
+  <div class="shot-body">
+    <div class="shot-desc">純黑幕，「《靜世錄・卷七》」以古籍燙金字體緩慢淡入，字體邊緣有墨暈擴散效果，停留片刻後淡出</div>
+    <div class="prompt-section">
+      <div class="prompt-label"><span class="prompt-tool">Sora</span><button class="copy-btn" onclick="copyPrompt(this)">複製</button></div>
+      <div class="prompt-text">Black screen, ancient Chinese gold calligraphy text fading in with ink bleed effect, text reads classical Chinese characters, dark background, subtle paper texture overlay, cinematic, mysterious atmosphere, 4K</div>
+    </div>
+    <div class="prompt-section">
+      <div class="prompt-label"><span class="prompt-tool grok">Grok</span><button class="copy-btn" onclick="copyPrompt(this)">複製</button></div>
+      <div class="prompt-text">A pure black background with ancient Chinese calligraphy appearing in gold ink, ink bleeding outward from each stroke, old manuscript style, paper grain texture visible, atmospheric and cinematic, dark moody tone</div>
+    </div>
+    <div class="shot-note">字卡可後製合成，此段也可用 AI 生成帶墨暈的動態背景再疊字</div>
+    <div class="shot-meta"><span class="meta-tag optional">可後製替代</span></div>
+  </div>
+</div>
+
+<div class="shot-card" data-shot="2">
+  <div class="shot-header" onclick="toggleShot(this)">
+    <div class="shot-checkbox" onclick="event.stopPropagation();toggleCheck(this)"></div>
+    <span class="shot-num">S02</span>
+    <span class="shot-name">霧中城門</span>
+    <span class="shot-time">0:04-0:08</span>
+    <span class="shot-toggle">&#9660;</span>
+  </div>
+  <div class="shot-body">
+    <div class="shot-desc">大量水墨霧氣緩緩流動，霧氣中逐漸浮現一座巨大的古代城門輪廓，城門半開，門內一片漆黑，紅燈籠光隱約從門縫透出</div>
+    <div class="prompt-section">
+      <div class="prompt-label"><span class="prompt-tool">Sora</span><button class="copy-btn" onclick="copyPrompt(this)">複製</button></div>
+      <div class="prompt-text">Massive ancient Chinese city gate emerging from thick ink-wash fog, half-open gate revealing darkness inside, faint red lantern glow seeping through the gap, ink painting style, dark fantasy, cinematic lighting, mysterious fog, dramatic shadows, ancient Chinese architecture, slow camera push forward, 4K cinematic</div>
+    </div>
+    <div class="prompt-section">
+      <div class="prompt-label"><span class="prompt-tool grok">Grok</span><button class="copy-btn" onclick="copyPrompt(this)">複製</button></div>
+      <div class="prompt-text">An enormous ancient Chinese stone city gate shrouded in swirling ink-like fog, the gate is partially open with darkness beyond, dim red lantern light glowing from within, traditional ink wash painting aesthetic, dark moody atmosphere, cinematic wide shot slowly pushing forward, dramatic volumetric fog</div>
+    </div>
+    <div class="shot-note">城門是核心意象之一，需強調「巨大」與「封閉感」，紅色光源是畫面中唯一的暖色</div>
+    <div class="shot-meta"><span class="meta-tag core">必要</span></div>
+  </div>
+</div>
+
+<div class="shot-card" data-shot="3">
+  <div class="shot-header" onclick="toggleShot(this)">
+    <div class="shot-checkbox" onclick="event.stopPropagation();toggleCheck(this)"></div>
+    <span class="shot-num">S03</span>
+    <span class="shot-name">沉默的街道</span>
+    <span class="shot-time">0:08-0:15</span>
+    <span class="shot-toggle">&#9660;</span>
+  </div>
+  <div class="shot-body">
+    <div class="shot-desc">俯瞰視角，狹窄的街道兩側是高聳的暗色建築，數個紙人面無表情地沉默行走，步伐一致，身體隱約透光，紅燈籠沿街懸掛，薄霧貼地流動</div>
+    <div class="prompt-section">
+      <div class="prompt-label"><span class="prompt-tool">Sora</span><button class="copy-btn" onclick="copyPrompt(this)">複製</button></div>
+      <div class="prompt-text">High angle overhead shot of a narrow ancient Chinese street, tall dark buildings on both sides, several paper-skinned humanoid figures walking silently in unison with blank expressionless faces, faint translucent glow through their skin, red lanterns hanging along the street, ground-level fog creeping, ink painting style, dark fantasy, cinematic lighting, mysterious fog, dramatic shadows, paper texture skin, 4K cinematic</div>
+    </div>
+    <div class="prompt-section">
+      <div class="prompt-label"><span class="prompt-tool grok">Grok</span><button class="copy-btn" onclick="copyPrompt(this)">複製</button></div>
+      <div class="prompt-text">Bird's eye view looking down at a narrow dark alley in an ancient Chinese city, faceless pale figures walking in perfect unison, their skin has a translucent paper-like quality, red paper lanterns casting dim crimson light, low fog rolling across cobblestones, ink wash painting style, dark atmospheric, cinematic overhead tracking shot, eerie silence implied</div>
+    </div>
+    <div class="shot-note">紙人不要拍臉部特寫，用群體的「整齊」與「沉默」製造不安感；俯瞰角度暗示監控視角</div>
+    <div class="shot-meta"><span class="meta-tag core">必要</span></div>
+  </div>
+</div>
+
+<!-- 第二幕 -->
+<div class="act-header">
+  <div class="act-title">第二幕：碎片式不安堆疊</div>
+  <div class="act-desc">0:15 - 0:45 / 逐漸加快、好奇 &rarr; 緊張 &rarr; 恐懼 &rarr; 絕望</div>
+</div>
+
+<div class="shot-card" data-shot="4">
+  <div class="shot-header" onclick="toggleShot(this)">
+    <div class="shot-checkbox" onclick="event.stopPropagation();toggleCheck(this)"></div>
+    <span class="shot-num">S04</span>
+    <span class="shot-name">書生入城</span>
+    <span class="shot-time">0:15-0:19</span>
+    <span class="shot-toggle">&#9660;</span>
+  </div>
+  <div class="shot-body">
+    <div class="shot-desc">一個穿漢服的書生背影走進城門，他在門口停下腳步，微微側頭環顧四周，肩膀線條顯示好奇與警覺，霧氣從他腳邊湧過</div>
+    <div class="prompt-section">
+      <div class="prompt-label"><span class="prompt-tool">Sora</span><button class="copy-btn" onclick="copyPrompt(this)">複製</button></div>
+      <div class="prompt-text">Back view of a young scholar in traditional Chinese hanfu robe walking through an ancient city gate, he pauses and slightly turns his head looking around, thick fog swirling at his feet, ink painting style, dark ancient Chinese city, cinematic lighting, mysterious fog, dramatic shadows, following camera from behind at low angle, 4K cinematic</div>
+    </div>
+    <div class="prompt-section">
+      <div class="prompt-label"><span class="prompt-tool grok">Grok</span><button class="copy-btn" onclick="copyPrompt(this)">複製</button></div>
+      <div class="prompt-text">A young man in flowing traditional Chinese scholar robes seen from behind, stepping through a massive stone gate into a foggy ancient city, he hesitates and glances sideways, mist curling around his legs, dark ink wash painting aesthetic, cinematic back-tracking shot at slight low angle, moody atmospheric lighting, paper texture visible on surrounding walls</div>
+    </div>
+    <div class="shot-note">書生只拍背影與側影，不露正臉；漢服選深色調，與紙人的蒼白形成對比</div>
+    <div class="shot-meta"><span class="meta-tag core">必要</span></div>
+  </div>
+</div>
+
+<div class="shot-card" data-shot="5">
+  <div class="shot-header" onclick="toggleShot(this)">
+    <div class="shot-checkbox" onclick="event.stopPropagation();toggleCheck(this)"></div>
+    <span class="shot-num">S05</span>
+    <span class="shot-name">禁語的恐懼</span>
+    <span class="shot-time">0:19-0:23</span>
+    <span class="shot-toggle">&#9660;</span>
+  </div>
+  <div class="shot-body">
+    <div class="shot-desc">中景，一個紙人站在街角，嘴唇極輕微地動了一下，旁邊另一個紙人猛然轉頭看他，眼神空洞但動作充滿警覺，第一個紙人立刻僵住不動</div>
+    <div class="prompt-section">
+      <div class="prompt-label"><span class="prompt-tool">Sora</span><button class="copy-btn" onclick="copyPrompt(this)">複製</button></div>
+      <div class="prompt-text">Medium shot of two paper-skinned humanoid figures at a street corner in a dark ancient Chinese city, one figure's lips barely move, the other figure sharply turns head to stare with hollow blank eyes, first figure freezes in fear, paper texture skin, translucent pale faces, ink painting style, cinematic lighting, mysterious fog, tense atmosphere, slight handheld camera shake, 4K</div>
+    </div>
+    <div class="prompt-section">
+      <div class="prompt-label"><span class="prompt-tool grok">Grok</span><button class="copy-btn" onclick="copyPrompt(this)">複製</button></div>
+      <div class="prompt-text">Two pale paper-like humanoid figures in an ancient Chinese alley, one barely parts its lips as if about to speak, the other snaps its head to stare with empty eyes, the first figure freezes completely, their skin is translucent like aged paper, dark moody lighting, ink wash aesthetic, static camera with subtle shake, tension and dread atmosphere</div>
+    </div>
+    <div class="shot-note">重點是「微小動作引發的巨大反應」，嘴唇的動作要非常輕微，轉頭的動作要非常突然</div>
+    <div class="shot-meta"><span class="meta-tag core">必要</span></div>
+  </div>
+</div>
+
+<div class="shot-card" data-shot="6">
+  <div class="shot-header" onclick="toggleShot(this)">
+    <div class="shot-checkbox" onclick="event.stopPropagation();toggleCheck(this)"></div>
+    <span class="shot-num">S06</span>
+    <span class="shot-name">撕紙官的影子</span>
+    <span class="shot-time">0:23-0:27</span>
+    <span class="shot-toggle">&#9660;</span>
+  </div>
+  <div class="shot-body">
+    <div class="shot-desc">暗巷牆面上的影子：一個高大的官員影子伸手按住一個較小紙人的影子，然後做出撕扯的動作，被撕的影子頭部出現空白，紅燈籠光將影子映成暗紅色</div>
+    <div class="prompt-section">
+      <div class="prompt-label"><span class="prompt-tool">Sora</span><button class="copy-btn" onclick="copyPrompt(this)">複製</button></div>
+      <div class="prompt-text">Shadow play on a dark ancient Chinese alley wall, shadow of a tall official figure pressing down on a smaller figure, the official's shadow hand tears away the smaller figure's face shadow revealing blank emptiness underneath, red lantern light casting crimson shadows, ink painting style, dark fantasy, cinematic lighting, dramatic shadows on weathered wall, 4K cinematic</div>
+    </div>
+    <div class="prompt-section">
+      <div class="prompt-label"><span class="prompt-tool grok">Grok</span><button class="copy-btn" onclick="copyPrompt(this)">複製</button></div>
+      <div class="prompt-text">Dramatic shadows cast on an old stone wall in a dark Chinese alley, silhouette of a tall authority figure pinning a smaller person against the wall and tearing something from their face, the torn area becomes a void of blankness, deep red lantern light illuminating the shadow play, ink wash painting style, highly cinematic with stark contrast, horror atmosphere</div>
+    </div>
+    <div class="shot-note">全程只拍影子，不拍實體人物！影子戲的手法可迴避 AI 人物一致性問題，同時更具藝術感</div>
+    <div class="shot-meta"><span class="meta-tag core">核心鏡頭</span></div>
+  </div>
+</div>
+
+<div class="shot-card" data-shot="7">
+  <div class="shot-header" onclick="toggleShot(this)">
+    <div class="shot-checkbox" onclick="event.stopPropagation();toggleCheck(this)"></div>
+    <span class="shot-num">S07</span>
+    <span class="shot-name">自我撕裂</span>
+    <span class="shot-time">0:27-0:31</span>
+    <span class="shot-toggle">&#9660;</span>
+  </div>
+  <div class="shot-body">
+    <div class="shot-desc">特寫：一雙蒼白如紙的手，顫抖著伸向自己的下半臉，手指捏住嘴唇邊緣的紙層，緩慢而堅定地將嘴巴那片紙撕下，露出底下一層空白的紙</div>
+    <div class="prompt-section">
+      <div class="prompt-label"><span class="prompt-tool">Sora</span><button class="copy-btn" onclick="copyPrompt(this)">複製</button></div>
+      <div class="prompt-text">Extreme close-up of pale paper-textured trembling hands reaching toward own lower face, fingers gripping the edge of paper skin around the mouth area, slowly tearing away a layer of paper lip revealing blank white paper underneath, paper texture skin, ink painting style, dark fantasy, cinematic macro shot, dramatic shadows, disturbing and unsettling, 4K</div>
+    </div>
+    <div class="prompt-section">
+      <div class="prompt-label"><span class="prompt-tool grok">Grok</span><button class="copy-btn" onclick="copyPrompt(this)">複製</button></div>
+      <div class="prompt-text">Tight close-up of two shaking hands made of layered paper reaching up to tear away their own mouth, fingers peeling back paper skin to reveal smooth blank paper beneath, the hands tremble with suppressed emotion, dark cinematic lighting, ink wash texture, macro lens feel, deeply unsettling body horror, paper texture throughout</div>
+    </div>
+    <div class="shot-note">只拍手和下半臉，不露眼睛或全臉；「自願撕掉自己」是本片最核心的恐怖意象</div>
+    <div class="shot-meta"><span class="meta-tag core">核心鏡頭</span></div>
+  </div>
+</div>
+
+<div class="shot-card" data-shot="8">
+  <div class="shot-header" onclick="toggleShot(this)">
+    <div class="shot-checkbox" onclick="event.stopPropagation();toggleCheck(this)"></div>
+    <span class="shot-num">S08</span>
+    <span class="shot-name">焚燒記憶</span>
+    <span class="shot-time">0:31-0:35</span>
+    <span class="shot-toggle">&#9660;</span>
+  </div>
+  <div class="shot-body">
+    <div class="shot-desc">一隻手將數張寫滿墨字的舊紙片丟入銅火盆，紙片在火焰中捲曲，墨字扭曲變形後化為灰燼，火光映在牆上跳動</div>
+    <div class="prompt-section">
+      <div class="prompt-label"><span class="prompt-tool">Sora</span><button class="copy-btn" onclick="copyPrompt(this)">複製</button></div>
+      <div class="prompt-text">Overhead shot of a hand dropping old paper sheets covered in Chinese calligraphy ink writing into a bronze fire brazier, papers curling and burning in flames, ink characters distorting and turning to ash, firelight dancing on surrounding dark walls, ink painting style, dark ancient Chinese city, cinematic lighting, dramatic fire glow, 4K cinematic</div>
+    </div>
+    <div class="prompt-section">
+      <div class="prompt-label"><span class="prompt-tool grok">Grok</span><button class="copy-btn" onclick="copyPrompt(this)">複製</button></div>
+      <div class="prompt-text">Top-down view of aged paper sheets with Chinese ink calligraphy being dropped into an ornate bronze fire pit, the papers catch fire and curl, black ink characters twist and dissolve into embers and ash, warm firelight flickering against cold dark stone walls, ancient Chinese setting, ink wash painting meets fire photography, cinematic and ritualistic atmosphere</div>
+    </div>
+    <div class="shot-note">紙上的字可隱約看到「記」「名」「家」等與身份相關的字，暗示記憶被銷毀</div>
+    <div class="shot-meta"><span class="meta-tag core">必要</span></div>
+  </div>
+</div>
+
+<div class="shot-card" data-shot="9">
+  <div class="shot-header" onclick="toggleShot(this)">
+    <div class="shot-checkbox" onclick="event.stopPropagation();toggleCheck(this)"></div>
+    <span class="shot-num">S09</span>
+    <span class="shot-name">圍觀的紙人</span>
+    <span class="shot-time">0:35-0:39</span>
+    <span class="shot-toggle">&#9660;</span>
+  </div>
+  <div class="shot-body">
+    <div class="shot-desc">低角度仰拍，數十個紙人圍成半圓沉默站立，逆光使他們的邊緣發出紙張透光的微光，所有人面無表情，一動不動</div>
+    <div class="prompt-section">
+      <div class="prompt-label"><span class="prompt-tool">Sora</span><button class="copy-btn" onclick="copyPrompt(this)">複製</button></div>
+      <div class="prompt-text">Low angle looking up at dozens of paper-skinned humanoid figures standing in a silent semi-circle, backlit so their edges glow with translucent paper light, all completely expressionless and motionless, dark ancient Chinese city background, ink painting style, cinematic lighting from behind, mysterious fog, eerie stillness, slow rotating camera, 4K cinematic</div>
+    </div>
+    <div class="prompt-section">
+      <div class="prompt-label"><span class="prompt-tool grok">Grok</span><button class="copy-btn" onclick="copyPrompt(this)">複製</button></div>
+      <div class="prompt-text">Ground-level upward shot of a crowd of pale paper-like humanoid figures forming a silent semicircle, strong backlight creating translucent glowing edges on their paper skin, every face blank and unmoving, ancient Chinese architecture in background shrouded in fog, ink wash painting style, deeply unsettling atmosphere, slow camera rotation, horror cinematography</div>
+    </div>
+    <div class="shot-note">無聲的集體圍觀比尖叫更恐怖；逆光透光效果強調紙的材質感</div>
+    <div class="shot-meta"><span class="meta-tag core">必要</span></div>
+  </div>
+</div>
+
+<div class="shot-card" data-shot="10">
+  <div class="shot-header" onclick="toggleShot(this)">
+    <div class="shot-checkbox" onclick="event.stopPropagation();toggleCheck(this)"></div>
+    <span class="shot-num">S10</span>
+    <span class="shot-name">書生奔逃</span>
+    <span class="shot-time">0:39-0:45</span>
+    <span class="shot-toggle">&#9660;</span>
+  </div>
+  <div class="shot-body">
+    <div class="shot-desc">書生的背影在狹窄巷弄中奔跑，漢服衣擺飛揚，兩側高牆壓迫，紅燈籠的光一盞一盞從他身邊掠過，他跑到城門口——城門已經關上</div>
+    <div class="prompt-section">
+      <div class="prompt-label"><span class="prompt-tool">Sora</span><button class="copy-btn" onclick="copyPrompt(this)">複製</button></div>
+      <div class="prompt-text">Back view of a scholar in dark Chinese hanfu running desperately through narrow ancient alleyway, robes flowing behind him, tall oppressive walls on both sides, red lanterns flashing past as he runs, he reaches a massive closed city gate and pushes against it with both hands but it won't move, ink painting style, dark ancient Chinese city, cinematic lighting, mysterious fog, dramatic chase sequence, 4K cinematic</div>
+    </div>
+    <div class="prompt-section">
+      <div class="prompt-label"><span class="prompt-tool grok">Grok</span><button class="copy-btn" onclick="copyPrompt(this)">複製</button></div>
+      <div class="prompt-text">A figure in traditional Chinese scholar robes sprinting through a claustrophobic ancient alley seen from behind, fabric billowing, red lanterns streaking past in the run, he arrives at enormous sealed city gates and slams both palms against them in desperation, the gates are immovable, dark ink wash painting aesthetic, cinematic chase camera, fog and dramatic shadows, tension at maximum</div>
+    </div>
+    <div class="shot-note">跑步段落節奏最快，是第二幕的高潮收束；城門關上 = 無路可逃；書生依然不露正臉</div>
+    <div class="shot-meta"><span class="meta-tag core">必要</span></div>
+  </div>
+</div>
+
+<!-- 第三幕 -->
+<div class="act-header">
+  <div class="act-title">第三幕：鉤子</div>
+  <div class="act-desc">0:45 - 1:00 / 驟然放慢 &rarr; 切斷、震撼、自我懷疑</div>
+</div>
+
+<div class="shot-card" data-shot="11">
+  <div class="shot-header" onclick="toggleShot(this)">
+    <div class="shot-checkbox" onclick="event.stopPropagation();toggleCheck(this)"></div>
+    <span class="shot-num">S11</span>
+    <span class="shot-name">水邊倒影</span>
+    <span class="shot-time">0:45-0:52</span>
+    <span class="shot-toggle">&#9660;</span>
+  </div>
+  <div class="shot-body">
+    <div class="shot-desc">書生蹲在一灘靜水邊低頭看自己的倒影，水面微微波動，倒影中他的臉隱約呈現紙張的紋理與透光感，與他自認的「真實」面貌不同</div>
+    <div class="prompt-section">
+      <div class="prompt-label"><span class="prompt-tool">Sora</span><button class="copy-btn" onclick="copyPrompt(this)">複製</button></div>
+      <div class="prompt-text">Overhead shot looking down at still water on stone ground, a young scholar in Chinese robes crouching beside it looking at his reflection, the reflection subtly shows paper texture and translucent quality on his face unlike his real appearance, gentle water ripples, ink painting style, dark ancient Chinese city, cinematic lighting, mysterious fog, melancholic and haunting atmosphere, very slow camera push, 4K cinematic</div>
+    </div>
+    <div class="prompt-section">
+      <div class="prompt-label"><span class="prompt-tool grok">Grok</span><button class="copy-btn" onclick="copyPrompt(this)">複製</button></div>
+      <div class="prompt-text">Top-down view of a still puddle on ancient stone pavement, a figure in scholar robes kneeling beside it gazing at his own reflection, the reflected face has visible paper grain texture and translucent paper-like quality that differs from reality, faint ripples distorting the image, ink wash painting style, dark reflective surface, hauntingly quiet atmosphere, ultra slow cinematic camera movement</div>
+    </div>
+    <div class="shot-note">全片的轉折核心——「你以為自己是觀察者，其實你也是紙人」；倒影中的紙紋要微妙</div>
+    <div class="shot-meta"><span class="meta-tag core">轉折核心</span></div>
+  </div>
+</div>
+
+<div class="shot-card" data-shot="12">
+  <div class="shot-header" onclick="toggleShot(this)">
+    <div class="shot-checkbox" onclick="event.stopPropagation();toggleCheck(this)"></div>
+    <span class="shot-num">S12</span>
+    <span class="shot-name">摸到接縫</span>
+    <span class="shot-time">0:52-0:57</span>
+    <span class="shot-toggle">&#9660;</span>
+  </div>
+  <div class="shot-body">
+    <div class="shot-desc">特寫：書生的手緩慢伸向自己的後頸，手指碰到一條明顯的接縫——紙張與紙張的交界線，手指微微陷入接縫，停住，微微顫抖</div>
+    <div class="prompt-section">
+      <div class="prompt-label"><span class="prompt-tool">Sora</span><button class="copy-btn" onclick="copyPrompt(this)">複製</button></div>
+      <div class="prompt-text">Extreme close-up of a hand slowly reaching behind the neck, fingers tracing down the back and finding a visible seam where paper layers meet, fingertip pressing into the seam edge feeling paper texture underneath, the hand freezes and trembles slightly, paper texture skin, ink painting style, cinematic macro shot, dark fantasy, dramatic shadows, disturbing revelation moment, 4K</div>
+    </div>
+    <div class="prompt-section">
+      <div class="prompt-label"><span class="prompt-tool grok">Grok</span><button class="copy-btn" onclick="copyPrompt(this)">複製</button></div>
+      <div class="prompt-text">Tight close-up tracking a hand reaching to the back of a neck, fingers sliding downward and discovering a distinct paper seam line where two layers of paper skin overlap, the fingertip catches on the paper edge and the hand begins to tremble, paper grain texture on skin, dark cinematic lighting, ink wash aesthetic, macro lens intimacy, moment of horrifying self-discovery</div>
+    </div>
+    <div class="shot-note">只拍手和後頸/背部，絕對不拍臉；手指的顫抖是唯一的情緒表達</div>
+    <div class="shot-meta"><span class="meta-tag core">必要</span></div>
+  </div>
+</div>
+
+<div class="shot-card" data-shot="13">
+  <div class="shot-header" onclick="toggleShot(this)">
+    <div class="shot-checkbox" onclick="event.stopPropagation();toggleCheck(this)"></div>
+    <span class="shot-num">S13</span>
+    <span class="shot-name">撕裂與切黑</span>
+    <span class="shot-time">0:57-1:00</span>
+    <span class="shot-toggle">&#9660;</span>
+  </div>
+  <div class="shot-body">
+    <div class="shot-desc">畫面突然切黑，全黑畫面中只有聲音：一聲清晰的、緩慢的紙被撕開的聲響，然後完全沉默，黑幕停留 2 秒</div>
+    <div class="prompt-section">
+      <div class="prompt-label"><span class="prompt-tool">Sora</span></div>
+      <div class="prompt-text">此段為純黑畫面，不需要 AI 生成影像，後製處理即可</div>
+    </div>
+    <div class="shot-note">什麼都不給觀眾看，只讓他們聽到撕紙聲然後自己腦補；沉默的 2 秒是刻意的</div>
+    <div class="shot-meta"><span class="meta-tag post">後製處理</span></div>
+  </div>
+</div>
+
+<!-- 結尾字卡 -->
+<div class="act-header">
+  <div class="act-title">結尾字卡</div>
+  <div class="act-desc">1:00 - 1:15 / 靜止、餘韻、不安的收尾</div>
+</div>
+
+<div class="shot-card" data-shot="14">
+  <div class="shot-header" onclick="toggleShot(this)">
+    <div class="shot-checkbox" onclick="event.stopPropagation();toggleCheck(this)"></div>
+    <span class="shot-num">S14</span>
+    <span class="shot-name">禁書字卡</span>
+    <span class="shot-time">1:00-1:10</span>
+    <span class="shot-toggle">&#9660;</span>
+  </div>
+  <div class="shot-body">
+    <div class="shot-desc">黑底，白色古風字體逐行緩慢浮現：「此書於景和三年被列為禁書。」「此後，再無人提及太平城。」「——《靜世錄》已佚，僅存殘頁。」</div>
+    <div class="prompt-section">
+      <div class="prompt-label"><span class="prompt-tool">Sora</span><button class="copy-btn" onclick="copyPrompt(this)">複製</button></div>
+      <div class="prompt-text">Black background with white ancient Chinese calligraphy text appearing line by line with subtle paper texture effect, minimalist, dark atmospheric, text fading in slowly, ink wash style typography, 4K</div>
+    </div>
+    <div class="prompt-section">
+      <div class="prompt-label"><span class="prompt-tool grok">Grok</span><button class="copy-btn" onclick="copyPrompt(this)">複製</button></div>
+      <div class="prompt-text">Pure black background, elegant white traditional Chinese calligraphy text fading in one line at a time, each line appearing with a subtle paper grain animation, minimalist dark design, ancient manuscript feeling, cinematic title card</div>
+    </div>
+    <div class="shot-note">字卡建議後製處理，字體選用書法體</div>
+    <div class="shot-meta"><span class="meta-tag optional">可後製替代</span></div>
+  </div>
+</div>
+
+<div class="shot-card" data-shot="15">
+  <div class="shot-header" onclick="toggleShot(this)">
+    <div class="shot-checkbox" onclick="event.stopPropagation();toggleCheck(this)"></div>
+    <span class="shot-num">S15</span>
+    <span class="shot-name">片名</span>
+    <span class="shot-time">1:10-1:15</span>
+    <span class="shot-toggle">&#9660;</span>
+  </div>
+  <div class="shot-body">
+    <div class="shot-desc">黑幕中，片名「紙人之國」以水墨暈染的方式從中央擴散浮現，墨跡如活物般流動成字，字體邊緣不規則如撕紙邊，停留數秒後整個畫面如紙張般從中間被撕開</div>
+    <div class="prompt-section">
+      <div class="prompt-label"><span class="prompt-tool">Sora</span><button class="copy-btn" onclick="copyPrompt(this)">複製</button></div>
+      <div class="prompt-text">Black background, Chinese calligraphy title appearing through ink wash animation spreading from center, ink flowing like liquid forming characters, edges of text irregular like torn paper, the entire frame then tears apart like paper from the center revealing white underneath, ink painting style, dark fantasy, cinematic title reveal, 4K</div>
+    </div>
+    <div class="prompt-section">
+      <div class="prompt-label"><span class="prompt-tool grok">Grok</span><button class="copy-btn" onclick="copyPrompt(this)">複製</button></div>
+      <div class="prompt-text">Dark void with Chinese ink calligraphy title materializing through flowing ink wash animation, ink spreading organically to form bold characters, the text edges are rough and torn like ripped paper, then the whole screen tears apart like a sheet of paper splitting from the middle to reveal pure white, dramatic ink wash animation, cinematic title sequence</div>
+    </div>
+    <div class="shot-note">片名動畫是最後的印象，水墨流動 + 撕紙效果呼應全片主題；可用 After Effects 手動製作</div>
+    <div class="shot-meta"><span class="meta-tag optional">可後製替代</span></div>
+  </div>
+</div>
+
+<div class="footer">紙人之國 — AI 生成清單 / 進度存在本機瀏覽器</div>
+
+</div>
+
+<script>
+// Load saved state
+function loadState(){
+  try{
+    const s=localStorage.getItem('papernation_checks');
+    if(s){
+      const checked=JSON.parse(s);
+      document.querySelectorAll('.shot-card').forEach(card=>{
+        const n=card.dataset.shot;
+        if(checked.includes(n)){
+          card.querySelector('.shot-checkbox').classList.add('checked');
+          card.classList.add('done');
+        }
+      });
+    }
+  }catch(e){}
+  updateProgress();
+}
+
+function saveState(){
+  const checked=[];
+  document.querySelectorAll('.shot-checkbox.checked').forEach(cb=>{
+    checked.push(cb.closest('.shot-card').dataset.shot);
+  });
+  localStorage.setItem('papernation_checks',JSON.stringify(checked));
+}
+
+function toggleCheck(el){
+  el.classList.toggle('checked');
+  el.closest('.shot-card').classList.toggle('done');
+  saveState();
+  updateProgress();
+}
+
+function toggleShot(header){
+  const body=header.nextElementSibling;
+  const toggle=header.querySelector('.shot-toggle');
+  body.classList.toggle('open');
+  toggle.classList.toggle('open');
+}
+
+function copyPrompt(btn){
+  const text=btn.closest('.prompt-section').querySelector('.prompt-text').textContent;
+  navigator.clipboard.writeText(text).then(()=>{
+    btn.textContent='已複製';
+    btn.classList.add('copied');
+    setTimeout(()=>{btn.textContent='複製';btn.classList.remove('copied')},1500);
+  });
+}
+
+function updateProgress(){
+  const total=document.querySelectorAll('.shot-card').length;
+  const done=document.querySelectorAll('.shot-checkbox.checked').length;
+  const badge=document.getElementById('progressBadge');
+  badge.textContent=done+' / '+total;
+  if(done===total){badge.style.background='#1a2a1a';badge.style.color='#6aba6a';badge.style.borderColor='#2a3a2a';}
+  else{badge.style.background='#2a1a1a';badge.style.color='#cc4444';badge.style.borderColor='#3a2020';}
+}
+
+loadState();
+</script>
+</body>
+</html>
