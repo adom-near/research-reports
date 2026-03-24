@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>神話四部曲 — 預告片生成清單</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Microsoft JhengHei","PingFang TC",sans-serif;background:#f5f3f0;color:#2a2a2a;line-height:1.7;font-size:15px;min-height:100vh}
+
+.top-bar{position:fixed;top:0;left:0;right:0;z-index:1000;background:linear-gradient(135deg,#5a1a1a,#8b1a1a);box-shadow:0 2px 12px rgba(0,0,0,.15);padding:12px 24px;display:flex;align-items:center;justify-content:space-between}
+.top-bar h1{color:#fff;font-size:18px;font-weight:700}
+.progress-badge{background:rgba(255,255,255,.15);color:#fff;font-size:12px;padding:4px 12px;border-radius:20px;border:1px solid rgba(255,255,255,.2)}
+
+.container{max-width:900px;margin:72px auto 40px;padding:0 16px}
+
+.act-header{margin-top:36px;margin-bottom:16px;padding:12px 16px;background:linear-gradient(90deg,#f0e4e4,transparent);border-left:3px solid #8b1a1a;border-radius:4px}
+.act-title{font-size:16px;font-weight:700;color:#6a1a1a}
+.act-desc{font-size:12px;color:#8a6a6a;margin-top:2px}
+
+.shot-card{background:#fff;border:1px solid #e0dbd5;border-radius:12px;margin-bottom:16px;overflow:hidden;transition:border-color .2s;box-shadow:0 1px 4px rgba(0,0,0,.05)}
+.shot-card.done{opacity:.6}
+.shot-card.done .shot-header{background:#f0f5f0}
+.shot-card:hover{border-color:#c0b8ae;box-shadow:0 2px 8px rgba(0,0,0,.08)}
+
+.shot-header{display:flex;align-items:center;gap:12px;padding:14px 16px;background:#faf8f5;cursor:pointer;user-select:none}
+.shot-checkbox{width:22px;height:22px;border:2px solid #c0b8ae;border-radius:6px;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .2s;cursor:pointer}
+.shot-checkbox.checked{background:#d4edda;border-color:#5a9a5a}
+.shot-checkbox.checked::after{content:'\2713';color:#2a7a2a;font-size:14px;font-weight:700}
+.shot-num{font-size:13px;font-weight:700;color:#fff;background:#8b1a1a;padding:2px 8px;border-radius:4px;flex-shrink:0}
+.shot-name{font-size:15px;font-weight:600;color:#2a2a2a;flex:1}
+.shot-time{font-size:12px;color:#8a8a8a;flex-shrink:0}
+.shot-toggle{color:#aaa;font-size:18px;transition:transform .2s;flex-shrink:0}
+.shot-toggle.open{transform:rotate(180deg)}
+
+.shot-body{display:none;padding:0 16px 16px}
+.shot-body.open{display:block}
+
+.shot-desc{font-size:13px;color:#5a5a5a;padding:12px;background:#f8f6f3;border-radius:8px;margin-bottom:12px;border-left:2px solid #d4c8b8}
+
+.prompt-section{margin-bottom:12px}
+.prompt-label{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px}
+.prompt-tool{font-size:12px;font-weight:700;color:#2a6090;background:#e8f0f8;padding:3px 10px;border-radius:4px}
+.prompt-tool.concept{color:#5a8a3a;background:#e8f0e0}
+.prompt-tool.grok{color:#8a2a5a;background:#f8e8f0}
+.prompt-tool.i2v{color:#8a5a2a;background:#f5ebe0}
+.copy-btn{font-size:11px;color:#6a6a6a;background:#f0ede8;border:1px solid #d8d2ca;border-radius:4px;padding:3px 10px;cursor:pointer;transition:all .2s}
+.copy-btn:hover{background:#e0dbd5;color:#3a3a3a}
+.copy-btn.copied{background:#d4edda;color:#2a7a2a;border-color:#a0d0a0}
+
+.prompt-text{font-size:13px;color:#4a4a4a;background:#f8f6f3;border:1px solid #e8e2da;border-radius:8px;padding:12px;font-family:"SF Mono",Monaco,monospace;line-height:1.6;word-break:break-word}
+
+.shot-note{font-size:12px;color:#6a4a4a;background:#faf0ee;border-radius:6px;padding:10px 12px;margin-top:8px;border-left:2px solid #d49696}
+.shot-note::before{content:'TIP';font-size:10px;font-weight:700;color:#8b3030;margin-right:6px}
+
+.shot-meta{display:flex;gap:8px;margin-top:8px;flex-wrap:wrap}
+.meta-tag{font-size:11px;padding:2px 8px;border-radius:4px;background:#f0ede8;color:#6a6a6a}
+.meta-tag.core{background:#fde8e8;color:#aa3333}
+.meta-tag.optional{background:#e8e8f0;color:#5a5a7a}
+.meta-tag.post{background:#f0f0e0;color:#6a6a3a}
+
+.user-notes{margin-top:12px}
+.user-notes-label{font-size:12px;font-weight:600;color:#8a7a6a;margin-bottom:4px;display:flex;align-items:center;gap:6px}
+.user-notes-label::before{content:'📝';font-size:14px}
+.user-notes-input{width:100%;min-height:60px;padding:10px;font-size:13px;font-family:inherit;background:#faf8f5;border:1px solid #e0dbd5;border-radius:8px;color:#3a3a3a;resize:vertical;line-height:1.5;outline:none;transition:border-color .2s}
+.user-notes-input:focus{border-color:#b0a898}
+.user-notes-input::placeholder{color:#bbb}
+
+.footer{text-align:center;padding:32px 0;color:#aaa;font-size:12px}
+
+@media(max-width:600px){
+  .container{padding:0 8px;margin-top:64px}
+  .shot-header{padding:12px}
+  .prompt-text{font-size:12px;padding:10px}
+  .top-bar h1{font-size:16px}
+}
+</style>
+</head>
+<body>
+
+<div class="top-bar">
+  <h1>神話四部曲 — 預告片生成清單</h1>
+  <div class="progress-badge" id="progressBadge">0 / 8</div>
+</div>
+
+<div class="container">
+
+<!-- 開場 -->
+<div class="act-header">
+  <div class="act-title">序幕：神話的真面目</div>
+  <div class="act-desc">0:00 - 0:03 / 黑幕字卡引言</div>
+</div>
+
+<div class="shot-card" data-shot="1">
+  <div class="shot-header" onclick="toggleShot(this)">
+    <div class="shot-checkbox" onclick="event.stopPropagation();toggleCheck(this)"></div>
+    <span class="shot-num">S01</span>
+    <span class="shot-name">開場字卡</span>
+    <span class="shot-time">0:00-0:03</span>
+    <span class="shot-toggle">&#9660;</span>
+  </div>
+  <div class="shot-body">
+    <div class="shot-desc">黑幕，白色字體淡入：「你以為這些是神話。」「其實，它們是預言。」</div>
+    <div class="prompt-section">
+      <div class="prompt-label"><span class="prompt-tool concept">Concept Image</span><button class="copy-btn" onclick="copyPrompt(this)">複製</button></div>
+      <div class="prompt-text">Black background with elegant white Chinese calligraphy text, minimalist, cinematic title card style. Warm subtle paper texture on the black. Photorealistic, film grain, 16mm film texture</div>
+    </div>
+    <div class="prompt-section">
+      <div class="prompt-label"><span class="prompt-tool grok">Grok</span><button class="copy-btn" onclick="copyPrompt(this)">複製</button></div>
+      <div class="prompt-text">Same as concept - post-production recommended for text cards</div>
+    </div>
+    <div class="prompt-section">
+      <div class="prompt-label"><span class="prompt-tool i2v">img2vid</span><button class="copy-btn" onclick="copyPrompt(this)">複製</button></div>
+      <div class="prompt-text">Slow subtle zoom in. Static scene, only smooth camera movement. No new objects appear.</div>
+    </div>
+    <div class="shot-note">字卡建議用 Remotion 或後製，AI 生中文字效果差</div>
+    <div class="shot-meta"><span class="meta-tag post">可後製替代</span></div>
+  </div>
+</div>
+
+<!-- 四神話主體 -->
+<div class="act-header">
+  <div class="act-title">第一章：四個神話，四種命運</div>
+  <div class="act-desc">0:03 - 0:20 / 哪吒、關羽、后羿、嫦娥</div>
+</div>
+
+<div class="shot-card" data-shot="2">
+  <div class="shot-header" onclick="toggleShot(this)">
+    <div class="shot-checkbox" onclick="event.stopPropagation();toggleCheck(this)"></div>
+    <span class="shot-num">S02</span>
+    <span class="shot-name">哪吒：蓮花重生</span>
+    <span class="shot-time">0:03-0:05</span>
+    <span class="shot-toggle">&#9660;</span>
+  </div>
+  <div class="shot-body">
+    <div class="shot-desc">一朵巨大的蓮花在黑暗中綻放，花瓣中央浮現哪吒的身影。傳統造型——紅肚兜、混天綾飄動、火尖槍在手、腳踩風火輪。眼神叛逆不馴。</div>
+    <div class="prompt-section">
+      <div class="prompt-label"><span class="prompt-tool concept">Concept Image</span><button class="copy-btn" onclick="copyPrompt(this)">複製</button></div>
+      <div class="prompt-text">Anime-cinematic style. A giant luminous golden lotus flower blooming in darkness, at its center stands a young rebellious boy — Nezha in traditional Chinese mythology design: red dudou vest, flowing Huntian Ling ribbon swirling around him, Fire-tipped Spear in hand, standing on Wind Fire Wheels. Defiant fierce eyes, youthful energy. Warm golden light radiating from the lotus petals. High contrast, dramatic lighting, animation style with cinematic quality, film grain, 16mm film texture</div>
+    </div>
+    <div class="prompt-section">
+      <div class="prompt-label"><span class="prompt-tool grok">Grok</span><button class="copy-btn" onclick="copyPrompt(this)">複製</button></div>
+      <div class="prompt-text">A giant golden lotus blooming in darkness with a rebellious young Nezha at its center in traditional red dudou, Huntian Ling ribbon flowing, Fire-tipped Spear raised, Wind Fire Wheels under his feet. Defiant expression. Golden warm light from lotus, anime-cinematic style, high contrast dramatic lighting, film grain, 16mm film texture</div>
+    </div>
+    <div class="prompt-section">
+      <div class="prompt-label"><span class="prompt-tool i2v">img2vid</span><button class="copy-btn" onclick="copyPrompt(this)">複製</button></div>
+      <div class="prompt-text">Slow push out from lotus center, revealing full figure. Static scene, nothing changes or grows, only smooth camera movement. No new objects appear.</div>
+    </div>
+    <div class="shot-note">哪吒前期造型：叛逆少年，紅金色調，充滿生命力</div>
+    <div class="shot-meta"><span class="meta-tag core">核心鏡頭</span></div>
+  </div>
+</div>
+
+<div class="shot-card" data-shot="3">
+  <div class="shot-header" onclick="toggleShot(this)">
+    <div class="shot-checkbox" onclick="event.stopPropagation();toggleCheck(this)"></div>
+    <span class="shot-num">S03</span>
+    <span class="shot-name">哪吒：被收編</span>
+    <span class="shot-time">0:05-0:08</span>
+    <span class="shot-toggle">&#9660;</span>
+  </div>
+  <div class="shot-body">
+    <div class="shot-desc">哪吒造型漸變——混天綾變成鎖鏈纏繞身體，火尖槍變成權杖，風火輪變成底座固定。穿上天庭鎧甲，表情從叛逆變為空洞。背景為金碧輝煌的天庭大殿。</div>
+    <div class="prompt-section">
+      <div class="prompt-label"><span class="prompt-tool concept">Concept Image</span><button class="copy-btn" onclick="copyPrompt(this)">複製</button></div>
+      <div class="prompt-text">Anime-cinematic style. Nezha standing in a grand golden celestial palace hall, but transformed — his Huntian Ling ribbon has become golden chains wrapped tightly around his body, his Fire-tipped Spear has morphed into a ceremonial scepter, his Wind Fire Wheels have become a fixed pedestal locking him in place. He wears cold silver celestial armor instead of his red vest. His expression is blank and hollow, eyes empty. The palace is overwhelmingly ornate with golden pillars and oppressive architecture. Cold silver and gold color palette, high contrast, dramatic overhead lighting casting harsh shadows, anime-cinematic style, film grain, 16mm film texture</div>
+    </div>
+    <div class="prompt-section">
+      <div class="prompt-label"><span class="prompt-tool grok">Grok</span><button class="copy-btn" onclick="copyPrompt(this)">複製</button></div>
+      <div class="prompt-text">Nezha trapped in a golden celestial palace, his red ribbon transformed into golden binding chains, spear become a scepter, wheels become a locked pedestal. Silver celestial armor replacing his red vest. Blank hollow expression. Ornate oppressive golden palace architecture. Cold silver-gold palette, anime-cinematic, high contrast, harsh dramatic lighting, film grain, 16mm film texture</div>
+    </div>
+    <div class="prompt-section">
+      <div class="prompt-label"><span class="prompt-tool i2v">img2vid</span><button class="copy-btn" onclick="copyPrompt(this)">複製</button></div>
+      <div class="prompt-text">Slow dolly backward revealing the full palace. Static scene, nothing changes or grows, only smooth camera movement. No new objects appear.</div>
+    </div>
+    <div class="shot-note">哪吒後期：被體制改造，紅金→冷銀金，叛逆→空洞</div>
+    <div class="shot-meta"><span class="meta-tag core">核心鏡頭</span></div>
+  </div>
+</div>
+
+<div class="shot-card" data-shot="4">
+  <div class="shot-header" onclick="toggleShot(this)">
+    <div class="shot-checkbox" onclick="event.stopPropagation();toggleCheck(this)"></div>
+    <span class="shot-num">S04</span>
+    <span class="shot-name">關羽：被神化</span>
+    <span class="shot-time">0:08-0:12</span>
+    <span class="shot-toggle">&#9660;</span>
+  </div>
+  <div class="shot-body">
+    <div class="shot-desc">關羽巨大神像，形象在不同燈光下切換——紅光下是財神、藍光下是戰神、黃光下是義氣象徵、白光下是商業招牌。所有形象疊在一起變成模糊。</div>
+    <div class="prompt-section">
+      <div class="prompt-label"><span class="prompt-tool concept">Concept Image</span><button class="copy-btn" onclick="copyPrompt(this)">複製</button></div>
+      <div class="prompt-text">Anime-cinematic style. A massive stone statue of Guan Yu (Chinese god of war) in a dark temple, dramatically lit from multiple colored light sources simultaneously — red light from one side making him look like a wealth god, blue light from another making him a war deity, golden light from above as a symbol of loyalty. The overlapping colored lights create a confusing distorted appearance on the statue's face, as if the statue has multiple conflicting identities. Incense smoke swirling around. High contrast, dramatic multi-colored lighting, anime-cinematic style, film grain, 16mm film texture</div>
+    </div>
+    <div class="prompt-section">
+      <div class="prompt-label"><span class="prompt-tool grok">Grok</span><button class="copy-btn" onclick="copyPrompt(this)">複製</button></div>
+      <div class="prompt-text">Massive Guan Yu stone statue in a dark temple, lit by conflicting red, blue, and golden lights from different directions, each light transforming his appearance — wealth god, war god, loyalty symbol. The overlapping colors distort his face into something unrecognizable. Incense smoke, dark temple, anime-cinematic, high contrast multi-colored dramatic lighting, film grain, 16mm film texture</div>
+    </div>
+    <div class="prompt-section">
+      <div class="prompt-label"><span class="prompt-tool i2v">img2vid</span><button class="copy-btn" onclick="copyPrompt(this)">複製</button></div>
+      <div class="prompt-text">Slow rotating camera orbiting the statue. Static scene, nothing changes or grows, only smooth camera movement. No new objects appear.</div>
+    </div>
+    <div class="shot-note">關羽不是活人，是神像。多色光切換代表被不同勢力詮釋利用</div>
+    <div class="shot-meta"><span class="meta-tag core">核心鏡頭</span></div>
+  </div>
+</div>
+
+<div class="shot-card" data-shot="5">
+  <div class="shot-header" onclick="toggleShot(this)">
+    <div class="shot-checkbox" onclick="event.stopPropagation();toggleCheck(this)"></div>
+    <span class="shot-num">S05</span>
+    <span class="shot-name">后羿：被遺忘</span>
+    <span class="shot-time">0:12-0:16</span>
+    <span class="shot-toggle">&#9660;</span>
+  </div>
+  <div class="shot-body">
+    <div class="shot-desc">后羿站在空曠殿堂中央，身後射日壁畫正在褪色剝落。人群轉身離去，手中的弓碎裂成灰塵。低頭看著空空的雙手。</div>
+    <div class="prompt-section">
+      <div class="prompt-label"><span class="prompt-tool concept">Concept Image</span><button class="copy-btn" onclick="copyPrompt(this)">複製</button></div>
+      <div class="prompt-text">Anime-cinematic style. A lone muscular archer (Hou Yi) standing in the center of a vast empty palace hall, seen from behind. On the wall behind him, a once-glorious golden mural depicting him shooting down suns is visibly fading and peeling away. The hall is dimming, shadows creeping in from the edges. His legendary bow in his hands is crumbling into dust and ash. His posture is defeated, shoulders slumped. Warm golden tones fading to cold grey, high contrast, dramatic lighting from the fading mural, anime-cinematic style, film grain, 16mm film texture</div>
+    </div>
+    <div class="prompt-section">
+      <div class="prompt-label"><span class="prompt-tool grok">Grok</span><button class="copy-btn" onclick="copyPrompt(this)">複製</button></div>
+      <div class="prompt-text">Lone archer Hou Yi standing in an empty palace hall seen from behind, the golden sun-shooting mural on the wall behind him fading and peeling. His bow crumbling to dust in his hands. Defeated posture. Hall darkening, warm gold fading to cold grey, anime-cinematic, high contrast, dramatic fading light, film grain, 16mm film texture</div>
+    </div>
+    <div class="prompt-section">
+      <div class="prompt-label"><span class="prompt-tool i2v">img2vid</span><button class="copy-btn" onclick="copyPrompt(this)">複製</button></div>
+      <div class="prompt-text">Slow push in toward the figure from behind. Static scene, nothing changes or grows, only smooth camera movement. No new objects appear.</div>
+    </div>
+    <div class="shot-note">從英雄到被遺忘，金色調褪成灰色</div>
+    <div class="shot-meta"><span class="meta-tag core">核心鏡頭</span></div>
+  </div>
+</div>
+
+<div class="shot-card" data-shot="6">
+  <div class="shot-header" onclick="toggleShot(this)">
+    <div class="shot-checkbox" onclick="event.stopPropagation();toggleCheck(this)"></div>
+    <span class="shot-num">S06</span>
+    <span class="shot-name">嫦娥：永恆孤獨</span>
+    <span class="shot-time">0:16-0:20</span>
+    <span class="shot-toggle">&#9660;</span>
+  </div>
+  <div class="shot-body">
+    <div class="shot-desc">嫦娥飄浮在月球表面，回頭望向遠方的地球。伸手但永遠夠不到。衣袍在無重力中緩慢飄動。月球冷白色光，沒有溫度。</div>
+    <div class="prompt-section">
+      <div class="prompt-label"><span class="prompt-tool concept">Concept Image</span><button class="copy-btn" onclick="copyPrompt(this)">複製</button></div>
+      <div class="prompt-text">Anime-cinematic style. Chang'e floating above the grey barren lunar surface in her flowing white celestial robes, seen from behind. She reaches one hand toward a small blue Earth hanging in the vast black void of space. The distance between her hand and Earth feels infinite. Her robes and hair drift slowly in zero gravity like underwater. The only light is cold stark white moonlight from below, casting harsh upward shadows. Extreme isolation and emptiness. Cold white-blue palette, high contrast, anime-cinematic style, film grain, 16mm film texture</div>
+    </div>
+    <div class="prompt-section">
+      <div class="prompt-label"><span class="prompt-tool grok">Grok</span><button class="copy-btn" onclick="copyPrompt(this)">複製</button></div>
+      <div class="prompt-text">Chang'e floating above barren grey moon surface, reaching toward a tiny blue Earth in black space, seen from behind. Flowing white robes and hair drifting in zero gravity. Cold stark white moonlight from below. Infinite distance and isolation. Cold white-blue, anime-cinematic, high contrast, film grain, 16mm film texture</div>
+    </div>
+    <div class="prompt-section">
+      <div class="prompt-label"><span class="prompt-tool i2v">img2vid</span><button class="copy-btn" onclick="copyPrompt(this)">複製</button></div>
+      <div class="prompt-text">Very slow drift, subtle floating movement. Static scene, nothing changes or grows, only subtle floating camera drift. No new objects appear.</div>
+    </div>
+    <div class="shot-note">完全無聲段落，只有一聲心跳。冷白色調，極度孤立</div>
+    <div class="shot-meta"><span class="meta-tag core">核心鏡頭</span></div>
+  </div>
+</div>
+
+<!-- 覺醒與結尾 -->
+<div class="act-header">
+  <div class="act-title">終章：覺察與真相</div>
+  <div class="act-desc">0:20 - 0:30 / 覺醒轉折、片名揭示</div>
+</div>
+
+<div class="shot-card" data-shot="7">
+  <div class="shot-header" onclick="toggleShot(this)">
+    <div class="shot-checkbox" onclick="event.stopPropagation();toggleCheck(this)"></div>
+    <span class="shot-num">S07</span>
+    <span class="shot-name">哪吒：覺察</span>
+    <span class="shot-time">0:20-0:25</span>
+    <span class="shot-toggle">&#9660;</span>
+  </div>
+  <div class="shot-body">
+    <div class="shot-desc">哪吒低頭看手——金色鎖鏈的另一端連接自己的心臟。猛然抬頭，眼中重新燃起火焰。不是叛逆的怒火，是看清真相的冷靜。天庭大殿出現裂縫。</div>
+    <div class="prompt-section">
+      <div class="prompt-label"><span class="prompt-tool concept">Concept Image</span><button class="copy-btn" onclick="copyPrompt(this)">複製</button></div>
+      <div class="prompt-text">Anime-cinematic style. Close-up of Nezha in celestial armor looking down at his hands — golden chains extending from his wrists lead directly into his own chest, connected to his heart. His eyes suddenly ignite with a new kind of fire — not rage but cold clarity and understanding. Behind him, the ornate golden celestial palace walls begin to crack, light streaming through the fractures. The moment of awakening. Dramatic high contrast lighting, warm fire in his eyes against cold silver armor, anime-cinematic style, film grain, 16mm film texture</div>
+    </div>
+    <div class="prompt-section">
+      <div class="prompt-label"><span class="prompt-tool grok">Grok</span><button class="copy-btn" onclick="copyPrompt(this)">複製</button></div>
+      <div class="prompt-text">Close-up of armored Nezha looking at golden chains from his wrists leading into his own chest/heart. Eyes reignite with cold clear fire — not anger but understanding. Palace walls cracking behind him, light through fractures. Dramatic high contrast, warm eye-fire against cold armor, anime-cinematic, film grain, 16mm film texture</div>
+    </div>
+    <div class="prompt-section">
+      <div class="prompt-label"><span class="prompt-tool i2v">img2vid</span><button class="copy-btn" onclick="copyPrompt(this)">複製</button></div>
+      <div class="prompt-text">Quick push in from hands to face. Static scene, nothing changes or grows, only smooth camera movement. No new objects appear.</div>
+    </div>
+    <div class="shot-note">全片最有力的一刻。不是叛逆回歸，是更深層的覺醒</div>
+    <div class="shot-meta"><span class="meta-tag core">核心鏡頭</span></div>
+  </div>
+</div>
+
+<div class="shot-card" data-shot="8">
+  <div class="shot-header" onclick="toggleShot(this)">
+    <div class="shot-checkbox" onclick="event.stopPropagation();toggleCheck(this)"></div>
+    <span class="shot-num">S08</span>
+    <span class="shot-name">結尾字卡</span>
+    <span class="shot-time">0:25-0:30</span>
+    <span class="shot-toggle">&#9660;</span>
+  </div>
+  <div class="shot-body">
+    <div class="shot-desc">黑幕。「秩序。權力。個體。」→「四個神話。一個真相。」→ 片名《神話四部曲》水墨暈染浮現</div>
+    <div class="prompt-section">
+      <div class="prompt-label"><span class="prompt-tool concept">Concept Image</span><button class="copy-btn" onclick="copyPrompt(this)">複製</button></div>
+      <div class="prompt-text">Black background with flowing ink wash animation, black ink spreading organically from center forming abstract shapes, no text or characters. Warm subtle paper texture. Cinematic, film grain, 16mm film texture</div>
+    </div>
+    <div class="prompt-section">
+      <div class="prompt-label"><span class="prompt-tool grok">Grok</span><button class="copy-btn" onclick="copyPrompt(this)">複製</button></div>
+      <div class="prompt-text">Same as concept - post-production recommended for text and title</div>
+    </div>
+    <div class="prompt-section">
+      <div class="prompt-label"><span class="prompt-tool i2v">img2vid</span><button class="copy-btn" onclick="copyPrompt(this)">複製</button></div>
+      <div class="prompt-text">Static camera. Ink flows organically from center. No camera movement. No new objects appear beyond the ink animation.</div>
+    </div>
+    <div class="shot-note">字卡和片名用 Remotion 或後製。AI 只生成背景墨暈動態</div>
+    <div class="shot-meta"><span class="meta-tag post">可後製替代</span></div>
+  </div>
+</div>
+
+<div class="footer">神話四部曲 — AI 預告片生成清單 | 勾選完成的鏡頭，進度自動儲存</div>
+
+</div>
+
+<script>
+function loadState(){
+  try{
+    const s=localStorage.getItem('mythquartet_checks');
+    if(s){
+      const checked=JSON.parse(s);
+      document.querySelectorAll('.shot-card').forEach(card=>{
+        const n=card.dataset.shot;
+        if(checked.includes(n)){
+          card.querySelector('.shot-checkbox').classList.add('checked');
+          card.classList.add('done');
+        }
+      });
+    }
+  }catch(e){}
+  updateProgress();
+}
+
+function saveState(){
+  const checked=[];
+  document.querySelectorAll('.shot-checkbox.checked').forEach(cb=>{
+    checked.push(cb.closest('.shot-card').dataset.shot);
+  });
+  localStorage.setItem('mythquartet_checks',JSON.stringify(checked));
+}
+
+function toggleCheck(el){
+  el.classList.toggle('checked');
+  el.closest('.shot-card').classList.toggle('done');
+  saveState();
+  updateProgress();
+}
+
+function toggleShot(header){
+  const body=header.nextElementSibling;
+  const toggle=header.querySelector('.shot-toggle');
+  body.classList.toggle('open');
+  toggle.classList.toggle('open');
+}
+
+function copyPrompt(btn){
+  const text=btn.closest('.prompt-section').querySelector('.prompt-text').textContent;
+  navigator.clipboard.writeText(text).then(()=>{
+    btn.textContent='已複製';
+    btn.classList.add('copied');
+    setTimeout(()=>{btn.textContent='複製';btn.classList.remove('copied')},1500);
+  });
+}
+
+function updateProgress(){
+  const total=document.querySelectorAll('.shot-card').length;
+  const done=document.querySelectorAll('.shot-checkbox.checked').length;
+  const badge=document.getElementById('progressBadge');
+  badge.textContent=done+' / '+total;
+  if(done===total){badge.style.background='rgba(42,122,42,.2)';badge.style.color='#fff';badge.style.borderColor='rgba(42,122,42,.4)';}
+  else{badge.style.background='rgba(255,255,255,.15)';badge.style.color='#fff';badge.style.borderColor='rgba(255,255,255,.2)';}
+}
+
+// Inject notes textarea into each shot card
+document.querySelectorAll('.shot-card').forEach(card=>{
+  const n=card.dataset.shot;
+  const body=card.querySelector('.shot-body');
+  if(!body)return;
+  const div=document.createElement('div');
+  div.className='user-notes';
+  div.innerHTML='<div class="user-notes-label">我的備註</div><textarea class="user-notes-input" placeholder="影片製作時要注意的事項..." oninput="saveNotes()"></textarea>';
+  body.appendChild(div);
+  // Load saved note
+  const notes=JSON.parse(localStorage.getItem('mythquartet_notes')||'{}');
+  if(notes[n])div.querySelector('textarea').value=notes[n];
+});
+
+function saveNotes(){
+  const notes={};
+  document.querySelectorAll('.shot-card').forEach(card=>{
+    const n=card.dataset.shot;
+    const ta=card.querySelector('.user-notes-input');
+    if(ta&&ta.value.trim())notes[n]=ta.value;
+  });
+  localStorage.setItem('mythquartet_notes',JSON.stringify(notes));
+}
+
+loadState();
+</script>
+</body>
+</html>
