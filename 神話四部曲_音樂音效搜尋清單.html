@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>神話四部曲 — Envato 配樂與音效搜尋清單</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;scroll-padding-top:70px}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Microsoft JhengHei","PingFang TC",sans-serif;background:#f5f3f0;color:#2a2420;line-height:1.8;font-size:15px}
+.top-bar{position:fixed;top:0;left:0;right:0;z-index:1000;background:linear-gradient(135deg,#3a1010,#8b1a1a);box-shadow:0 2px 12px rgba(0,0,0,.25);display:flex;align-items:center;justify-content:center;padding:0 24px}
+.top-bar h1{color:#f0dca0;font-size:17px;font-weight:700;padding:14px 0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.container{max-width:880px;margin:72px auto 40px;padding:0 20px}
+
+.card{background:#fff;border-radius:12px;box-shadow:0 1px 4px rgba(0,0,0,.06);padding:32px 36px;margin-bottom:20px}
+.card h2{font-size:20px;color:#8b1a1a;margin:28px 0 14px;padding-bottom:8px;border-bottom:2px solid #e0d5c8}
+.card h2:first-child{margin-top:0}
+.card h3{font-size:16px;color:#5a3030;margin:20px 0 10px}
+.card p{margin:10px 0}
+.card ul{margin:10px 0 10px 20px;list-style:disc}
+.card li{margin:5px 0}
+
+.tw{overflow-x:auto;margin:14px 0;border-radius:8px;border:1px solid #e0d5c8}
+table{width:100%;border-collapse:collapse;font-size:13.5px}
+thead{background:#8b1a1a}
+thead th{color:#f5f0e8;font-weight:600;padding:10px 14px;text-align:left}
+tbody td{padding:9px 14px;border-bottom:1px solid #ece6dc}
+tbody tr:nth-child(even){background:#faf8f4}
+tbody tr:hover{background:#f0e8dc}
+.kw{font-family:"SF Mono",Monaco,Consolas,monospace;font-size:12.5px;background:#faf5ee;padding:2px 8px;border-radius:4px;color:#5a3030;white-space:nowrap}
+
+.check-row{display:flex;align-items:center;gap:10px;padding:6px 0;cursor:pointer;user-select:none}
+.check-row:hover{background:#faf8f4;border-radius:6px;padding-left:4px;margin-left:-4px}
+.check-box{width:20px;height:20px;border:2px solid #c0b8a8;border-radius:4px;flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all .15s;font-size:13px;color:#fff}
+.check-box.checked{background:#8b1a1a;border-color:#8b1a1a}
+.check-box.checked::after{content:'\2713'}
+.check-label{font-size:14px;color:#2a2420}
+.check-label.checked{color:#a09888;text-decoration:line-through}
+
+.file-name{font-family:"SF Mono",Monaco,Consolas,monospace;font-size:13px;background:#f5f0e8;padding:2px 8px;border-radius:4px;color:#5a3030}
+.line-text{font-size:14px;color:#6a5a4a;font-style:italic}
+
+.section-note{background:#faf5ee;border-left:3px solid #8b1a1a;padding:12px 16px;margin:14px 0;border-radius:0 8px 8px 0;font-size:13.5px;color:#5a3030}
+
+.footer{text-align:center;padding:24px 0;color:#a09888;font-size:12px}
+
+@media(max-width:600px){
+  .container{padding:0 12px;margin-top:64px}
+  .card{padding:20px 18px}
+  .card h2{font-size:18px}
+  .top-bar h1{font-size:15px}
+  thead th{padding:8px 10px;font-size:12px}
+  tbody td{padding:7px 10px;font-size:12.5px}
+}
+</style>
+</head>
+<body>
+
+<div class="top-bar">
+  <h1>神話四部曲 — Envato 配樂與音效搜尋清單</h1>
+</div>
+
+<div class="container">
+
+<!-- 配樂搜尋 -->
+<div class="card">
+  <h2>配樂搜尋（1 首主配樂）</h2>
+  <p>需求：30 秒預告片配樂，從慢到快再到靜止</p>
+
+  <div class="tw"><table>
+    <thead><tr><th>搜尋關鍵字</th><th>說明</th><th style="width:40px"></th></tr></thead>
+    <tbody>
+      <tr><td><span class="kw">epic chinese mythology trailer</span></td><td>中國神話史詩預告片</td><td><div class="check-box" data-key="bgm_1" onclick="toggle(this)"></div></td></tr>
+      <tr><td><span class="kw">oriental cinematic trailer</span></td><td>東方電影感預告</td><td><div class="check-box" data-key="bgm_2" onclick="toggle(this)"></div></td></tr>
+      <tr><td><span class="kw">chinese epic orchestral short</span></td><td>中國史詩管弦短曲</td><td><div class="check-box" data-key="bgm_3" onclick="toggle(this)"></div></td></tr>
+      <tr><td><span class="kw">dark mythology dramatic</span></td><td>暗黑神話戲劇性</td><td><div class="check-box" data-key="bgm_4" onclick="toggle(this)"></div></td></tr>
+      <tr><td><span class="kw">ancient chinese dramatic build</span></td><td>古代中國戲劇性漸強</td><td><div class="check-box" data-key="bgm_5" onclick="toggle(this)"></div></td></tr>
+    </tbody>
+  </table></div>
+
+  <h3>篩選建議</h3>
+  <ul>
+    <li>時長選 30 秒左右（或可裁切的 60 秒）</li>
+    <li>風格：有東方樂器（古箏、笛、鼓）+ 管弦</li>
+    <li>節奏：前段慢 → 中段漸強 → 結尾一聲鼓後靜止</li>
+    <li>避免太歡樂或太現代電子的</li>
+  </ul>
+</div>
+
+<!-- 音效搜尋 -->
+<div class="card">
+  <h2>音效搜尋（按場景分）</h2>
+
+  <div class="tw"><table>
+    <thead><tr><th>場景</th><th>需要的音效</th><th>Envato 搜尋關鍵字</th><th style="width:40px"></th></tr></thead>
+    <tbody>
+      <tr><td>S01 開場字卡</td><td>低頻 drone 緩升</td><td><span class="kw">dark ambient drone rise</span></td><td><div class="check-box" data-key="sfx_s01" onclick="toggle(this)"></div></td></tr>
+      <tr><td>S02 蓮花重生</td><td>蓮花綻放／魔法／光芒</td><td><span class="kw">magic bloom sparkle</span><br><span class="kw">flower opening</span></td><td><div class="check-box" data-key="sfx_s02" onclick="toggle(this)"></div></td></tr>
+      <tr><td>S03 被收編</td><td>金屬鎧甲穿戴、鎖鏈</td><td><span class="kw">armor equip metal</span><br><span class="kw">chain rattle</span></td><td><div class="check-box" data-key="sfx_s03a" onclick="toggle(this)"></div></td></tr>
+      <tr><td>S03 行軍</td><td>齊步走腳步聲</td><td><span class="kw">army marching footsteps</span></td><td><div class="check-box" data-key="sfx_s03b" onclick="toggle(this)"></div></td></tr>
+      <tr><td>S04 關羽廟宇</td><td>香火、木魚、誦經</td><td><span class="kw">temple incense</span><br><span class="kw">wooden fish</span><br><span class="kw">chanting</span></td><td><div class="check-box" data-key="sfx_s04a" onclick="toggle(this)"></div></td></tr>
+      <tr><td>S04 關羽賭場</td><td>麻將牌碰撞</td><td><span class="kw">mahjong tiles shuffle</span></td><td><div class="check-box" data-key="sfx_s04b" onclick="toggle(this)"></div></td></tr>
+      <tr><td>S04 關羽倉庫</td><td>灰塵飄落、安靜</td><td><span class="kw">dust settle silence</span></td><td><div class="check-box" data-key="sfx_s04c" onclick="toggle(this)"></div></td></tr>
+      <tr><td>S05 后羿</td><td>酒杯翻倒、空曠迴音</td><td><span class="kw">cup falling</span><br><span class="kw">empty hall reverb</span></td><td><div class="check-box" data-key="sfx_s05" onclick="toggle(this)"></div></td></tr>
+      <tr><td>S06 嫦娥</td><td>完全靜音 → 一聲心跳</td><td><span class="kw">single heartbeat</span><br><span class="kw">silence</span></td><td><div class="check-box" data-key="sfx_s06" onclick="toggle(this)"></div></td></tr>
+      <tr><td>S07 覺察</td><td>心跳加速 → 突然停止</td><td><span class="kw">heartbeat accelerating stop</span></td><td><div class="check-box" data-key="sfx_s07" onclick="toggle(this)"></div></td></tr>
+      <tr><td>S08 結尾</td><td>一聲深沉鼓</td><td><span class="kw">single deep taiko drum hit</span></td><td><div class="check-box" data-key="sfx_s08" onclick="toggle(this)"></div></td></tr>
+    </tbody>
+  </table></div>
+</div>
+
+<!-- 旁白音檔 -->
+<div class="card">
+  <h2>旁白音檔（已生成）</h2>
+  <div class="section-note">以下 6 個旁白音檔已用 TTS 生成，對應預告片各場景的台詞。</div>
+
+  <div style="margin-top:16px">
+    <div class="check-row" onclick="toggleRow(this)" data-key="vo_s02">
+      <div class="check-box"></div>
+      <div class="check-label"><span class="file-name">s02_nezha_rebel.mp3</span> <span class="line-text">「我不信命。」</span></div>
+    </div>
+    <div class="check-row" onclick="toggleRow(this)" data-key="vo_s03">
+      <div class="check-box"></div>
+      <div class="check-label"><span class="file-name">s03_authority.mp3</span> <span class="line-text">「重生，不是解放。是改造的開始。」</span></div>
+    </div>
+    <div class="check-row" onclick="toggleRow(this)" data-key="vo_s04">
+      <div class="check-box"></div>
+      <div class="check-label"><span class="file-name">s04_guanyu.mp3</span> <span class="line-text">「他們拜的不是我。是他們需要我成為的樣子。」</span></div>
+    </div>
+    <div class="check-row" onclick="toggleRow(this)" data-key="vo_s05">
+      <div class="check-box"></div>
+      <div class="check-label"><span class="file-name">s05_houyi.mp3</span> <span class="line-text">「太陽射完了。英雄，也就用完了。」</span></div>
+    </div>
+    <div class="check-row" onclick="toggleRow(this)" data-key="vo_s06">
+      <div class="check-box"></div>
+      <div class="check-label"><span class="file-name">s06_change.mp3</span> <span class="line-text">「我以為飛得夠高，就能自由。」</span></div>
+    </div>
+    <div class="check-row" onclick="toggleRow(this)" data-key="vo_s07">
+      <div class="check-box"></div>
+      <div class="check-label"><span class="file-name">s07_nezha_awaken.mp3</span> <span class="line-text">「他們不需要鎖住我。只要讓我忘記門在哪。」</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="footer">神話四部曲 — Envato 配樂與音效搜尋清單 | 勾選已下載的項目，進度自動儲存</div>
+
+</div>
+
+<script>
+const STORAGE_KEY='mythquartet_audio_checks';
+
+function loadState(){
+  try{return JSON.parse(localStorage.getItem(STORAGE_KEY))||{}}catch(e){return{}}
+}
+function saveState(s){
+  try{localStorage.setItem(STORAGE_KEY,JSON.stringify(s))}catch(e){}
+}
+
+function toggle(el){
+  const key=el.dataset.key;
+  const state=loadState();
+  const checked=!state[key];
+  state[key]=checked;
+  saveState(state);
+  el.classList.toggle('checked',checked);
+}
+
+function toggleRow(row){
+  const key=row.dataset.key;
+  const state=loadState();
+  const checked=!state[key];
+  state[key]=checked;
+  saveState(state);
+  const box=row.querySelector('.check-box');
+  const label=row.querySelector('.check-label');
+  box.classList.toggle('checked',checked);
+  label.classList.toggle('checked',checked);
+}
+
+// restore state on load
+document.addEventListener('DOMContentLoaded',function(){
+  const state=loadState();
+  // table checkboxes
+  document.querySelectorAll('.check-box[data-key]').forEach(function(el){
+    if(state[el.dataset.key]) el.classList.add('checked');
+  });
+  // row checkboxes
+  document.querySelectorAll('.check-row[data-key]').forEach(function(row){
+    if(state[row.dataset.key]){
+      row.querySelector('.check-box').classList.add('checked');
+      row.querySelector('.check-label').classList.add('checked');
+    }
+  });
+});
+</script>
+
+</body>
+</html>
