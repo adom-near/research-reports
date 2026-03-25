@@ -7,53 +7,53 @@
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth;scroll-padding-top:70px}
-body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Microsoft JhengHei","PingFang TC",sans-serif;background:#f5f3f0;color:#2a2a2a;line-height:1.8;font-size:15px}
-.top-bar{position:fixed;top:0;left:0;right:0;z-index:1000;background:linear-gradient(135deg,#1a1f15,#2e3620);box-shadow:0 2px 12px rgba(0,0,0,.25);display:flex;align-items:center;padding:0 24px;gap:16px}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Microsoft JhengHei","PingFang TC",sans-serif;background:#f5f3f0;color:#2a2420;line-height:1.8;font-size:15px}
+.top-bar{position:fixed;top:0;left:0;right:0;z-index:1000;background:linear-gradient(135deg,#3a1010,#8b1a1a);box-shadow:0 2px 12px rgba(0,0,0,.25);display:flex;align-items:center;padding:0 24px;gap:16px}
 .top-bar .back{color:rgba(255,255,255,.7);text-decoration:none;font-size:14px;display:flex;align-items:center;gap:4px;flex-shrink:0}
 .top-bar .back:hover{color:#fff}
-.top-bar h1{color:#c8a84b;font-size:17px;font-weight:700;padding:14px 0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.top-bar h1{color:#f0dca0;font-size:17px;font-weight:700;padding:14px 0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .container{max-width:880px;margin:72px auto 40px;padding:0 20px}
 
 .card{background:#fff;border-radius:12px;box-shadow:0 1px 4px rgba(0,0,0,.06);padding:32px 36px;margin-bottom:20px}
-.card h2{font-size:20px;color:#2e3620;margin:28px 0 14px;padding-bottom:8px;border-bottom:2px solid #d4cdb0}
+.card h2{font-size:20px;color:#8b1a1a;margin:28px 0 14px;padding-bottom:8px;border-bottom:2px solid #e0d5c8}
 .card h2:first-child{margin-top:0}
-.card h3{font-size:16px;color:#7a6020;margin:20px 0 10px}
+.card h3{font-size:16px;color:#5a3030;margin:20px 0 10px}
 .card p{margin:10px 0}
 .card ul,.card ol{margin:10px 0 10px 20px}
 .card li{margin:5px 0}
 
-.tw{overflow-x:auto;margin:14px 0;border-radius:8px;border:1px solid #d4cdb0}
+.tw{overflow-x:auto;margin:14px 0;border-radius:8px;border:1px solid #e0d5c8}
 table{width:100%;border-collapse:collapse;font-size:13.5px}
-thead{background:#2e3620}
-thead th{color:#e8d9b0;font-weight:600;padding:10px 14px;text-align:left}
-tbody td{padding:9px 14px;border-bottom:1px solid #ece8d8}
-tbody tr:nth-child(even){background:#faf8f2}
-tbody tr:hover{background:#f5f0e0}
-tbody tr.highlight{background:#fff8e1;font-weight:600}
-tbody tr.highlight td{border-bottom-color:#f0e0a0}
+thead{background:#8b1a1a}
+thead th{color:#f5f0e8;font-weight:600;padding:10px 14px;text-align:left}
+tbody td{padding:9px 14px;border-bottom:1px solid #ece6dc}
+tbody tr:nth-child(even){background:#faf8f4}
+tbody tr:hover{background:#f5ede0}
+tbody tr.highlight{background:#fdf6e8;font-weight:600}
+tbody tr.highlight td{border-bottom-color:#e8d8a8}
 tbody tr.promote{background:#e8f5e9;font-weight:600}
 tbody tr.promote td{border-bottom-color:#a5d6a7}
 
 .callout{border-radius:8px;padding:14px 18px;margin:14px 0;border-left:4px solid;font-size:14px}
-.callout-danger{background:#fef2f2;border-color:#b83030;color:#7f1d1d}
-.callout-info{background:#f0f4f0;border-color:#4a8a3a;color:#1a3a10}
-.callout-warn{background:#fffbeb;border-color:#c8a84b;color:#5a4010}
+.callout-danger{background:#fef2f2;border-color:#8b1a1a;color:#5a1010}
+.callout-info{background:#f0f6f0;border-color:#4a8a3a;color:#1a3a10}
+.callout-warn{background:#fffbeb;border-color:#c8a020;color:#5a4010}
 .callout-gold{background:#faf6e8;border-color:#c8a84b;color:#5a4010}
 
 .stat-row{display:flex;gap:12px;flex-wrap:wrap;margin:16px 0}
-.stat-box{flex:1;min-width:140px;background:linear-gradient(135deg,#faf8f2,#f0ebe0);border:1px solid #d4cdb0;border-radius:10px;padding:16px 18px;text-align:center}
-.stat-num{font-size:28px;font-weight:800;color:#2e3620}
-.stat-label{font-size:12px;color:#8a7a5a;margin-top:2px}
+.stat-box{flex:1;min-width:140px;background:linear-gradient(135deg,#faf8f4,#f0e8dc);border:1px solid #e0d5c8;border-radius:10px;padding:16px 18px;text-align:center}
+.stat-num{font-size:28px;font-weight:800;color:#8b1a1a}
+.stat-label{font-size:12px;color:#8a7a6a;margin-top:2px}
 
 .tag{display:inline-block;font-size:12px;padding:2px 8px;border-radius:4px;margin:2px}
-.tag-red{background:#fde8e8;color:#8a2a2a}
+.tag-red{background:#fde8e8;color:#8b1a1a}
 .tag-green{background:#d4edda;color:#155724}
 .tag-gold{background:#faf0d0;color:#7a6020}
 .tag-gray{background:#f0ede8;color:#6a6a6a}
 
-.scene-header{margin-top:24px;margin-bottom:14px;padding:12px 16px;background:linear-gradient(90deg,#f0ebe0,transparent);border-left:3px solid #c8a84b;border-radius:4px}
-.scene-title{font-size:16px;font-weight:700;color:#2e3620}
-.scene-time{font-size:12px;color:#8a7a5a;margin-top:2px}
+.scene-header{margin-top:24px;margin-bottom:14px;padding:12px 16px;background:linear-gradient(90deg,#f0e8dc,transparent);border-left:3px solid #8b1a1a;border-radius:4px}
+.scene-title{font-size:16px;font-weight:700;color:#8b1a1a}
+.scene-time{font-size:12px;color:#8a7a6a;margin-top:2px}
 
 .color-swatch{display:inline-block;width:20px;height:20px;border-radius:4px;vertical-align:middle;margin-right:6px;border:1px solid rgba(0,0,0,.1)}
 
@@ -63,8 +63,8 @@ tbody tr.promote td{border-bottom-color:#a5d6a7}
 .dialog-box .ko{color:#b83030;font-weight:700;font-size:16px}
 
 details{margin:10px 0}
-details summary{cursor:pointer;font-weight:600;color:#7a6020;padding:8px 0;font-size:14px}
-details summary:hover{color:#2e3620}
+details summary{cursor:pointer;font-weight:600;color:#8b1a1a;padding:8px 0;font-size:14px}
+details summary:hover{color:#5a1010}
 
 .footer{text-align:center;padding:24px 0;color:#aaa;font-size:12px}
 @media(max-width:600px){
@@ -80,7 +80,7 @@ details summary:hover{color:#2e3620}
 
 <div class="top-bar">
   <a class="back" href="index.html">&larr; 首頁</a>
-  <h1>軍委大亂鬥 — RPG 遊戲風格軍委清洗動畫腳本</h1>
+  <h1>軍委大亂鬥 — RPG 遊戲風格軍委清洗動畫腳本（StyleC3AnimatedV2）</h1>
 </div>
 
 <div class="container">
@@ -101,7 +101,7 @@ details summary:hover{color:#2e3620}
 <tr><td style="font-weight:600">風格</td><td>HOI4 軍事 UI + RPG 回合制戰鬥 + CRT 掃描線</td></tr>
 <tr><td style="font-weight:600">字體</td><td>ZCOOL QingKe HuangYou（像素風標題）+ Noto Sans SC（內文）</td></tr>
 <tr><td style="font-weight:600">語言</td><td>全簡體中文</td></tr>
-<tr><td style="font-weight:600">配音</td><td>15 段旁白音檔（播放速率 +10%）</td></tr>
+<tr><td style="font-weight:600">配音</td><td>15 段旁白音檔（public/vo/v2/），播放速率 +10%</td></tr>
 </tbody>
 </table>
 </div>
@@ -145,29 +145,22 @@ details summary:hover{color:#2e3620}
 <tr><th>姓名</th><th>職位</th><th>類型</th><th>Lv</th><th>ATK</th><th>DEF</th><th>結局</th><th>時間</th></tr>
 </thead>
 <tbody>
-<tr class="highlight"><td>習近平</td><td>軍委主席</td><td><span class="tag tag-gold">👑 統帥系</span></td><td>99</td><td>99</td><td>99</td><td><span class="tag tag-gold">BOSS</span></td><td>&mdash;</td></tr>
-<tr><td>張又俠</td><td>原副主席</td><td><span class="tag tag-red">⚔️ 陸軍系</span></td><td>78</td><td>85</td><td>70</td><td><span class="tag tag-red">KO &mdash; 立案審查</span></td><td>2026.01</td></tr>
-<tr><td>何衛東</td><td>原副主席</td><td><span class="tag tag-red">⚔️ 陸軍系</span></td><td>75</td><td>80</td><td>65</td><td><span class="tag tag-red">KO &mdash; 落馬</span></td><td>2025.10</td></tr>
-<tr class="promote"><td>張升民</td><td>紀檢委書記→副主席</td><td><span class="tag tag-green">🔍 紀檢系</span></td><td>72→85</td><td>60→78</td><td>85→95</td><td><span class="tag tag-green">升級（升任副主席）</span></td><td>&mdash;</td></tr>
-<tr><td>李尚福</td><td>國防部長</td><td><span class="tag tag-gray">🛡️ 裝備系</span></td><td>63</td><td>75</td><td>50</td><td><span class="tag tag-red">KO &mdash; 開除黨籍</span></td><td>2024.06</td></tr>
-<tr><td>劉振立</td><td>裝備發展部部長</td><td><span class="tag tag-gray">🛡️ 裝備系</span></td><td>65</td><td>70</td><td>55</td><td><span class="tag tag-red">KO &mdash; 立案審查</span></td><td>2026.01</td></tr>
-<tr><td>苗華</td><td>政治工作部主任</td><td><span class="tag tag-gray">📋 政工系</span></td><td>68</td><td>65</td><td>60</td><td><span class="tag tag-red">KO &mdash; 帶走調查</span></td><td>2024.11</td></tr>
+<tr class="highlight"><td>習近平</td><td>軍委主席</td><td><span class="tag tag-gold">統帥系</span></td><td>99</td><td>99</td><td>99</td><td><span class="tag tag-gold">BOSS</span></td><td>&mdash;</td></tr>
+<tr><td>張又俠</td><td>原副主席</td><td><span class="tag tag-red">陸軍系</span></td><td>78</td><td>85</td><td>70</td><td><span class="tag tag-red">KO &mdash; 立案審查</span></td><td>2026.01</td></tr>
+<tr><td>何衛東</td><td>原副主席</td><td><span class="tag tag-red">陸軍系</span></td><td>75</td><td>80</td><td>65</td><td><span class="tag tag-red">KO &mdash; 落馬</span></td><td>2025.10</td></tr>
+<tr class="promote"><td>張升民</td><td>紀檢委書記→副主席</td><td><span class="tag tag-green">紀檢系</span></td><td>72→85</td><td>60→78</td><td>85→95</td><td><span class="tag tag-green">升級（升任副主席）</span></td><td>&mdash;</td></tr>
+<tr><td>李尚福</td><td>國防部長</td><td><span class="tag tag-gray">裝備系</span></td><td>63</td><td>75</td><td>50</td><td><span class="tag tag-red">KO &mdash; 開除黨籍</span></td><td>2024.06</td></tr>
+<tr><td>劉振立</td><td>裝備發展部部長</td><td><span class="tag tag-gray">裝備系</span></td><td>65</td><td>70</td><td>55</td><td><span class="tag tag-red">KO &mdash; 立案審查</span></td><td>2026.01</td></tr>
+<tr><td>苗華</td><td>政治工作部主任</td><td><span class="tag tag-gray">政工系</span></td><td>68</td><td>65</td><td>60</td><td><span class="tag tag-red">KO &mdash; 帶走調查</span></td><td>2024.11</td></tr>
 </tbody>
 </table>
 </div>
 </div>
 
-<!-- ===== 全局視覺元素 ===== -->
+<!-- ===== 色彩設計規格 ===== -->
 <div class="card">
-<h2>全局視覺元素</h2>
-<ul>
-<li><strong>CRT 掃描線：</strong>全程覆蓋，2px 間距的水平條紋，模擬老式 CRT 螢幕效果</li>
-<li><strong>橄欖色格子紋：</strong>40px 網格，極低透明度金色線條，營造軍事地圖質感</li>
-<li><strong>金色雙層邊框：</strong>所有面板使用 HOI4 風格的雙金色邊框 + 內陰影</li>
-<li><strong>打字機效果：</strong>所有文字內容以逐字出現方式呈現，搭配閃爍光標</li>
-</ul>
+<h2>色彩設計規格（HOI4 軍事 UI 風格）</h2>
 
-<h3>色彩規格（HOI4 軍事 UI 風格）</h3>
 <div class="tw">
 <table>
 <thead><tr><th>項目</th><th>色碼</th><th>用途</th></tr></thead>
@@ -177,14 +170,29 @@ details summary:hover{color:#2e3620}
 <tr><td><span class="color-swatch" style="background:#252b1c"></span>BG_PANEL</td><td>#252b1c</td><td>面板背景</td></tr>
 <tr><td><span class="color-swatch" style="background:#2e3620"></span>BG_ELEVATED</td><td>#2e3620</td><td>凸起面板</td></tr>
 <tr><td><span class="color-swatch" style="background:#c8a84b"></span>GOLD_BRIGHT</td><td>#c8a84b</td><td>金色邊框、高亮文字</td></tr>
+<tr><td><span class="color-swatch" style="background:#a0832a"></span>GOLD_MID</td><td>#a0832a</td><td>金色中間調</td></tr>
+<tr><td><span class="color-swatch" style="background:#7a6020"></span>GOLD_DARK</td><td>#7a6020</td><td>金色邊框暗調</td></tr>
 <tr><td><span class="color-swatch" style="background:#e8d9b0"></span>TEXT_PRIMARY</td><td>#e8d9b0</td><td>主要文字（奶油色）</td></tr>
-<tr><td><span class="color-swatch" style="background:#4a8a3a"></span>GREEN</td><td>#4a8a3a</td><td>HP 條、存活狀態</td></tr>
-<tr><td><span class="color-swatch" style="background:#8a2a2a"></span>RED</td><td>#8a2a2a</td><td>ATK 條、被擊敗</td></tr>
+<tr><td><span class="color-swatch" style="background:#f5e8c0"></span>TEXT_HEADER</td><td>#f5e8c0</td><td>標題文字</td></tr>
+<tr><td><span class="color-swatch" style="background:#a89868"></span>TEXT_SECONDARY</td><td>#a89868</td><td>次要文字</td></tr>
+<tr><td><span class="color-swatch" style="background:#4a8a3a"></span>GREEN</td><td>#4a8a3a</td><td>HP 條、存活狀態、紀檢系邊框</td></tr>
+<tr><td><span class="color-swatch" style="background:#8a2a2a"></span>RED</td><td>#8a2a2a</td><td>ATK 條、陸軍系色帶、被擊敗邊框</td></tr>
 <tr><td><span class="color-swatch" style="background:#b83030"></span>RED_KO</td><td>#b83030</td><td>KO 文字、亮紅色</td></tr>
-<tr><td><span class="color-swatch" style="background:#2a5878"></span>BLUE</td><td>#2a5878</td><td>DEF 條、裝備系</td></tr>
+<tr><td><span class="color-swatch" style="background:#2a5878"></span>BLUE</td><td>#2a5878</td><td>DEF 條、裝備系色帶</td></tr>
+<tr><td><span class="color-swatch" style="background:#c8a020"></span>YELLOW</td><td>#c8a020</td><td>HP 警告、EXP 條</td></tr>
 </tbody>
 </table>
 </div>
+</div>
+
+<!-- ===== 全局視覺元素 ===== -->
+<div class="card">
+<h2>全局視覺元素</h2>
+<ul>
+<li><strong>CRT 掃描線：</strong>全程覆蓋，2px 間距的水平條紋（rgba(0,0,0,0.04)），模擬老式 CRT 螢幕效果</li>
+<li><strong>橄欖色格子紋：</strong>40px 網格，極低透明度金色線條（rgba(200,168,75,0.03)），營造軍事地圖質感</li>
+<li><strong>金色雙層邊框：</strong>所有面板使用 HOI4 風格的雙金色邊框 + 內陰影</li>
+</ul>
 </div>
 
 <!-- ===== 分場腳本 ===== -->
@@ -198,15 +206,15 @@ details summary:hover{color:#2e3620}
   <div class="scene-time">0:00 - 0:07.3 &nbsp;|&nbsp; 220 幀 &nbsp;|&nbsp; 音檔：p1.mp3（6.8s）</div>
 </div>
 
-<p><strong>畫面：</strong>深色放射漸層背景。主標題以打字機效果逐字出現，搭配閃爍光標。整體以 spring 動畫從 scale 0.8 放大到 1.0。</p>
+<p><strong>畫面：</strong>深色放射漸層背景（從 BG_DARK 到 BG_DARKEST）。主標題以打字機效果逐字出現（每 3 幀一個字），搭配閃爍光標。字體為像素風格（ZCOOL QingKe HuangYou），113px，金色。標題區域以 spring 動畫從 scale 0.8 放大到 1.0。</p>
 
 <div class="dialog-box">
   <div class="speaker">畫面文字</div>
   <div style="margin-top:8px">
     <strong style="font-size:18px;color:#c8a84b">军 委 大 乱 斗</strong>（打字機逐字出現，113px 像素字體）<br>
-    CENTRAL MILITARY COMMISSION &mdash; BATTLE ROYALE（副標題，frame 40 淡入）<br>
-    <span style="color:#a89868">第二十届 &middot; 2023-2026</span>（年代，frame 60 淡入）<br>
-    <span style="opacity:0.7">PRESS START</span>（frame 100 後閃爍）
+    CENTRAL MILITARY COMMISSION &mdash; BATTLE ROYALE（副標題，31px，frame 40 淡入）<br>
+    <span style="color:#a89868">第二十届 &middot; 2023-2026</span>（38px，frame 60 淡入）<br>
+    <span style="opacity:0.7">PRESS START</span>（frame 100 後每 15 幀閃爍）
   </div>
 </div>
 
@@ -216,13 +224,13 @@ details summary:hover{color:#2e3620}
   <div class="scene-time">0:07.3 - 0:13.5 &nbsp;|&nbsp; 185 幀 &nbsp;|&nbsp; 音檔：p2.mp3（5.6s）</div>
 </div>
 
-<p><strong>畫面：</strong>7 張 RPG 角色卡（420&times;250px）以動畫方式進場。每張卡片含頭像（sepia 濾鏡）、姓名、等級、職位、類型、HP/ATK/DEF 數值條。</p>
+<p><strong>畫面：</strong>7 張 RPG 角色卡（420&times;250px）以動畫方式進場，形成組織圖佈局。每張卡片含頭像（110&times;110px，sepia 濾鏡）、姓名、等級、職位、類型、HP/ATK/DEF 數值條。卡片頂部有類型色帶（4px 高）。</p>
 
 <div class="tw">
 <table>
 <thead><tr><th>排</th><th>角色</th><th>進場方式</th><th>特殊標記</th></tr></thead>
 <tbody>
-<tr class="highlight"><td>第 0 排（居中）</td><td>習近平</td><td>從上方彈入（f0 起）</td><td>金色邊框 + 脈動光暈</td></tr>
+<tr class="highlight"><td>第 0 排（居中）</td><td>習近平</td><td>從上方彈入（spring，f0 起）</td><td>金色邊框 + 脈動光暈</td></tr>
 <tr><td>第 1 排（三欄）</td><td>張又俠、何衛東、張升民</td><td>從左右滑入（f40 起，stagger 5 幀）</td><td>張升民：綠色邊框</td></tr>
 <tr><td>第 2 排（三欄）</td><td>李尚福、劉振立、苗華</td><td>從下方滑入（f50 起，stagger 5 幀）</td><td>&mdash;</td></tr>
 </tbody>
@@ -232,7 +240,7 @@ details summary:hover{color:#2e3620}
 <div class="dialog-box">
   <div class="speaker">畫面文字</div>
   <div style="margin-top:8px">
-    <span style="font-size:16px;color:#c8a84b">选择你的队伍</span>（f30 淡入，置中顯示於第 0 排與第 1 排之間）
+    <span style="font-size:16px;color:#c8a84b">选择你的队伍</span>（f30 淡入，45px 金色像素字體，置中顯示於第 0 排與第 1 排之間）
   </div>
 </div>
 
@@ -247,16 +255,16 @@ details summary:hover{color:#2e3620}
 <!-- Seg 1 -->
 <details open>
 <summary>段落 1：回合 1 &mdash; 李尚福（完整回合，250 幀 / p3_r1.mp3）</summary>
-<p><strong>佈局：</strong>頂部標題「═══ 回合 1 ═══」、左側習近平卡 vs 右側李尚福卡、底部戰鬥選單 + RPG 對話框</p>
-<p><strong>戰鬥選單：</strong>▸ 铲除 / 调查 / 背包 / 逃跑（2&times;2 網格）</p>
+<p><strong>佈局：</strong>頂部標題「═══ 回合 1 ═══」（44px 像素字體，spring 彈入）、左側習近平卡（525&times;313px）vs 右側李尚福卡（從右滑入）、底部戰鬥選單 + RPG 對話框（1600&times;313px）</p>
+<p><strong>戰鬥選單：</strong>▸ 铲除 / 调查 / 背包 / 逃跑（2&times;2 網格，32px 像素字體），游標在選項間閃爍</p>
 <p><strong>戰鬥流程：</strong></p>
 <ol>
-<li>角色卡入場 → 選單出現（游標閃爍）</li>
-<li>能量彈從習近平飛向李尚福（拋物線 + 尾焰粒子 + 命中爆發）</li>
-<li>砍擊特效（sprite sheet 逐幀動畫）</li>
-<li>畫面震動 + 暖色閃白</li>
+<li>角色卡入場 → 選單出現</li>
+<li>能量彈從習近平飛向李尚福（拋物線軌跡 + 尾焰粒子 + 命中爆發）</li>
+<li>砍擊特效（sprite sheet 逐幀動畫，5 種變體&times;6 幀）</li>
+<li>畫面震動 + 暖色閃白（sepia tint）</li>
 <li>HP 條 100% → 0%（綠→黃→紅）</li>
-<li>6 顆金色/紅色粒子向外擴散</li>
+<li>6 顆金色/紅色方形粒子向外擴散</li>
 </ol>
 <div class="dialog-box">
   <div class="speaker">习近平</div>
@@ -264,7 +272,7 @@ details summary:hover{color:#2e3620}
     习近平 使用了「<span class="highlight">反腐清洗</span>」！<br>
     对 李尚福 造成了 <span class="highlight">致命一击</span>！<br>
     李尚福 被「<span class="highlight">开除党籍</span>」了！<br>
-    <span class="ko">KO</span>
+    <span class="ko">KO</span>（150px，spring 彈入，對手卡片灰暗化至 30% 透明度）
   </div>
 </div>
 </details>
@@ -276,8 +284,8 @@ details summary:hover{color:#2e3620}
   <div class="speaker">═══ 情报简报 ═══</div>
   <div style="margin-top:8px">
     <span style="color:#b83030;font-weight:700">2023.07</span> <span class="tag tag-gold">新华社</span><br>
-    火箭军高层集体失踪（打字機效果）<br>
-    <span style="font-size:12px;color:#a89868">配圖：news/r0_rocket_force.jpg（400&times;250px）</span>
+    火箭军高层集体失踪（38px，打字機效果）<br>
+    <span style="font-size:12px;color:#a89868">配圖：news/r0_rocket_force.jpg（400&times;250px，saturate(0.7) contrast(1.1) 濾鏡）</span>
   </div>
 </div>
 </details>
@@ -310,20 +318,28 @@ details summary:hover{color:#2e3620}
 <details>
 <summary>段落 5：專家引述 1（185 幀 / p3_q1.mp3）</summary>
 <div class="dialog-box">
-  <div class="speaker">📜 情报档案</div>
+  <div class="speaker">情报档案</div>
   <div style="margin-top:8px">
     &ldquo;习近平对军队的控制，已经从信任转向了恐惧。&rdquo;<br>
     <span style="color:#a89868;text-align:right;display:block;margin-top:8px">&mdash;&mdash; 外交政策杂志，2024</span>
   </div>
 </div>
+<p style="font-size:13px;color:#8a7a6a">底部閃爍箭頭（▼）提示繼續</p>
 </details>
 
 <!-- Seg 6 -->
 <details open>
 <summary>段落 6：回合 4 &mdash; 張升民（完整回合 &mdash; 升職，240 幀 / p3_r4.mp3）</summary>
-<p><strong>特殊：</strong>此回合為升職而非攻擊。選單額外出現「提拔」選項。</p>
-<p><strong>游標移動：</strong>铲除 → 调查 → 背包 → <strong>提拔</strong></p>
-<p><strong>升職動畫：</strong>金色光效由下向上掃過 → 「LV UP!」文字彈出 → 數值提升（Lv.72→85、ATK 60→78、DEF 85→95）→ 邊框變金色</p>
+<p><strong>特殊：</strong>此回合為升職而非攻擊。選單除標準四選項外，額外出現「提拔」選項（spring 彈入）。</p>
+<p><strong>游標移動順序：</strong>铲除 → 调查 → 背包 → <strong>提拔</strong></p>
+<p><strong>升職動畫：</strong></p>
+<ol>
+<li>選單「提拔」選項被選中</li>
+<li>金色光效從底部向上掃過整個畫面</li>
+<li>「LV UP!」文字（60px，金色 + 光暈）在角色卡中央彈出</li>
+<li>張升民的數值提升：Lv.72→85、ATK 60→78、DEF 85→95</li>
+<li>角色卡邊框從暗金色變為明亮金色 + 金色光暈</li>
+</ol>
 <div class="dialog-box">
   <div class="speaker">习近平</div>
   <div style="margin-top:8px">
@@ -378,7 +394,7 @@ details summary:hover{color:#2e3620}
 <details>
 <summary>段落 10：專家引述 2（150 幀 / p3_q2.mp3）</summary>
 <div class="dialog-box">
-  <div class="speaker">📜 情报档案</div>
+  <div class="speaker">情报档案</div>
   <div style="margin-top:8px">
     &ldquo;三年清洗五名军委委员，中共历史上前所未有。&rdquo;<br>
     <span style="color:#a89868;text-align:right;display:block;margin-top:8px">&mdash;&mdash; 路透社分析，2026</span>
@@ -392,7 +408,7 @@ details summary:hover{color:#2e3620}
   <div class="scene-time">1:17.0 - 1:27.0 &nbsp;|&nbsp; 300 幀 &nbsp;|&nbsp; 音檔：p4.mp3（6.5s）</div>
 </div>
 
-<p><strong>標題：</strong>「═══ 战 斗 结 果 ═══」（spring 縮放彈入）</p>
+<p><strong>標題：</strong>「═══ 战 斗 结 果 ═══」（40px 像素字體，spring 縮放彈入 + 金色光暈）</p>
 
 <div class="stat-row">
 <div class="stat-box"><div class="stat-num" style="color:#b83030">5</div><div class="stat-label">击败数</div></div>
@@ -404,9 +420,9 @@ details summary:hover{color:#2e3620}
 <div class="dialog-box">
   <div class="speaker">结算框</div>
   <div style="margin-top:8px">
-    🏆 经验值获得：+99999 EXP（進度條 0%→100%，金色漸層，顯示 MAX）<br><br>
-    💀 击败名单：李尚福、苗华、何卫东、张又侠、刘振立（打字機效果）<br>
-    ⬆️ 升级：张升民 → 副主席（打字機效果）
+    经验值获得：+99999 EXP（進度條 0%→100%，金色漸層，右側顯示 MAX）<br><br>
+    击败名单：李尚福、苗华、何卫东、张又侠、刘振立（打字機效果）<br>
+    升级：张升民 → 副主席（打字機效果）
   </div>
 </div>
 
@@ -431,23 +447,23 @@ details summary:hover{color:#2e3620}
 </div>
 
 <h3>Part 1（frame 0-180）：角色回顧組織圖</h3>
-<p>7 張迷你角色卡（320&times;200px）依序 spring 彈入。存活者有彩色頭像與金色/綠色邊框；被擊敗者為灰階頭像、紅色邊框、紅色「✕」標記、40% 透明度。</p>
+<p>7 張迷你角色卡（320&times;200px）依序 spring 彈入（stagger 12 幀）。存活者（習近平、張升民）：亮色面板 + 金色/綠色邊框 + 彩色頭像；被擊敗者（其他 5 人）：暗色面板 + 紅色邊框 + 灰階頭像 + 紅色「✕」標記 + 40% 透明度。HP 條：存活者 100%（綠色），被擊敗者 0%（空條）。</p>
 <div class="dialog-box">
   <div class="speaker">畫面文字</div>
   <div style="margin-top:8px">
-    存活率：16.7%（52px，打字機效果）
+    存活率：16.7%（52px，像素字體，打字機效果）
   </div>
 </div>
 
 <h3>Part 2（frame 180-320）：GAME OVER</h3>
-<p>暗幕過渡（透明度 0→0.9）後，文字逐字出現：</p>
+<p>暗幕過渡（frame 180-195：透明度 0→0.9）後，文字逐字出現（每 5 幀一字）：</p>
 <div class="dialog-box" style="text-align:center">
   <div style="font-size:22px;color:#b83030;font-weight:700;letter-spacing:4px;margin:8px 0">G A M E &ensp; O V E R &ensp;?</div>
   <div style="font-size:16px;color:#e8d9b0;letter-spacing:3px;margin-top:12px">下 一 个 ， 会 是 谁 ？</div>
 </div>
 
 <h3>Part 3（frame 320-360）：選擇按鈕</h3>
-<p>兩個 HOI4 風格按鈕「[继续]」和「[放弃]」交替閃爍，最終停在「繼續」。</p>
+<p>兩個 HOI4 風格按鈕「[继续]」和「[放弃]」（40px 像素字體）交替閃爍，最終停在「繼續」。</p>
 
 <!-- Phase 7 -->
 <div class="scene-header">
@@ -456,24 +472,24 @@ details summary:hover{color:#2e3620}
 </div>
 
 <h3>進場（frame 0-48）</h3>
-<p>從黑畫面淡入。習近平卡（金色邊框）從左側滑入，張升民卡（綠色邊框）從右側滑入。兩卡初始居中，各顯示姓名、職位、HP 100/100。</p>
+<p>從黑畫面淡入。習近平角色卡（340px 寬，金色邊框）從左側滑入（spring，frame 15 起），張升民角色卡（綠色邊框）從右側滑入（spring，frame 20 起）。兩卡初始居中，各顯示姓名、職位、HP 100/100。</p>
 
 <h3>閃電 VS（frame 48-70）</h3>
-<p>全螢幕 SVG 閃電 + 金色「VS」文字（120px）spring 彈入。金色閃白 + 畫面震動。兩張卡片同時向上移動。</p>
+<p>全螢幕閃電（SVG 多邊形 + 金色 drop-shadow）+ 「VS」文字（120px，金色，三層光暈）spring 彈入。金色閃白（frame 48-55）+ 畫面震動（frame 48-63）。兩張卡片同時向上移動（y:310 → y:120）。</p>
 
 <h3>對話框（frame 110 起）</h3>
 <div class="dialog-box">
-  <div class="speaker" style="background:#8a2a2a;border-color:#b83030">⚠️ 系统提示</div>
+  <div class="speaker" style="background:#8a2a2a;border-color:#b83030">系统提示</div>
   <div style="margin-top:8px">
-    &ldquo;忠诚不绝对，就是绝对不忠诚。&rdquo;（42px，打字機效果）<br>
-    <span style="color:#b83030;font-weight:700">给家人一个没有恐惧的明天，是你今天最勇敢的决定。</span>（40px，紅色粗體）
+    &ldquo;忠诚不绝对，就是绝对不忠诚。&rdquo;（42px，打字機效果，frame 125 起每 3 幀一字）<br>
+    <span style="color:#b83030;font-weight:700">给家人一个没有恐惧的明天，是你今天最勇敢的决定。</span>（40px，紅色粗體，frame 190 起每 3 幀一字）
   </div>
 </div>
 
-<p><strong>選擇按鈕（frame 240 起）：</strong>「[接受]」和「[拒绝]」交替閃爍</p>
+<p><strong>選擇按鈕（frame 240 起）：</strong>「[接受]」和「[拒绝]」（34px 像素字體）每 20 幀交替閃爍</p>
 
 <div class="dialog-box" style="text-align:center">
-  <div style="color:#a89868;font-size:14px">&mdash;&mdash; 下一回合加载中...（閃爍效果）</div>
+  <div style="color:#a89868;font-size:14px">&mdash;&mdash; 下一回合加载中...（26px 像素字體，閃爍效果，frame 260 起）</div>
 </div>
 
 </div>
@@ -500,7 +516,7 @@ details summary:hover{color:#2e3620}
 <!-- ===== 音訊配置 ===== -->
 <div class="card">
 <h2>音訊配置</h2>
-<p>共 15 段旁白音檔，播放速率 +10%。</p>
+<p>共 15 段旁白音檔（public/vo/v2/），播放速率 +10%。</p>
 
 <div class="tw">
 <table>
