@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SentrySearch 影片語意搜尋研究</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;scroll-padding-top:70px}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Microsoft JhengHei","PingFang TC",sans-serif;background:#f5f3f0;color:#1a2332;line-height:1.7;font-size:15px}
+.top-bar{position:fixed;top:0;left:0;right:0;z-index:1000;background:linear-gradient(135deg,#0a1628,#1a3a5c);box-shadow:0 2px 12px rgba(0,0,0,.3);display:flex;align-items:center;padding:0 24px;gap:16px}
+.top-bar .back{color:rgba(255,255,255,.7);text-decoration:none;font-size:14px;display:flex;align-items:center;gap:4px;flex-shrink:0}
+.top-bar .back:hover{color:#fff}
+.top-bar h1{color:#fff;font-size:17px;font-weight:700;padding:14px 0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.layout{display:flex;max-width:1200px;margin:66px auto 0;padding:20px;gap:24px}
+.sidebar{width:250px;flex-shrink:0;position:sticky;top:86px;height:calc(100vh - 106px);overflow-y:auto;padding-right:8px}
+.sidebar::-webkit-scrollbar{width:4px}
+.sidebar::-webkit-scrollbar-thumb{background:#c0c8d4;border-radius:4px}
+.toc-title{font-size:12px;font-weight:700;color:#8494a7;text-transform:uppercase;letter-spacing:1px;padding:8px 12px;margin-bottom:4px}
+.toc-list{list-style:none}
+.toc-list li a{display:block;padding:5px 12px;font-size:13px;color:#5a6a7e;text-decoration:none;border-left:2px solid transparent;transition:all .15s;border-radius:0 4px 4px 0}
+.toc-list li a:hover{color:#1a3a5c;background:rgba(26,58,92,.05)}
+.toc-list li a.active{color:#1a3a5c;font-weight:600;border-left-color:#1a3a5c;background:rgba(26,58,92,.08)}
+.main{flex:1;min-width:0}
+.card{background:#fff;border-radius:12px;box-shadow:0 1px 4px rgba(0,0,0,.06);padding:36px 40px;margin-bottom:20px}
+.card h2{font-size:22px;color:#0a1628;margin:32px 0 16px;padding-bottom:8px;border-bottom:2px solid #e8edf2}
+.card h2:first-child{margin-top:0}
+.card h3{font-size:17px;color:#1a3a5c;margin:24px 0 12px}
+.card h4{font-size:15px;color:#2c5282;margin:18px 0 10px}
+.card p{margin:10px 0}
+.card ul,.card ol{margin:10px 0 10px 20px}
+.card li{margin:4px 0}
+.card a{color:#3182ce;text-decoration:none}
+.card a:hover{text-decoration:underline}
+.tw{overflow-x:auto;margin:14px 0;border-radius:8px;border:1px solid #e2e8f0}
+table{width:100%;border-collapse:collapse;font-size:13.5px;min-width:480px}
+thead{background:#1a3a5c}
+thead th{color:#fff;font-weight:600;padding:10px 14px;text-align:left;white-space:nowrap}
+tbody td{padding:9px 14px;border-bottom:1px solid #edf2f7}
+tbody tr:nth-child(even){background:#f7fafc}
+tbody tr:hover{background:#ebf4ff}
+.callout{border-radius:8px;padding:16px 20px;margin:16px 0;border-left:4px solid}
+.callout-info{background:#ebf8ff;border-color:#3182ce;color:#2a4365}
+.callout-warn{background:#fffbeb;border-color:#d69e2e;color:#744210}
+.callout-success{background:#f0fff4;border-color:#38a169;color:#22543d}
+.bq{border-left:3px solid #cbd5e0;padding:8px 16px;color:#5a6a7e;margin:12px 0;font-size:14px;background:#f7fafc;border-radius:0 6px 6px 0}
+.vs-box{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:16px 0}
+.vs-card{border-radius:8px;padding:16px 20px;border:1px solid #e2e8f0}
+.vs-card h4{margin-top:0;margin-bottom:8px}
+.vs-card.old{background:#fff5f5;border-color:#feb2b2}
+.vs-card.new{background:#f0fff4;border-color:#9ae6b4}
+.metaphor{background:#f7f5f2;border-radius:8px;padding:20px 24px;margin:16px 0;border:1px solid #e8e4df}
+.metaphor-title{font-weight:700;color:#1a3a5c;margin-bottom:8px;font-size:15px}
+.tag{display:inline-block;font-size:12px;padding:2px 8px;border-radius:10px;margin:2px}
+.tag-high{background:#fed7d7;color:#9b2c2c}
+.tag-mid{background:#fefcbf;color:#975a16}
+.tag-low{background:#c6f6d5;color:#276749}
+.disclaimer{text-align:center;padding:24px;color:#8494a7;font-size:13px;border-top:1px solid #e2e8f0;margin-top:20px}
+.sidebar-toggle{display:none;position:fixed;bottom:20px;right:20px;width:48px;height:48px;border-radius:50%;background:#1a3a5c;color:#fff;border:none;box-shadow:0 4px 12px rgba(0,0,0,.3);cursor:pointer;font-size:20px;z-index:999;align-items:center;justify-content:center}
+@media(max-width:900px){
+.sidebar{display:none}
+.layout{padding:12px}
+.card{padding:20px 18px}
+.top-bar h1{font-size:15px}
+table{font-size:12.5px}
+thead th,tbody td{padding:7px 10px}
+.vs-box{grid-template-columns:1fr}
+.sidebar-toggle{display:flex}
+.sidebar.mobile-show{display:block;position:fixed;top:56px;left:0;bottom:0;width:280px;background:#fff;z-index:998;box-shadow:4px 0 20px rgba(0,0,0,.15);padding:16px 8px;height:auto}
+}
+</style>
+</head>
+<body>
+
+<div class="top-bar">
+  <a class="back" href="index.html">&#9664; 索引</a>
+  <h1>SentrySearch 影片語意搜尋研究</h1>
+</div>
+
+<button class="sidebar-toggle" onclick="document.querySelector('.sidebar').classList.toggle('mobile-show')">&#9776;</button>
+
+<div class="layout">
+
+<nav class="sidebar">
+  <div class="toc-title">目錄</div>
+  <ul class="toc-list">
+    <li><a href="#s1">1. SentrySearch 是什麼</a></li>
+    <li><a href="#s2">2. 底層技術邏輯</a></li>
+    <li><a href="#s2-1">　截圖辨識 vs 語意嵌入</a></li>
+    <li><a href="#s2-2">　比喻說明</a></li>
+    <li><a href="#s2-3">　Gemini Embedding 2 多模態</a></li>
+    <li><a href="#s3">3. Pipeline 比較</a></li>
+    <li><a href="#s4">4. 目前 Pipeline 的不足</a></li>
+    <li><a href="#s5">5. 整合方案</a></li>
+    <li><a href="#s6">6. 實際工作場景影響</a></li>
+    <li><a href="#s7">7. 風險與注意事項</a></li>
+  </ul>
+</nav>
+
+<div class="main">
+
+<!-- Section 1 -->
+<div class="card">
+  <h2 id="s1">1. SentrySearch 是什麼</h2>
+
+  <p>SentrySearch 是一個開源工具，利用 <strong>Gemini multimodal embedding</strong> 實現影片語意搜尋。你可以用自然語言描述想找的畫面，它會從大量影片素材中找到最匹配的片段。</p>
+
+  <h3>運作流程</h3>
+  <ol>
+    <li><strong>影片預處理</strong>：將影片切成 <strong>30 秒 chunks</strong>，解析度降至 <strong>480p</strong>，幀率降至 <strong>5fps</strong>（大幅降低處理成本）</li>
+    <li><strong>向量化</strong>：每個 chunk 送入 <strong>Gemini Embedding 2</strong>，轉換成 <strong>768 維向量</strong></li>
+    <li><strong>本地儲存</strong>：向量存入本地 <strong>ChromaDB</strong> 向量資料庫</li>
+    <li><strong>語意搜尋</strong>：使用者輸入文字 query，同樣轉成向量，透過最近鄰演算法找到最相似的影片片段</li>
+  </ol>
+
+  <div class="callout callout-info">
+    <div class="callout-title">成本參考</div>
+    1 小時影片素材的索引成本約 <strong>USD $2.50</strong>（Gemini API 費用）。索引建立後，搜尋本身在本地執行，不再產生費用。
+  </div>
+
+  <p>GitHub：<a href="https://github.com/ssrajadh/sentrysearch" target="_blank">github.com/ssrajadh/sentrysearch</a></p>
+</div>
+
+<!-- Section 2 -->
+<div class="card">
+  <h2 id="s2">2. 底層技術邏輯</h2>
+
+  <p>SentrySearch 的核心不是「截圖辨識」（OCR / 物件偵測），而是<strong>語意嵌入</strong>（Semantic Embedding）。這是理解這個工具價值的關鍵。</p>
+
+  <h3 id="s2-1">截圖辨識 vs 語意嵌入</h3>
+
+  <div class="vs-box">
+    <div class="vs-card old">
+      <h4>截圖辨識方式（傳統）</h4>
+      <ul>
+        <li>每幀截圖 → 物件偵測（YOLO 等）→ 標記「有人、有書、有桌子」</li>
+        <li>或用 OCR 讀取畫面文字</li>
+        <li>搜尋方式是<strong>關鍵字匹配</strong>：搜「書」→ 找標記有「書」的幀</li>
+        <li>限制：只能搜到預定義的物件類別，無法理解場景語意</li>
+      </ul>
+    </div>
+    <div class="vs-card new">
+      <h4>SentrySearch 語意嵌入方式</h4>
+      <ul>
+        <li>影片片段整體（不是單幀）→ Gemini 把「視覺意義」壓縮成向量</li>
+        <li>向量代表的不是「有什麼物件」，而是<strong>「這段影片在表達什麼」</strong></li>
+        <li>搜尋是<strong>向量相似度</strong>：搜「學生開心地做手工」→ 找語意最接近的片段</li>
+        <li>能理解抽象概念：「氣氛緊張」「老師在鼓勵學生」</li>
+        <li>不需要預定義物件類別</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3 id="s2-2">用比喻說明</h3>
+
+  <div class="metaphor">
+    <div class="metaphor-title">截圖辨識 = 圖書館的關鍵字索引</div>
+    <p>搜「蘋果」→ 只找到標題或標籤有「蘋果」的書。搜不到內容在講蘋果但標題沒寫的書。</p>
+  </div>
+
+  <div class="metaphor">
+    <div class="metaphor-title">語意嵌入 = 圖書館員理解你要什麼</div>
+    <p>搜「健康飲食」→ 圖書館員會推薦關於蘋果、沙拉、營養學的書，因為她<strong>理解語意關聯</strong>，不只看標題字面。</p>
+  </div>
+
+  <h3 id="s2-3">Gemini Embedding 2 的多模態特性</h3>
+
+  <p>這項技術之所以可行，關鍵在於 Gemini Embedding 2 的<strong>多模態能力</strong>：</p>
+
+  <ul>
+    <li><strong>同一個向量空間</strong>可以放文字、圖片、影片 — 不同媒介的資料被映射到同一個 768 維空間</li>
+    <li>因此「文字描述」和「影片片段」能<strong>直接比較相似度</strong>，不需要中間轉換步驟</li>
+    <li>這是 <strong>2026 年 3 月才剛發布的新能力</strong>，在此之前沒有公開可用的影片級語意嵌入 API</li>
+  </ul>
+
+  <div class="callout callout-info">
+    <div class="callout-title">為什麼這很重要？</div>
+    以前要做「用文字搜影片」，必須先把影片轉成文字描述（caption），再做文字對文字的搜尋。現在可以跳過這一步，直接在語意空間裡比較，保留了更多視覺資訊。
+  </div>
+</div>
+
+<!-- Section 3 -->
+<div class="card">
+  <h2 id="s3">3. 你的 Pipeline vs SentrySearch 比較</h2>
+
+  <div class="tw">
+    <table>
+      <thead>
+        <tr>
+          <th>面向</th>
+          <th>目前 Pipeline（Whisper + LLM）</th>
+          <th>SentrySearch（Gemini Embedding）</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>輸入來源</strong></td>
+          <td>音訊（語音轉文字）</td>
+          <td>視覺（影片畫面）</td>
+        </tr>
+        <tr>
+          <td><strong>理解維度</strong></td>
+          <td>語言內容、語意、情緒</td>
+          <td>視覺場景、動作、氣氛</td>
+        </tr>
+        <tr>
+          <td><strong>擅長場景</strong></td>
+          <td>訪談、演講、對話</td>
+          <td>活動紀錄、B-Roll、無語音素材</td>
+        </tr>
+        <tr>
+          <td><strong>搜尋方式</strong></td>
+          <td>文字全文搜尋 / LLM 語意分析</td>
+          <td>向量語意相似度</td>
+        </tr>
+        <tr>
+          <td><strong>最小單位</strong></td>
+          <td>句子 / 段落（依語音斷句）</td>
+          <td>30 秒影片片段</td>
+        </tr>
+        <tr>
+          <td><strong>處理成本</strong></td>
+          <td>Whisper 本地免費 / API 低成本</td>
+          <td>~USD $2.50 / 小時素材</td>
+        </tr>
+        <tr>
+          <td><strong>對 Talking Head 效果</strong></td>
+          <td><span class="tag tag-low">極佳</span> 語音內容豐富</td>
+          <td><span class="tag tag-high">有限</span> 畫面變化小</td>
+        </tr>
+        <tr>
+          <td><strong>對 B-Roll 效果</strong></td>
+          <td><span class="tag tag-high">無效</span> 無語音可分析</td>
+          <td><span class="tag tag-low">極佳</span> 純視覺理解</td>
+        </tr>
+        <tr>
+          <td><strong>輸出格式</strong></td>
+          <td>FCPXML（直接匯入剪輯軟體）</td>
+          <td>時間碼 + 相似度分數</td>
+        </tr>
+        <tr>
+          <td><strong>成熟度</strong></td>
+          <td>已整合進工作流，穩定使用中</td>
+          <td>開源原型，Gemini Embedding 仍在 Preview</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout callout-success">
+    <div class="callout-title">關鍵觀察</div>
+    兩者是<strong>互補關係</strong>，不是取代關係。你的 Pipeline 處理「說了什麼」，SentrySearch 處理「看到什麼」。合在一起才是完整的影片理解。
+  </div>
+</div>
+
+<!-- Section 4 -->
+<div class="card">
+  <h2 id="s4">4. 目前 Pipeline 的不足</h2>
+
+  <h3>4.1 無視覺理解</h3>
+  <p>目前的 Whisper + LLM pipeline 完全基於音訊。畫面上發生什麼事 — 人的表情、動作、環境變化 — 完全不在分析範圍內。對於訪談類內容影響不大，但在活動紀錄、紀錄片素材中是重大盲區。</p>
+
+  <h3>4.2 B-Roll 配對困難</h3>
+  <p>剪輯時最耗時的環節之一：講到某個主題時，需要手動翻找對應的 B-Roll 畫面。目前 pipeline 無法協助這個步驟，因為 B-Roll 通常沒有語音。</p>
+
+  <h3>4.3 無法處理非語音素材</h3>
+  <p>活動紀錄中大量的環境鏡頭、空鏡、互動畫面，只要沒有人在說話，就完全無法被索引或搜尋。</p>
+
+  <h3>4.4 素材導航效率低</h3>
+  <p>面對數小時的活動素材，目前只能靠時間碼和記憶來找特定畫面。沒有「搜尋畫面內容」的能力，導致大量時間花在素材瀏覽上。</p>
+</div>
+
+<!-- Section 5 -->
+<div class="card">
+  <h2 id="s5">5. 整合方案</h2>
+
+  <h3>方案 A：加入視覺索引層</h3>
+  <p>在現有 pipeline 的 Whisper 語音分析旁邊，平行加入 SentrySearch 的視覺索引。兩套索引獨立建立，搜尋時可以選擇「搜語音內容」或「搜畫面內容」。</p>
+  <div class="bq">適合：已經有穩定 pipeline 的情況，最小改動、最低風險。</div>
+
+  <h3>方案 B：B-Roll 自動配對</h3>
+  <p>利用 Whisper 分析出的訪談段落主題，自動用語意搜尋從 B-Roll 素材庫中找到最匹配的畫面。例如受訪者說到「孩子們在做手工」，自動找到拍攝孩子做手工的 B-Roll 片段。</p>
+  <div class="bq">適合：訪談 + B-Roll 的典型剪輯工作流，自動化程度最高。</div>
+
+  <h3>方案 C：獨立搜尋工具</h3>
+  <p>不整合進現有 pipeline，單獨部署 SentrySearch 作為素材搜尋工具。拍完活動後先跑索引，之後隨時可以用自然語言搜尋素材。</p>
+  <div class="bq">適合：先試水溫，驗證視覺搜尋對工作流的實際價值。</div>
+</div>
+
+<!-- Section 6 -->
+<div class="card">
+  <h2 id="s6">6. 實際工作場景影響</h2>
+
+  <p>以圖書館活動拍攝為例（如大東藝術圖書館研習活動），比較導入前後的差異：</p>
+
+  <div class="tw">
+    <table>
+      <thead>
+        <tr>
+          <th>工作環節</th>
+          <th>導入前</th>
+          <th>導入後</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>找特定畫面</strong></td>
+          <td>手動快轉瀏覽數小時素材，憑記憶和時間碼定位</td>
+          <td>輸入「老師示範摺紙」，直接跳到對應片段</td>
+        </tr>
+        <tr>
+          <td><strong>B-Roll 配對</strong></td>
+          <td>聽到受訪者提到某個活動，手動從素材堆中翻找對應畫面</td>
+          <td>系統自動建議：「這段訪談提到手作，這 3 個 B-Roll 片段最匹配」</td>
+        </tr>
+        <tr>
+          <td><strong>非語音素材管理</strong></td>
+          <td>空鏡、環境鏡頭只能靠檔名和拍攝順序辨識</td>
+          <td>所有畫面都有語意索引，搜「安靜的閱讀角落」就能找到</td>
+        </tr>
+        <tr>
+          <td><strong>粗剪時間</strong></td>
+          <td>4-6 小時（大量時間花在瀏覽素材）</td>
+          <td>預估 2-3 小時（搜尋取代瀏覽）</td>
+        </tr>
+        <tr>
+          <td><strong>素材復用</strong></td>
+          <td>過去拍的素材很難再找到特定畫面，幾乎不復用</td>
+          <td>所有歷史素材都建立索引，隨時可跨專案搜尋</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- Section 7 -->
+<div class="card">
+  <h2 id="s7">7. 風險與注意事項</h2>
+
+  <div class="tw">
+    <table>
+      <thead>
+        <tr>
+          <th>風險項目</th>
+          <th>說明</th>
+          <th>影響程度</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Gemini Embedding 2 仍在 Preview</strong></td>
+          <td>API 可能有 breaking changes、定價可能調整、服務穩定性尚未經過大規模驗證</td>
+          <td><span class="tag tag-mid">中</span></td>
+        </tr>
+        <tr>
+          <td><strong>Talking Head 素材視覺區分度低</strong></td>
+          <td>訪談鏡頭畫面幾乎不變（同一個人坐著說話），視覺向量的區分能力有限，這類素材仍應依賴語音分析</td>
+          <td><span class="tag tag-mid">中</span></td>
+        </tr>
+        <tr>
+          <td><strong>成本線性增長</strong></td>
+          <td>每小時素材 ~$2.50，10 小時 = $25。大量素材的索引成本需要納入專案預算</td>
+          <td><span class="tag tag-low">低</span></td>
+        </tr>
+        <tr>
+          <td><strong>多機位素材的挑戰</strong></td>
+          <td>同一場景的不同角度會產生相似但不同的向量，搜尋結果可能出現大量近似重複</td>
+          <td><span class="tag tag-mid">中</span></td>
+        </tr>
+        <tr>
+          <td><strong>30 秒粒度限制</strong></td>
+          <td>最小搜尋單位是 30 秒片段，無法精確到秒級定位，找到片段後仍需人工微調</td>
+          <td><span class="tag tag-low">低</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout callout-warn">
+    <div class="callout-title">建議策略</div>
+    先以<strong>方案 C（獨立搜尋工具）</strong>試水溫，用一個實際專案驗證效果。確認價值後再考慮整合進 pipeline。Gemini Embedding 2 正式 GA 前，不建議作為核心依賴。
+  </div>
+</div>
+
+<div class="disclaimer">
+  本報告由 AI 輔助生成，內容僅供參考 — 2026-03-25
+</div>
+
+</div><!-- .main -->
+</div><!-- .layout -->
+
+<script>
+// TOC active state
+const tocLinks = document.querySelectorAll('.toc-list a');
+const sections = [];
+tocLinks.forEach(a => {
+  const id = a.getAttribute('href').slice(1);
+  const el = document.getElementById(id);
+  if (el) sections.push({ el, a });
+});
+function updateToc() {
+  let current = sections[0];
+  for (const s of sections) {
+    if (s.el.getBoundingClientRect().top <= 100) current = s;
+  }
+  tocLinks.forEach(a => a.classList.remove('active'));
+  if (current) current.a.classList.add('active');
+}
+window.addEventListener('scroll', updateToc, { passive: true });
+updateToc();
+</script>
+
+</body>
+</html>
