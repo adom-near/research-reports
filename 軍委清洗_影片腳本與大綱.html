@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>軍委清洗 — 影片腳本與大綱</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;scroll-padding-top:70px}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Microsoft JhengHei","PingFang TC",sans-serif;background:#f5f3f0;color:#2a2a2a;line-height:1.8;font-size:15px}
+.top-bar{position:fixed;top:0;left:0;right:0;z-index:1000;background:linear-gradient(135deg,#3a0a0a,#8b1a1a);box-shadow:0 2px 12px rgba(0,0,0,.25);display:flex;align-items:center;padding:0 24px;gap:16px}
+.top-bar .back{color:rgba(255,255,255,.7);text-decoration:none;font-size:14px;display:flex;align-items:center;gap:4px;flex-shrink:0}
+.top-bar .back:hover{color:#fff}
+.top-bar h1{color:#fff;font-size:17px;font-weight:700;padding:14px 0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.container{max-width:880px;margin:72px auto 40px;padding:0 20px}
+
+.card{background:#fff;border-radius:12px;box-shadow:0 1px 4px rgba(0,0,0,.06);padding:32px 36px;margin-bottom:20px}
+.card h2{font-size:20px;color:#5a1010;margin:28px 0 14px;padding-bottom:8px;border-bottom:2px solid #e8d8d5}
+.card h2:first-child{margin-top:0}
+.card h3{font-size:16px;color:#8b1a1a;margin:20px 0 10px}
+.card p{margin:10px 0}
+.card ul,.card ol{margin:10px 0 10px 20px}
+.card li{margin:5px 0}
+
+.tw{overflow-x:auto;margin:14px 0;border-radius:8px;border:1px solid #e2d8d5}
+table{width:100%;border-collapse:collapse;font-size:13.5px}
+thead{background:#8b1a1a}
+thead th{color:#fff;font-weight:600;padding:10px 14px;text-align:left}
+tbody td{padding:9px 14px;border-bottom:1px solid #f0e8e5}
+tbody tr:nth-child(even){background:#faf6f5}
+tbody tr:hover{background:#f5eae8}
+tbody tr.highlight{background:#fff8e1;font-weight:600}
+tbody tr.highlight td{border-bottom-color:#f0e0a0}
+
+.callout{border-radius:8px;padding:14px 18px;margin:14px 0;border-left:4px solid;font-size:14px}
+.callout-danger{background:#fef2f2;border-color:#dc2626;color:#7f1d1d}
+.callout-info{background:#f0f4f8;border-color:#6b7280;color:#374151}
+.callout-warn{background:#fffbeb;border-color:#d69e2e;color:#744210}
+
+.stat-row{display:flex;gap:12px;flex-wrap:wrap;margin:16px 0}
+.stat-box{flex:1;min-width:140px;background:linear-gradient(135deg,#faf6f5,#f5eae8);border:1px solid #e8d8d5;border-radius:10px;padding:16px 18px;text-align:center}
+.stat-num{font-size:28px;font-weight:800;color:#8b1a1a}
+.stat-label{font-size:12px;color:#8a6a6a;margin-top:2px}
+
+.tag{display:inline-block;font-size:12px;padding:2px 8px;border-radius:4px;margin:2px}
+.tag-red{background:#fde8e8;color:#8b1a1a}
+.tag-green{background:#d4edda;color:#155724}
+.tag-gray{background:#f0ede8;color:#6a6a6a}
+
+.scene-header{margin-top:24px;margin-bottom:14px;padding:12px 16px;background:linear-gradient(90deg,#f5eae8,transparent);border-left:3px solid #8b1a1a;border-radius:4px}
+.scene-title{font-size:16px;font-weight:700;color:#5a1010}
+.scene-time{font-size:12px;color:#8a6a6a;margin-top:2px}
+
+.color-swatch{display:inline-block;width:20px;height:20px;border-radius:4px;vertical-align:middle;margin-right:6px;border:1px solid rgba(0,0,0,.1)}
+
+details{margin:10px 0}
+details summary{cursor:pointer;font-weight:600;color:#8b1a1a;padding:8px 0;font-size:14px}
+details summary:hover{color:#5a1010}
+
+.footer{text-align:center;padding:24px 0;color:#aaa;font-size:12px}
+@media(max-width:600px){
+  .container{padding:0 12px;margin-top:64px}
+  .card{padding:20px 18px}
+  .top-bar h1{font-size:15px}
+  .stat-row{flex-direction:column}
+  .stat-box{min-width:auto}
+}
+</style>
+</head>
+<body>
+
+<div class="top-bar">
+  <a class="back" href="index.html">&larr; 首頁</a>
+  <h1>軍委清洗 — 影片腳本與大綱</h1>
+</div>
+
+<div class="container">
+
+<!-- ===== 影片大綱 ===== -->
+<div class="card">
+<h2>影片大綱</h2>
+
+<h3>基本資訊</h3>
+<div class="tw">
+<table>
+<tbody>
+<tr><td style="width:140px;font-weight:600">片名</td><td>下一個是誰？（WHO'S NEXT?）</td></tr>
+<tr><td style="font-weight:600">片長</td><td>16 秒</td></tr>
+<tr><td style="font-weight:600">格式</td><td>1080 &times; 1920（9:16 直式，適合短影音平台）</td></tr>
+<tr><td style="font-weight:600">幀率</td><td>30fps</td></tr>
+<tr><td style="font-weight:600">製作工具</td><td>Remotion（React 程式化動畫）</td></tr>
+<tr><td style="font-weight:600">風格</td><td>政治資訊圖表動畫，暗色系，驚悚節奏</td></tr>
+</tbody>
+</table>
+</div>
+
+<h3>影片概念</h3>
+<p>以中共中央軍事委員會（軍委）的組織圖為核心視覺，透過逐一「打紅叉」的動態效果，呈現 2023 年至今中共軍方高層的大規模清洗。鏡頭從習近平開始向下展開組織架構，再由底層往上逐一標記被清洗的將領，最終鏡頭急推回習近平，以「下一個是誰？」作結，留下懸念。</p>
+
+<h3>核心訊息</h3>
+<div class="callout callout-danger">
+中共軍委幾乎所有成員都已被清洗，唯獨習近平一人不動如山。這不是反腐，是權力的絕對集中。
+</div>
+
+<div class="stat-row">
+<div class="stat-box">
+  <div class="stat-num">13</div>
+  <div class="stat-label">軍委總人數</div>
+</div>
+<div class="stat-box">
+  <div class="stat-num" style="color:#dc2626">12</div>
+  <div class="stat-label">已被清洗</div>
+</div>
+<div class="stat-box">
+  <div class="stat-num" style="color:#d4a017">1</div>
+  <div class="stat-label">未被標記</div>
+</div>
+</div>
+</div>
+
+<!-- ===== 人物清單 ===== -->
+<div class="card">
+<h2>人物清單</h2>
+<p>共 13 人，12 人被打叉，僅習近平未被標記。打叉順序由底層向上，象徵清洗由下而上蔓延。</p>
+
+<div class="tw">
+<table>
+<thead>
+<tr><th>#</th><th>姓名</th><th>職位</th><th>組織圖位置</th><th>狀態</th><th>打叉順序</th></tr>
+</thead>
+<tbody>
+<tr class="highlight"><td></td><td>習近平</td><td>軍委主席</td><td>第 0 排（頂端）</td><td><span class="tag tag-green">未標記</span></td><td>--</td></tr>
+<tr><td></td><td>張又俠</td><td>副主席</td><td>第 1 排左</td><td><span class="tag tag-red">已清洗</span></td><td>第 11 個</td></tr>
+<tr><td></td><td>何衛東</td><td>副主席</td><td>第 1 排右</td><td><span class="tag tag-red">已清洗</span></td><td>第 12 個</td></tr>
+<tr><td></td><td>魏鳳和</td><td>前國防部長</td><td>第 2 排</td><td><span class="tag tag-red">已清洗</span></td><td>第 7 個</td></tr>
+<tr><td></td><td>李尚福</td><td>前國防部長</td><td>第 2 排</td><td><span class="tag tag-red">已清洗</span></td><td>第 8 個</td></tr>
+<tr><td></td><td>董軍</td><td>國防部長</td><td>第 2 排</td><td><span class="tag tag-red">已清洗</span></td><td>第 9 個</td></tr>
+<tr><td></td><td>苗華</td><td>政治工作部主任</td><td>第 2 排</td><td><span class="tag tag-red">已清洗</span></td><td>第 10 個</td></tr>
+<tr><td></td><td>張升民</td><td>紀檢委書記</td><td>第 3 排</td><td><span class="tag tag-red">已清洗</span></td><td>第 5 個</td></tr>
+<tr><td></td><td>李作成</td><td>聯參部參謀長</td><td>第 3 排</td><td><span class="tag tag-red">已清洗</span></td><td>第 6 個</td></tr>
+<tr><td></td><td>劉振立</td><td>裝備發展部部長</td><td>第 3 排</td><td><span class="tag tag-red">已清洗</span></td><td>第 3 個</td></tr>
+<tr><td></td><td>丁來杭</td><td>空軍原司令</td><td>第 3 排</td><td><span class="tag tag-red">已清洗</span></td><td>第 4 個</td></tr>
+<tr><td></td><td>周亞寧</td><td>火箭軍原司令</td><td>第 4 排（底層）</td><td><span class="tag tag-red">已清洗</span></td><td>第 1 個</td></tr>
+<tr><td></td><td>李玉超</td><td>火箭軍前司令</td><td>第 4 排（底層）</td><td><span class="tag tag-red">已清洗</span></td><td>第 2 個</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<!-- ===== 分場腳本 ===== -->
+<div class="card">
+<h2>分場腳本</h2>
+<p>全片 16 秒，分為四段：組織圖展開、逐一打叉、全景停留、急推結尾。</p>
+
+<!-- 第一段 -->
+<div class="scene-header">
+  <div class="scene-title">第一段：組織圖展開</div>
+  <div class="scene-time">0:00 - 0:05 &nbsp;|&nbsp; 鏡頭 scale 2.0 &rarr; 0.85</div>
+</div>
+
+<p><strong>畫面：</strong>黑色背景。鏡頭一開始緊貼習近平的方塊（金色邊框），隨後逐層向下展開。</p>
+
+<div class="tw">
+<table>
+<thead><tr><th>時間</th><th>畫面動作</th></tr></thead>
+<tbody>
+<tr><td style="white-space:nowrap">0:00.3</td><td>習近平方塊淡入（金色邊框發光），鏡頭緊貼</td></tr>
+<tr><td>0:01.2</td><td>鏡頭向下拉，副主席排（張又俠、何衛東）浮現，連線從習近平延伸下來</td></tr>
+<tr><td>0:02.8</td><td>繼續向下，國防部長排（魏鳳和、李尚福、董軍、苗華）浮現</td></tr>
+<tr><td>0:03.8</td><td>第三排（張升民、李作成、劉振立、丁來杭）浮現</td></tr>
+<tr><td>0:04.8</td><td>最底層（周亞寧、李玉超）浮現，全部組織圖完整呈現</td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="callout callout-info">
+<strong>鏡頭運動：</strong>從 scale 2.0（只看到習近平）逐步縮小到 scale 0.85（完整組織圖）<br>
+<strong>音效建議：</strong>低沉的 drone ambient，每排出現時有輕微的電子音效
+</div>
+
+<!-- 第二段 -->
+<div class="scene-header">
+  <div class="scene-title">第二段：逐一打叉</div>
+  <div class="scene-time">0:05.8 - 0:10.5 &nbsp;|&nbsp; 由底層往上，12 人標記</div>
+</div>
+
+<p><strong>畫面：</strong>組織圖已完整呈現，開始由底層往上逐一打紅叉。每個被打叉的方塊會泛紅光、透明度降低。</p>
+
+<div class="tw">
+<table>
+<thead><tr><th>時間</th><th>打叉對象</th><th>順序</th></tr></thead>
+<tbody>
+<tr><td style="white-space:nowrap">0:05.8</td><td>周亞寧（火箭軍原司令）</td><td>第 1 個</td></tr>
+<tr><td>0:06.2</td><td>李玉超（火箭軍前司令）</td><td>第 2 個</td></tr>
+<tr><td>0:06.6</td><td>劉振立（裝備發展部部長）</td><td>第 3 個</td></tr>
+<tr><td>0:06.9</td><td>丁來杭（空軍原司令）</td><td>第 4 個</td></tr>
+<tr><td>0:07.2</td><td>張升民（紀檢委書記）</td><td>第 5 個</td></tr>
+<tr><td>0:07.5</td><td>李作成（聯參部參謀長）</td><td>第 6 個</td></tr>
+<tr><td>0:07.8</td><td>魏鳳和（前國防部長）</td><td>第 7 個</td></tr>
+<tr><td>0:08.1</td><td>李尚福（前國防部長）</td><td>第 8 個</td></tr>
+<tr><td>0:08.4</td><td>董軍（國防部長）</td><td>第 9 個</td></tr>
+<tr><td>0:08.7</td><td>苗華（政治工作部主任）</td><td>第 10 個</td></tr>
+<tr><td>0:09.3</td><td>張又俠（副主席）</td><td>第 11 個</td></tr>
+<tr><td>0:09.8</td><td>何衛東（副主席）</td><td>第 12 個</td></tr>
+</tbody>
+</table>
+</div>
+
+<h3>節奏設計</h3>
+<ul>
+<li><strong>底層（1-2）：</strong>間隔 0.4 秒，較慢，讓觀眾理解發生什麼</li>
+<li><strong>中層（3-10）：</strong>間隔 0.3 秒，逐漸加速，製造壓迫感</li>
+<li><strong>副主席（11-12）：</strong>間隔 0.5 秒後才出現，刻意停頓製造衝擊</li>
+</ul>
+
+<h3>視覺效果</h3>
+<ul>
+<li>紅色叉叉以彈簧動畫（spring）從中心彈出</li>
+<li>被打叉的方塊邊框變紅、產生紅色光暈</li>
+<li>被打叉後方塊透明度逐漸降低（象徵「消失」）</li>
+</ul>
+
+<div class="callout callout-info">
+<strong>音效建議：</strong>每次打叉配上短促的打擊音效（如印章蓋下的聲音），節奏越來越快
+</div>
+
+<!-- 第三段 -->
+<div class="scene-header">
+  <div class="scene-title">第三段：全景停留</div>
+  <div class="scene-time">0:10.5 - 0:13.0 &nbsp;|&nbsp; scale 0.65，靜默</div>
+</div>
+
+<p><strong>畫面：</strong>鏡頭拉到最大全景（scale 0.65），展示整張組織圖 -- 幾乎所有方塊都已被紅叉標記並褪色，只剩頂端的習近平方塊依然金色發光、完整無損。</p>
+
+<div class="callout callout-danger">
+<strong>停留目的：</strong>讓觀眾自己觀察「只剩一個人」的事實，用畫面說話，不需要文字。
+</div>
+
+<div class="callout callout-info">
+<strong>音效建議：</strong>打叉音效停止，回到低沉的 drone，刻意的安靜
+</div>
+
+<!-- 第四段 -->
+<div class="scene-header">
+  <div class="scene-title">第四段：急推 + 結尾文字</div>
+  <div class="scene-time">0:13.0 - 0:16.0 &nbsp;|&nbsp; scale 0.65 &rarr; 2.2</div>
+</div>
+
+<p><strong>畫面：</strong></p>
+<ul>
+<li><strong>0:13.0 - 0:14.0</strong>：鏡頭急速推進（scale 0.65 &rarr; 2.2），從全景瞬間拉到只剩習近平</li>
+<li><strong>0:14.8</strong>：結尾文字從下方浮現</li>
+</ul>
+
+<div style="background:#0a0a14;border-radius:10px;padding:28px 24px;text-align:center;margin:16px 0">
+  <div style="color:#dc2626;font-size:28px;font-weight:800;text-shadow:0 0 20px rgba(220,38,38,.5)">下一個是誰？</div>
+  <div style="color:#475569;font-size:16px;margin-top:6px">WHO'S NEXT?</div>
+</div>
+
+<div class="callout callout-info">
+<strong>音效建議：</strong>急推時配一聲沉重的低音鼓（boom），文字出現時恢復安靜，只剩餘韻迴盪
+</div>
+</div>
+
+<!-- ===== 視覺設計規格 ===== -->
+<div class="card">
+<h2>視覺設計規格</h2>
+
+<div class="tw">
+<table>
+<thead><tr><th>項目</th><th>規格</th><th>色彩預覽</th></tr></thead>
+<tbody>
+<tr><td>背景色</td><td>#0a0a14（極深藍黑）</td><td><span class="color-swatch" style="background:#0a0a14"></span></td></tr>
+<tr><td>方塊背景</td><td>#16213e（深藍）/ 習近平 #1e293b</td><td><span class="color-swatch" style="background:#16213e"></span><span class="color-swatch" style="background:#1e293b"></span></td></tr>
+<tr><td>方塊邊框（一般）</td><td>#334155（暗灰）</td><td><span class="color-swatch" style="background:#334155"></span></td></tr>
+<tr><td>方塊邊框（習近平）</td><td>#fbbf24（金色）+ 金色光暈</td><td><span class="color-swatch" style="background:#fbbf24"></span></td></tr>
+<tr><td>方塊邊框（被打叉）</td><td>#dc2626（紅色）+ 紅色光暈</td><td><span class="color-swatch" style="background:#dc2626"></span></td></tr>
+<tr><td>紅叉顏色</td><td>#dc2626</td><td><span class="color-swatch" style="background:#dc2626"></span></td></tr>
+<tr><td>姓名文字</td><td>#e2e8f0（淺灰白），18px，粗體</td><td><span class="color-swatch" style="background:#e2e8f0"></span></td></tr>
+<tr><td>職位文字</td><td>#64748b（中灰），11px</td><td><span class="color-swatch" style="background:#64748b"></span></td></tr>
+<tr><td>結尾主文字</td><td>#dc2626（紅），52px，粗體</td><td><span class="color-swatch" style="background:#dc2626"></span></td></tr>
+<tr><td>結尾副文字</td><td>#475569（暗灰），22px</td><td><span class="color-swatch" style="background:#475569"></span></td></tr>
+<tr><td>方塊尺寸</td><td>170 &times; 80px</td><td>--</td></tr>
+<tr><td>連線顏色</td><td>#2d3748，1.5px，40% 透明度</td><td><span class="color-swatch" style="background:#2d3748"></span></td></tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<!-- ===== 製作備註 ===== -->
+<div class="card">
+<h2>製作備註</h2>
+
+<h3>已完成項目</h3>
+<ul>
+<li><span class="tag tag-green">DONE</span> Remotion 動畫程式碼（OrgChart.tsx）</li>
+<li><span class="tag tag-green">DONE</span> 組織圖資料結構與排版</li>
+<li><span class="tag tag-green">DONE</span> 逐排出現動畫（spring 彈簧效果）</li>
+<li><span class="tag tag-green">DONE</span> 打叉動畫（紅叉 + 紅光 + 褪色）</li>
+<li><span class="tag tag-green">DONE</span> 攝影機系統（展開 &rarr; 全景 &rarr; 急推）</li>
+<li><span class="tag tag-green">DONE</span> 結尾文字動畫</li>
+<li><span class="tag tag-green">DONE</span> 9:16 直式輸出</li>
+</ul>
+
+<details>
+<summary>可擴展方向（點擊展開）</summary>
+<ul style="margin-top:8px">
+<li><span class="tag tag-gray">TODO</span> 加入背景音樂/音效</li>
+<li><span class="tag tag-gray">TODO</span> 打叉時插入對應人物的新聞照片閃切</li>
+<li><span class="tag tag-gray">TODO</span> 加入簡短旁白</li>
+<li><span class="tag tag-gray">TODO</span> 增加開場字卡（背景介紹）</li>
+<li><span class="tag tag-gray">TODO</span> 增加計數器（「被清洗人數：1/12、2/12...」）</li>
+</ul>
+</details>
+</div>
+
+<div class="footer">軍委清洗影片腳本 — 最後更新 2026-03-25</div>
+</div>
+
+</body>
+</html>
