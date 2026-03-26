@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Claude Code 免費方案研究</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Microsoft JhengHei","PingFang TC",sans-serif;background:#f5f3f0;color:#2a2a2a;line-height:1.8;font-size:15px;min-height:100vh}
+.top-bar{position:fixed;top:0;left:0;right:0;z-index:1000;background:linear-gradient(135deg,#0a1628,#1a3a5c);box-shadow:0 2px 12px rgba(0,0,0,.3);display:flex;align-items:center;justify-content:space-between;padding:0 24px}
+.top-bar h1{color:#fff;font-size:18px;font-weight:700;padding:16px 0}
+.back-link{color:rgba(255,255,255,.8);text-decoration:none;font-size:13px;transition:color .2s}
+.back-link:hover{color:#fff}
+.container{max-width:800px;margin:80px auto 40px;padding:0 20px}
+h2{font-size:20px;color:#1a3a5c;margin:36px 0 16px;padding-bottom:8px;border-bottom:2px solid #1a3a5c}
+h3{font-size:16px;color:#1a3a5c;margin:24px 0 10px}
+p{margin-bottom:14px}
+.highlight-box{background:#fff;border-radius:12px;padding:20px 24px;margin:16px 0;box-shadow:0 1px 4px rgba(0,0,0,.06);border-left:4px solid #1a3a5c}
+.warning-box{background:#fff8f0;border-radius:12px;padding:20px 24px;margin:16px 0;box-shadow:0 1px 4px rgba(0,0,0,.06);border-left:4px solid #e67e22}
+.good-box{background:#f0faf0;border-radius:12px;padding:20px 24px;margin:16px 0;box-shadow:0 1px 4px rgba(0,0,0,.06);border-left:4px solid #27ae60}
+.tag{display:inline-block;background:#1a3a5c;color:#fff;font-size:11px;padding:2px 10px;border-radius:10px;margin-right:6px;margin-bottom:4px}
+.tag.orange{background:#e67e22}
+.tag.green{background:#27ae60}
+.tag.red{background:#c0392b}
+ul,ol{margin:0 0 14px 20px}
+li{margin-bottom:6px}
+
+/* 比較表 */
+.comparison-table{width:100%;border-collapse:collapse;margin:16px 0;font-size:14px;background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.comparison-table th{background:#1a3a5c;color:#fff;padding:12px 14px;text-align:left;font-weight:600;font-size:13px}
+.comparison-table td{padding:10px 14px;border-bottom:1px solid #eee;vertical-align:top}
+.comparison-table tr:last-child td{border-bottom:none}
+.comparison-table tr:hover td{background:#f9f7f4}
+.comparison-table .plan-free{color:#8494a7;font-weight:600}
+.comparison-table .plan-pro{color:#1a3a5c;font-weight:600}
+.comparison-table .plan-max5{color:#e67e22;font-weight:600}
+.comparison-table .plan-max20{color:#c0392b;font-weight:600}
+.check{color:#27ae60;font-weight:bold}
+.cross{color:#c0392b;font-weight:bold}
+
+.tldr{background:linear-gradient(135deg,#1a3a5c,#2a5a8c);color:#fff;border-radius:12px;padding:24px;margin:20px 0}
+.tldr h3{color:#fff;margin-top:0}
+.tldr ul{margin-left:16px}
+.tldr li{color:rgba(255,255,255,.9)}
+
+.meta{font-size:12px;color:#8494a7;margin-bottom:24px}
+.footer{text-align:center;padding:32px 0 24px;color:#8494a7;font-size:12px;border-top:1px solid #ddd;margin-top:40px}
+a{color:#1a3a5c}
+.source-list{font-size:13px;color:#5a6a7e}
+.source-list a{color:#1a3a5c;text-decoration:none;border-bottom:1px dotted #8494a7}
+.source-list a:hover{border-bottom-color:#1a3a5c}
+.source-list li{margin-bottom:4px}
+
+@media(max-width:600px){
+  .container{padding:0 12px;margin-top:68px}
+  .top-bar h1{font-size:16px}
+  .comparison-table{font-size:12px}
+  .comparison-table th,.comparison-table td{padding:8px 10px}
+  h2{font-size:18px}
+}
+</style>
+</head>
+<body>
+
+<div class="top-bar">
+  <a class="back-link" href="index.html">&larr; 返回索引</a>
+  <h1>Claude Code 免費方案研究</h1>
+  <span style="width:60px"></span>
+</div>
+
+<div class="container">
+
+<div class="meta">研究日期：2026-03-26 ｜ 資料來源：Anthropic 官網、科技媒體、社群討論</div>
+
+<div class="tldr">
+  <h3>TL;DR 快速結論</h3>
+  <ul>
+    <li>Claude Code <strong>並沒有</strong>開放免費方案 — 仍需 Pro ($20/月) 以上才能使用</li>
+    <li>近期變化：2026/3 月三項優惠活動（限時額度加倍、新用戶 50% 折扣、30 天免費試用）</li>
+    <li>免費層級在 2026/2 月大幅升級（Projects、Artifacts），但不含 Claude Code</li>
+    <li>你目前的 Max 20x ($200/月) 方案依然是最完整的個人方案，暫無降級理由</li>
+  </ul>
+</div>
+
+<h2>一、到底發生了什麼事？</h2>
+
+<p>2026 年初以來，Anthropic 針對 Claude 生態系統做了多項調整，讓不少人誤以為「Claude Code 變免費了」。實際情況是多個消息混在一起造成的誤解：</p>
+
+<div class="highlight-box">
+  <h3>2026 年 2 月：免費方案大升級</h3>
+  <p>Anthropic 將原本付費限定的 <strong>Projects</strong>、<strong>Artifacts</strong>、<strong>App Connectors</strong> 功能開放給免費用戶。這是一次重大的免費層級擴充，但 <strong>Claude Code 不在開放範圍內</strong>。</p>
+</div>
+
+<div class="highlight-box">
+  <h3>2026 年 2 月：Opus 4.6 發布 + $50 免費額度</h3>
+  <p>配合 Opus 4.6（100 萬 token 上下文）發布，Pro 和 Max 用戶可領取 $50 免費使用額度，適用於 Claude、Claude Code 和 Cowork。</p>
+</div>
+
+<div class="highlight-box">
+  <h3>2026 年 3 月 13 日：限時用量加倍活動</h3>
+  <p>3/13 至 3/28，所有方案（含免費）在離峰時段用量加倍。離峰定義：工作日 ET 下午 2 點後至隔日早上 8 點前；週末全天。此活動涵蓋 Claude Code，但前提是你本來就有 Claude Code 的存取權限。</p>
+</div>
+
+<div class="highlight-box">
+  <h3>2026 年 3 月：新用戶 Pro 半價 + 30 天免費試用</h3>
+  <p>新用戶可享 Pro 方案前 3 個月半價 ($10/月)，或 30 天免費試用（需綁信用卡）。試用期間含完整 Pro 功能，包括 Claude Code。</p>
+</div>
+
+<h2>二、各方案完整比較</h2>
+
+<table class="comparison-table">
+  <thead>
+    <tr>
+      <th>項目</th>
+      <th class="plan-free">Free</th>
+      <th class="plan-pro">Pro $20/月</th>
+      <th class="plan-max5">Max 5x $100/月</th>
+      <th class="plan-max20">Max 20x $200/月</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Claude Code</strong></td>
+      <td class="cross">X</td>
+      <td class="check">V</td>
+      <td class="check">V</td>
+      <td class="check">V</td>
+    </tr>
+    <tr>
+      <td><strong>Cowork (背景代理)</strong></td>
+      <td class="cross">X</td>
+      <td class="check">V</td>
+      <td class="check">V</td>
+      <td class="check">V</td>
+    </tr>
+    <tr>
+      <td><strong>Opus 4.6</strong></td>
+      <td class="cross">X</td>
+      <td class="check">V</td>
+      <td class="check">V</td>
+      <td class="check">V</td>
+    </tr>
+    <tr>
+      <td><strong>Sonnet 4.5</strong></td>
+      <td class="check">V</td>
+      <td class="check">V</td>
+      <td class="check">V</td>
+      <td class="check">V</td>
+    </tr>
+    <tr>
+      <td><strong>Projects / Artifacts</strong></td>
+      <td class="check">V (2月起)</td>
+      <td class="check">V</td>
+      <td class="check">V</td>
+      <td class="check">V</td>
+    </tr>
+    <tr>
+      <td><strong>網頁搜尋</strong></td>
+      <td class="check">V (基本)</td>
+      <td class="check">V</td>
+      <td class="check">V</td>
+      <td class="check">V</td>
+    </tr>
+    <tr>
+      <td><strong>App Connectors</strong></td>
+      <td class="check">V (2月起)</td>
+      <td class="check">V</td>
+      <td class="check">V</td>
+      <td class="check">V</td>
+    </tr>
+    <tr>
+      <td><strong>Google Docs/Gmail 整合</strong></td>
+      <td class="cross">X</td>
+      <td class="check">V</td>
+      <td class="check">V</td>
+      <td class="check">V</td>
+    </tr>
+    <tr>
+      <td><strong>用量（相對 Free）</strong></td>
+      <td>1x</td>
+      <td>~5x</td>
+      <td>~25x</td>
+      <td>~100x</td>
+    </tr>
+    <tr>
+      <td><strong>100 萬 token 上下文</strong></td>
+      <td class="cross">X</td>
+      <td class="check">V (beta)</td>
+      <td class="check">V (beta)</td>
+      <td class="check">V (beta)</td>
+    </tr>
+    <tr>
+      <td><strong>尖峰時段優先</strong></td>
+      <td>最低</td>
+      <td>一般</td>
+      <td>優先</td>
+      <td>最高</td>
+    </tr>
+    <tr>
+      <td><strong>持久記憶</strong></td>
+      <td class="check">V (3月起)</td>
+      <td class="check">V</td>
+      <td class="check">V (更高上限)</td>
+      <td class="check">V (最高上限)</td>
+    </tr>
+    <tr>
+      <td><strong>Claude Code Channels</strong></td>
+      <td class="cross">X</td>
+      <td class="cross">X</td>
+      <td class="check">V</td>
+      <td class="check">V</td>
+    </tr>
+    <tr>
+      <td><strong>每月費用</strong></td>
+      <td>$0</td>
+      <td>$20</td>
+      <td>$100</td>
+      <td>$200</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2>三、免費使用 Claude Code 的替代方案</h2>
+
+<p>雖然官方免費方案不含 Claude Code，但有幾個管道可以免費或低成本體驗：</p>
+
+<ol>
+  <li><strong>30 天免費試用</strong> — 新用戶綁卡即可使用完整 Pro 功能，到期前可取消</li>
+  <li><strong>Guest Pass 邀請碼</strong> — Max 用戶可邀請好友免費體驗 Pro 功能（你的 Max 20x 帳號應該有此資格）</li>
+  <li><strong>Claude for Open Source</strong> — 開源專案維護者可申請 6 個月免費 Max 20x</li>
+  <li><strong>學生方案</strong> — Amazon Prime Student 搭配 30 天 Claude Pro 試用</li>
+  <li><strong>API + 第三方模型</strong> — Claude Code CLI 可指向其他免費 API（如 Gemini、DeepSeek），但會失去 Anthropic 模型的優勢</li>
+</ol>
+
+<h2>四、對你的影響分析</h2>
+
+<div class="warning-box">
+  <h3>你的現況：Max 20x ($200/月)</h3>
+  <p>你目前使用最高階個人方案，每月 $200。以下是評估：</p>
+</div>
+
+<h3>值不值得降級？</h3>
+
+<div class="good-box">
+  <p><strong>維持 Max 20x 的理由：</strong></p>
+  <ul>
+    <li>你是重度 Claude Code 使用者（日常開發都靠它），Pro 方案的 5x 用量很可能不夠</li>
+    <li>Max 20x 提供 100x Free 用量，幾乎不會遇到速率限制</li>
+    <li>尖峰時段最高優先權，確保工作不被打斷</li>
+    <li>Claude Code Channels (Discord/Telegram 整合) 僅 Max 可用</li>
+    <li>Opus 4.6 的 100 萬 token 上下文搭配大型專案特別有用</li>
+  </ul>
+</div>
+
+<div class="highlight-box">
+  <p><strong>可考慮降到 Max 5x ($100/月) 的情境：</strong></p>
+  <ul>
+    <li>如果你發現每週的使用量都離上限很遠</li>
+    <li>如果你主要在離峰時段工作（台灣時間對應美東離峰，大部分時間其實是離峰）</li>
+    <li>每月省 $100 但用量降為 25x Free（仍是 Pro 的 5 倍）</li>
+  </ul>
+</div>
+
+<h3>台灣時區優勢</h3>
+<p>值得注意的是，美東尖峰時段 8AM-2PM ET 對應台灣 <strong>晚上 8 點到凌晨 2 點</strong>。如果你主要在白天工作，大多數時間都落在離峰時段，自然享有更寬裕的用量。</p>
+
+<h2>五、建議</h2>
+
+<div class="tldr">
+  <h3>具體行動建議</h3>
+  <ul>
+    <li><strong>短期：</strong>維持 Max 20x，因為你依賴 Claude Code 做每日開發，穩定性和速率上限是關鍵</li>
+    <li><strong>觀察：</strong>追蹤你的實際用量 (用 ccusage 工具)，如果連續幾週都遠低於上限，可考慮降到 Max 5x 省 $100</li>
+    <li><strong>善用 Guest Pass：</strong>你的 Max 帳號可以邀請別人免費試用，可作為推廣工具</li>
+    <li><strong>留意 Q2 動態：</strong>以 Anthropic 近期積極擴展免費層級的趨勢，不排除 2026 年中將 Claude Code 基礎版開放給 Pro 以下方案</li>
+  </ul>
+</div>
+
+<h2>六、資料來源</h2>
+
+<ul class="source-list">
+  <li><a href="https://claude.com/pricing" target="_blank">Plans & Pricing | Claude by Anthropic</a></li>
+  <li><a href="https://support.claude.com/en/articles/14063676-claude-march-2026-usage-promotion" target="_blank">Claude March 2026 Usage Promotion | Claude Help Center</a></li>
+  <li><a href="https://claudelog.com/claude-code-pricing/" target="_blank">Claude Code Pricing | ClaudeLog</a></li>
+  <li><a href="https://www.webpronews.com/anthropics-march-2026-claude-promotion-what-you-need-to-know-about-the-free-usage-boost/" target="_blank">Anthropic's March 2026 Claude Promotion | WebProNews</a></li>
+  <li><a href="https://www.webpronews.com/anthropic-loosens-the-velvet-rope-claudes-free-tier-gets-a-major-upgrade-in-a-bid-to-win-the-ai-arms-race/" target="_blank">Claude's Free Tier Gets a Major Upgrade | WebProNews</a></li>
+  <li><a href="https://screenapp.io/blog/claude-ai-pricing" target="_blank">Claude AI Pricing 2026 | ScreenApp</a></li>
+  <li><a href="https://freeacademy.ai/blog/claude-free-vs-pro-vs-max-comparison-2026" target="_blank">Claude Free vs Pro vs Max 2026 | FreeAcademy</a></li>
+  <li><a href="https://www.ssdnodes.com/blog/claude-code-pricing-in-2026-every-plan-explained-pro-max-api-teams/" target="_blank">Claude Code Pricing in 2026 | SSD Nodes</a></li>
+  <li><a href="https://venturebeat.com/orchestration/anthropic-just-shipped-an-openclaw-killer-called-claude-code-channels" target="_blank">Claude Code Channels | VentureBeat</a></li>
+</ul>
+
+<div class="footer">研究報告 — 2026-03-26 ｜ <a href="index.html">返回索引</a></div>
+
+</div>
+</body>
+</html>
