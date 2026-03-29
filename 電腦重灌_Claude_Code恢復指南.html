@@ -1,0 +1,335 @@
+<\!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>電腦重灌後 Claude Code 完整恢復指南</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Microsoft JhengHei","PingFang TC",sans-serif;background:#f5f3f0;color:#2a2a2a;line-height:1.8;font-size:15px;min-height:100vh}
+.top-bar{position:fixed;top:0;left:0;right:0;z-index:1000;background:linear-gradient(135deg,#0a1628,#1a3a5c);box-shadow:0 2px 12px rgba(0,0,0,.3);display:flex;align-items:center;justify-content:center;padding:0 24px}
+.top-bar h1{color:#fff;font-size:17px;font-weight:700;padding:16px 0}
+.container{max-width:720px;margin:80px auto 40px;padding:0 16px}
+.intro{background:#fff;border-radius:12px;padding:20px 24px;margin-bottom:28px;box-shadow:0 1px 4px rgba(0,0,0,.06);border-left:4px solid #1a3a5c}
+.intro p{font-size:14px;color:#5a5a5a}
+.section{margin-bottom:32px}
+.section-header{display:flex;align-items:center;gap:10px;margin-bottom:14px;cursor:default}
+.section-num{background:#1a3a5c;color:#fff;font-size:13px;font-weight:700;width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.section-title{font-size:17px;font-weight:700;color:#1a3a5c}
+.section-body{background:#fff;border-radius:12px;padding:20px 24px;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.check-item{display:flex;align-items:flex-start;gap:10px;padding:8px 0;border-bottom:1px solid #f0ede8}
+.check-item:last-child{border-bottom:none}
+.check-item input[type="checkbox"]{margin-top:5px;width:18px;height:18px;accent-color:#1a3a5c;flex-shrink:0;cursor:pointer}
+.check-item label{font-size:14px;color:#333;cursor:pointer;flex:1}
+.check-item label code{background:#eee8df;padding:1px 6px;border-radius:4px;font-size:13px;word-break:break-all}
+.step{margin-bottom:16px}
+.step:last-child{margin-bottom:0}
+.step-label{font-size:14px;font-weight:600;color:#1a3a5c;margin-bottom:6px}
+.step-desc{font-size:14px;color:#555;margin-bottom:8px}
+pre{background:#1a2332;color:#e8e0d4;padding:14px 16px;border-radius:8px;overflow-x:auto;font-size:13px;line-height:1.6;margin-bottom:8px;-webkit-overflow-scrolling:touch}
+pre code{color:#e8e0d4;background:none;padding:0;font-size:13px}
+.note{background:#faf6ee;border-left:3px solid #c9a84c;padding:10px 14px;border-radius:0 8px 8px 0;margin:10px 0;font-size:13px;color:#6a5a3a}
+.warn{background:#fef3f0;border-left:3px solid #c04040;padding:10px 14px;border-radius:0 8px 8px 0;margin:10px 0;font-size:13px;color:#6a3030}
+.progress-bar{background:#e8e0d4;border-radius:10px;height:8px;margin:20px 0 8px;overflow:hidden}
+.progress-fill{background:linear-gradient(90deg,#1a3a5c,#2a5a8c);height:100%;border-radius:10px;transition:width .4s ease}
+.progress-text{font-size:12px;color:#8a7a6a;text-align:right;margin-bottom:16px}
+.footer{text-align:center;padding:24px 0;color:#8a7a6a;font-size:12px}
+@media(max-width:600px){
+  .container{padding:0 10px;margin-top:68px}
+  .section-body{padding:16px 14px}
+  .top-bar h1{font-size:15px}
+  pre{padding:12px;font-size:12px}
+  .section-title{font-size:15px}
+}
+</style>
+</head>
+<body>
+
+<div class="top-bar">
+  <h1>Claude Code 完整恢復指南</h1>
+</div>
+
+<div class="container">
+
+  <div class="intro">
+    <p>這份指南涵蓋電腦重灌後恢復完整 Claude Code 工作環境的所有步驟。每個項目都可以打勾追蹤進度，進度會自動儲存在瀏覽器中。</p>
+  </div>
+
+  <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+  <div class="progress-text" id="progressText">0 / 0 完成</div>
+
+  <\!-- Section 1 -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">1</div>
+      <div class="section-title">前置準備（重灌前）</div>
+    </div>
+    <div class="section-body">
+      <div class="check-item"><input type="checkbox" id="c1" data-key="s1_backup_memory"><label for="c1">備份記憶檔案：<code>claude_memory_backup_20260327.tar.gz</code>（25KB）</label></div>
+      <div class="check-item"><input type="checkbox" id="c2" data-key="s1_backup_davinci"><label for="c2">備份 DaVinci 專案：<code>DaVinci_Resolve_backup_20260327.tar.gz</code>（267MB）</label></div>
+      <div class="check-item"><input type="checkbox" id="c3" data-key="s1_backup_project"><label for="c3">備份 PyCharmMiscProject（整個資料夾或 git push 確保最新）</label></div>
+      <div class="check-item"><input type="checkbox" id="c4" data-key="s1_anthropic_account"><label for="c4">記下 Anthropic 帳號（用什麼 email 登入的）</label></div>
+      <div class="check-item"><input type="checkbox" id="c5" data-key="s1_github_account"><label for="c5">記下 GitHub 帳號</label></div>
+      <div class="check-item"><input type="checkbox" id="c6" data-key="s1_discord_token"><label for="c6">記下 Discord Bot Token（在 Discord Developer Portal）</label></div>
+      <div class="check-item"><input type="checkbox" id="c7" data-key="s1_backup_access"><label for="c7">備份 <code>~/.claude/channels/discord/access.json</code></label></div>
+      <div class="check-item"><input type="checkbox" id="c8" data-key="s1_save_url"><label for="c8">存好這個網頁的網址</label></div>
+    </div>
+  </div>
+
+  <\!-- Section 2 -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">2</div>
+      <div class="section-title">安裝基礎工具</div>
+    </div>
+    <div class="section-body">
+      <div class="step">
+        <div class="step-label">2-1. 安裝 Homebrew</div>
+        <pre><code>/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"</code></pre>
+        <div class="check-item"><input type="checkbox" id="c9" data-key="s2_homebrew"><label for="c9">Homebrew 安裝完成</label></div>
+      </div>
+      <div class="step">
+        <div class="step-label">2-2. 安裝核心工具</div>
+        <pre><code>brew install node git python3 ffmpeg</code></pre>
+        <div class="check-item"><input type="checkbox" id="c10" data-key="s2_core_tools"><label for="c10">node / git / python3 / ffmpeg 安裝完成</label></div>
+      </div>
+      <div class="step">
+        <div class="step-label">2-3. 安裝 PyCharm</div>
+        <div class="step-desc">從官網下載 PyCharm Community Edition 並安裝。</div>
+        <div class="check-item"><input type="checkbox" id="c11" data-key="s2_pycharm"><label for="c11">PyCharm 安裝完成</label></div>
+      </div>
+    </div>
+  </div>
+
+  <\!-- Section 3 -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">3</div>
+      <div class="section-title">安裝 Claude Code</div>
+    </div>
+    <div class="section-body">
+      <div class="step">
+        <pre><code>npm install -g @anthropic-ai/claude-code</code></pre>
+        <div class="step-desc">第一次執行 <code>claude</code> 會要求登入 Anthropic 帳號。</div>
+        <div class="check-item"><input type="checkbox" id="c12" data-key="s3_claude_code"><label for="c12">Claude Code 安裝完成並登入成功</label></div>
+      </div>
+    </div>
+  </div>
+
+  <\!-- Section 4 -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">4</div>
+      <div class="section-title">恢復工作區</div>
+    </div>
+    <div class="section-body">
+      <div class="step">
+        <pre><code>cd ~
+git clone https://github.com/你的帳號/PyCharmMiscProject.git
+cd PyCharmMiscProject</code></pre>
+        <div class="note">CLAUDE.md 在 repo 裡，clone 下來就有，不需要額外設定。</div>
+        <div class="check-item"><input type="checkbox" id="c13" data-key="s4_clone"><label for="c13">工作區 clone 完成</label></div>
+      </div>
+    </div>
+  </div>
+
+  <\!-- Section 5 -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">5</div>
+      <div class="section-title">恢復 Claude 記憶</div>
+    </div>
+    <div class="section-body">
+      <div class="step">
+        <pre><code>mkdir -p ~/.claude/projects/-Users-wt-PyCharmMiscProject/memory/
+cd ~/.claude/projects/-Users-wt-PyCharmMiscProject/memory/
+tar xzf /path/to/claude_memory_backup_20260327.tar.gz</code></pre>
+        <div class="warn">路徑中的 <code>-Users-wt-PyCharmMiscProject</code> 要跟實際工作目錄對應。如果使用者名稱或路徑不同，需要調整。例如使用者改叫 <code>john</code>，路徑就是 <code>-Users-john-PyCharmMiscProject</code>。</div>
+        <div class="check-item"><input type="checkbox" id="c14" data-key="s5_memory"><label for="c14">記憶檔案恢復完成</label></div>
+      </div>
+    </div>
+  </div>
+
+  <\!-- Section 6 -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">6</div>
+      <div class="section-title">設定 Discord Plugin</div>
+    </div>
+    <div class="section-body">
+      <div class="step">
+        <div class="step-label">6-1. 啟動 Claude Code 並載入 Discord</div>
+        <pre><code>cd ~/PyCharmMiscProject
+claude --channels plugin:discord@claude-plugins-official</code></pre>
+      </div>
+      <div class="step">
+        <div class="step-label">6-2. 配對 Discord Bot</div>
+        <div class="step-desc">在 Claude Code 裡執行 <code>/discord:access</code> 進行 bot 配對。</div>
+      </div>
+      <div class="step">
+        <div class="step-label">6-3. 恢復 access.json（如果有備份）</div>
+        <pre><code>cp /path/to/access.json ~/.claude/channels/discord/access.json</code></pre>
+        <div class="note">如果有備份 access.json，可以直接複製回去跳過配對步驟。</div>
+      </div>
+      <div class="check-item"><input type="checkbox" id="c15" data-key="s6_discord"><label for="c15">Discord Plugin 設定完成</label></div>
+    </div>
+  </div>
+
+  <\!-- Section 7 -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">7</div>
+      <div class="section-title">恢復 DaVinci Resolve</div>
+    </div>
+    <div class="section-body">
+      <div class="step">
+        <div class="step-label">7-1. 安裝 DaVinci Resolve</div>
+        <div class="step-desc">從官網下載安裝 DaVinci Resolve。</div>
+      </div>
+      <div class="step">
+        <div class="step-label">7-2. 恢復專案資料庫</div>
+        <pre><code>mkdir -p ~/Library/Application\ Support/Blackmagic\ Design/
+tar xzf /path/to/DaVinci_Resolve_backup_20260327.tar.gz \
+  -C ~/Library/Application\ Support/Blackmagic\ Design/</code></pre>
+      </div>
+      <div class="check-item"><input type="checkbox" id="c16" data-key="s7_davinci"><label for="c16">DaVinci Resolve 恢復完成</label></div>
+    </div>
+  </div>
+
+  <\!-- Section 8 -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">8</div>
+      <div class="section-title">安裝其他常用工具</div>
+    </div>
+    <div class="section-body">
+      <div class="step">
+        <div class="step-label">8-1. Python 套件</div>
+        <pre><code>pip3 install edge-tts playwright</code></pre>
+      </div>
+      <div class="step">
+        <div class="step-label">8-2. Playwright 瀏覽器</div>
+        <pre><code>python3 -m playwright install</code></pre>
+      </div>
+      <div class="step">
+        <div class="step-label">8-3. 資料救援工具</div>
+        <pre><code>brew install testdisk</code></pre>
+      </div>
+      <div class="step">
+        <div class="step-label">8-4. Remotion 專案依賴（如果需要）</div>
+        <pre><code>cd ~/PyCharmMiscProject/高市圖動畫 &amp;&amp; npm install
+cd ~/PyCharmMiscProject/Ai影片生成/remotion-test &amp;&amp; npm install</code></pre>
+      </div>
+      <div class="check-item"><input type="checkbox" id="c17" data-key="s8_tools"><label for="c17">其他工具安裝完成</label></div>
+    </div>
+  </div>
+
+  <\!-- Section 9 -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">9</div>
+      <div class="section-title">GitHub Pages 研究報告網站</div>
+    </div>
+    <div class="section-body">
+      <div class="step">
+        <pre><code>cd ~/PyCharmMiscProject/研究報告網站
+git remote -v  # 確認 remote 正確</code></pre>
+        <div class="note">網站會自動從 GitHub Pages 部署，不需要額外設定。</div>
+        <div class="check-item"><input type="checkbox" id="c18" data-key="s9_ghpages"><label for="c18">GitHub Pages 確認正常</label></div>
+      </div>
+    </div>
+  </div>
+
+  <\!-- Section 10 -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">10</div>
+      <div class="section-title">備用電腦設定（Discord 不斷線方案）</div>
+    </div>
+    <div class="section-body">
+      <div class="step-desc">如果要在備用電腦上跑 Claude Code 維持 Discord 連線：</div>
+      <div class="step">
+        <div class="step-label">10-1. 完成基礎設定</div>
+        <div class="step-desc">在備用電腦上完成 Section 2 ~ 6 的步驟。</div>
+      </div>
+      <div class="step">
+        <div class="step-label">10-2. 啟動 Discord 連線</div>
+        <div class="step-desc">開一個 Terminal 視窗執行，不要關閉這個視窗：</div>
+        <pre><code>cd ~/PyCharmMiscProject
+claude --channels plugin:discord@claude-plugins-official</code></pre>
+      </div>
+      <div class="step">
+        <div class="step-label">10-3. 防止電腦睡眠</div>
+        <pre><code>caffeinate -d &amp;</code></pre>
+      </div>
+      <div class="step">
+        <div class="step-label">10-4. 雙機並行</div>
+        <div class="step-desc">主電腦有需要時另外開 Claude Code session（不帶 <code>--channels</code>），兩邊不衝突。</div>
+      </div>
+      <div class="check-item"><input type="checkbox" id="c19" data-key="s10_backup_pc"><label for="c19">備用電腦設定完成（可選）</label></div>
+    </div>
+  </div>
+
+  <\!-- Section 11 -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">11</div>
+      <div class="section-title">驗證清單</div>
+    </div>
+    <div class="section-body">
+      <div class="step-desc">全部設定完成後，逐一驗證以下項目：</div>
+      <div class="check-item"><input type="checkbox" id="c20" data-key="s11_claude_cmd"><label for="c20"><code>claude</code> 指令可以正常執行</label></div>
+      <div class="check-item"><input type="checkbox" id="c21" data-key="s11_memory_files"><label for="c21">記憶檔案存在（<code>ls ~/.claude/projects/*/memory/</code>）</label></div>
+      <div class="check-item"><input type="checkbox" id="c22" data-key="s11_discord"><label for="c22">Discord 可以收發訊息</label></div>
+      <div class="check-item"><input type="checkbox" id="c23" data-key="s11_davinci"><label for="c23">DaVinci Resolve 可以開啟，專案資料在</label></div>
+      <div class="check-item"><input type="checkbox" id="c24" data-key="s11_ghpages"><label for="c24">GitHub Pages 網站可以正常存取</label></div>
+      <div class="check-item"><input type="checkbox" id="c25" data-key="s11_cli_tools"><label for="c25"><code>ffmpeg</code> / <code>python3</code> / <code>node</code> 都能用</label></div>
+    </div>
+  </div>
+
+  <div class="footer">建立於 2026-03-29 — 重灌不可怕，這份指南會帶你回來</div>
+</div>
+
+<script>
+(function(){
+  var STORAGE_KEY = 'reinstall_guide_checks';
+  var checkboxes = document.querySelectorAll('input[type="checkbox"][data-key]');
+  var progressFill = document.getElementById('progressFill');
+  var progressText = document.getElementById('progressText');
+
+  function loadState(){
+    try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || {}; }
+    catch(e){ return {}; }
+  }
+
+  function saveState(state){
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+  }
+
+  function updateProgress(){
+    var total = checkboxes.length;
+    var done = 0;
+    checkboxes.forEach(function(cb){ if(cb.checked) done++; });
+    var pct = total ? Math.round(done / total * 100) : 0;
+    progressFill.style.width = pct + '%';
+    progressText.textContent = done + ' / ' + total + ' 完成（' + pct + '%）';
+  }
+
+  var state = loadState();
+  checkboxes.forEach(function(cb){
+    var key = cb.getAttribute('data-key');
+    if(state[key]) cb.checked = true;
+    cb.addEventListener('change', function(){
+      var s = loadState();
+      s[this.getAttribute('data-key')] = this.checked;
+      saveState(s);
+      updateProgress();
+    });
+  });
+  updateProgress();
+})();
+</script>
+
+</body>
+</html>
