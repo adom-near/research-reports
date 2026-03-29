@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>電腦重灌恢復指南</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Microsoft JhengHei","PingFang TC",sans-serif;background:#f5f3f0;color:#2a2a2a;line-height:1.8;font-size:15px;min-height:100vh}
+.top-bar{position:fixed;top:0;left:0;right:0;z-index:1000;background:linear-gradient(135deg,#0a1628,#1a3a5c);box-shadow:0 2px 12px rgba(0,0,0,.3);display:flex;align-items:center;justify-content:center;padding:0 24px}
+.top-bar h1{color:#fff;font-size:17px;font-weight:700;padding:16px 0}
+.container{max-width:720px;margin:80px auto 40px;padding:0 16px}
+.intro{background:#fff;border-radius:12px;padding:20px 24px;margin-bottom:28px;box-shadow:0 1px 4px rgba(0,0,0,.06);border-left:4px solid #1a3a5c}
+.intro p{font-size:14px;color:#5a5a5a}
+.section{margin-bottom:32px}
+.section-header{display:flex;align-items:center;gap:10px;margin-bottom:14px;cursor:default}
+.section-num{background:#1a3a5c;color:#fff;font-size:13px;font-weight:700;width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.section-title{font-size:17px;font-weight:700;color:#1a3a5c}
+.section-body{background:#fff;border-radius:12px;padding:20px 24px;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.check-item{display:flex;align-items:flex-start;gap:10px;padding:8px 0;border-bottom:1px solid #f0ede8}
+.check-item:last-child{border-bottom:none}
+.check-item input[type="checkbox"]{margin-top:5px;width:18px;height:18px;accent-color:#1a3a5c;flex-shrink:0;cursor:pointer}
+.check-item label{font-size:14px;color:#333;cursor:pointer;flex:1}
+.check-item label code{background:#eee8df;padding:1px 6px;border-radius:4px;font-size:13px;word-break:break-all}
+.step{margin-bottom:16px}
+.step:last-child{margin-bottom:0}
+.step-label{font-size:14px;font-weight:600;color:#1a3a5c;margin-bottom:6px}
+.step-desc{font-size:14px;color:#555;margin-bottom:8px}
+.code-wrap{position:relative;margin-bottom:8px}
+.code-wrap .copy-btn{position:absolute;top:8px;right:8px;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.25);color:#ccc;font-size:12px;padding:4px 10px;border-radius:6px;cursor:pointer;transition:all .2s;z-index:1}
+.code-wrap .copy-btn:hover{background:rgba(255,255,255,.25);color:#fff}
+.code-wrap .copy-btn.copied{background:#2a5a3c;border-color:#3a7a4c;color:#afd8b8}
+pre{background:#1a2332;color:#e8e0d4;padding:14px 16px;border-radius:8px;overflow-x:auto;font-size:13px;line-height:1.6;-webkit-overflow-scrolling:touch;margin:0}
+pre code{color:#e8e0d4;background:none;padding:0;font-size:13px}
+.note{background:#faf6ee;border-left:3px solid #c9a84c;padding:10px 14px;border-radius:0 8px 8px 0;margin:10px 0;font-size:13px;color:#6a5a3a}
+.warn{background:#fef3f0;border-left:3px solid #c04040;padding:10px 14px;border-radius:0 8px 8px 0;margin:10px 0;font-size:13px;color:#6a3030}
+.progress-bar{background:#e8e0d4;border-radius:10px;height:8px;margin:20px 0 8px;overflow:hidden}
+.progress-fill{background:linear-gradient(90deg,#1a3a5c,#2a5a8c);height:100%;border-radius:10px;transition:width .4s ease}
+.progress-text{font-size:12px;color:#8a7a6a;text-align:right;margin-bottom:16px}
+.cat-title{font-size:14px;font-weight:700;color:#1a3a5c;margin:14px 0 8px;padding-bottom:4px;border-bottom:1px solid #e8e0d4}
+.cat-title:first-child{margin-top:0}
+.footer{text-align:center;padding:24px 0;color:#8a7a6a;font-size:12px}
+@media(max-width:600px){
+  .container{padding:0 10px;margin-top:68px}
+  .section-body{padding:16px 14px}
+  .top-bar h1{font-size:15px}
+  pre{padding:12px;font-size:12px}
+  .section-title{font-size:15px}
+}
+</style>
+</head>
+<body>
+
+<div class="top-bar">
+  <h1>電腦重灌恢復指南</h1>
+</div>
+
+<div class="container">
+
+  <div class="intro">
+    <p>Mac 重灌後的完整恢復指南，涵蓋開發環境、備份恢復、App 安裝清單。所有項目可打勾追蹤進度，進度自動儲存在瀏覽器中。</p>
+  </div>
+
+  <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+  <div class="progress-text" id="progressText">0 / 0 完成</div>
+
+  <!-- Section 1: 注意事項（重灌前） -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">1</div>
+      <div class="section-title">注意事項（重灌前）</div>
+    </div>
+    <div class="section-body">
+      <div class="step-desc" style="font-weight:600;margin-bottom:10px">確認以下備份檔案已存到雲端（iCloud / Google Drive）：</div>
+      <div class="check-item"><input type="checkbox" id="c1" data-key="s1_backup_memory"><label for="c1"><code>claude_memory_backup_20260329.tar.gz</code>（Claude 記憶，27KB）</label></div>
+      <div class="check-item"><input type="checkbox" id="c2" data-key="s1_backup_davinci"><label for="c2"><code>DaVinci_Resolve_backup_20260327.tar.gz</code>（DaVinci 專案，267MB）</label></div>
+
+      <div class="step-desc" style="font-weight:600;margin:14px 0 10px">確認 GitHub 上的專案都已 push：</div>
+      <div class="check-item"><input type="checkbox" id="c3" data-key="s1_push_misc"><label for="c3">PyCharmMiscProject 已 push</label></div>
+      <div class="check-item"><input type="checkbox" id="c4" data-key="s1_push_reports"><label for="c4">research-reports 已 push</label></div>
+
+      <div class="step-desc" style="font-weight:600;margin:14px 0 10px">記住你的帳號密碼：</div>
+      <div class="check-item"><input type="checkbox" id="c5" data-key="s1_acc_anthropic"><label for="c5">Anthropic</label></div>
+      <div class="check-item"><input type="checkbox" id="c6" data-key="s1_acc_github"><label for="c6">GitHub</label></div>
+      <div class="check-item"><input type="checkbox" id="c7" data-key="s1_acc_adobe"><label for="c7">Adobe</label></div>
+      <div class="check-item"><input type="checkbox" id="c8" data-key="s1_acc_google"><label for="c8">Google</label></div>
+      <div class="check-item"><input type="checkbox" id="c9" data-key="s1_acc_apple"><label for="c9">Apple ID</label></div>
+      <div class="check-item"><input type="checkbox" id="c10" data-key="s1_acc_discord"><label for="c10">Discord</label></div>
+
+      <div class="warn">充電問題：電源連接埠有硬體問題（AppleHPMDeviceHALType3），重灌解決不了充電問題，需送修。</div>
+    </div>
+  </div>
+
+  <!-- Section 2: 重灌後第一步 -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">2</div>
+      <div class="section-title">重灌後第一步</div>
+    </div>
+    <div class="section-body">
+
+      <div class="step">
+        <div class="step-label">Step 1. 安裝 Homebrew</div>
+        <div class="code-wrap">
+          <button class="copy-btn" onclick="copyCode(this)">複製</button>
+          <pre><code>/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"</code></pre>
+        </div>
+        <div class="check-item"><input type="checkbox" id="c11" data-key="s2_homebrew"><label for="c11">Homebrew 安裝完成</label></div>
+      </div>
+
+      <div class="step">
+        <div class="step-label">Step 2. 核心開發工具</div>
+        <div class="code-wrap">
+          <button class="copy-btn" onclick="copyCode(this)">複製</button>
+          <pre><code>brew install node ffmpeg gh tmux testdisk python3</code></pre>
+        </div>
+        <div class="check-item"><input type="checkbox" id="c12" data-key="s2_core_tools"><label for="c12">核心工具安裝完成</label></div>
+      </div>
+
+      <div class="step">
+        <div class="step-label">Step 3. 安裝 Claude Code</div>
+        <div class="code-wrap">
+          <button class="copy-btn" onclick="copyCode(this)">複製</button>
+          <pre><code>npm install -g @anthropic-ai/claude-code ccusage</code></pre>
+        </div>
+        <div class="check-item"><input type="checkbox" id="c13" data-key="s2_claude_code"><label for="c13">Claude Code 與 ccusage 安裝完成</label></div>
+      </div>
+
+      <div class="step">
+        <div class="step-label">Step 4. 登入 Claude Code</div>
+        <div class="code-wrap">
+          <button class="copy-btn" onclick="copyCode(this)">複製</button>
+          <pre><code>claude</code></pre>
+        </div>
+        <div class="step-desc">會跳轉瀏覽器登入 Anthropic 帳號。</div>
+        <div class="check-item"><input type="checkbox" id="c14" data-key="s2_claude_login"><label for="c14">Claude Code 登入成功</label></div>
+      </div>
+
+      <div class="step">
+        <div class="step-label">Step 5. 恢復 Claude 記憶</div>
+        <div class="code-wrap">
+          <button class="copy-btn" onclick="copyCode(this)">複製</button>
+          <pre><code>mkdir -p ~/.claude/projects/-Users-wt-PyCharmMiscProject/memory/
+tar xzf claude_memory_backup_20260329.tar.gz -C ~/.claude/projects/-Users-wt-PyCharmMiscProject/memory/</code></pre>
+        </div>
+        <div class="check-item"><input type="checkbox" id="c15" data-key="s2_memory"><label for="c15">Claude 記憶恢復完成</label></div>
+      </div>
+
+      <div class="step">
+        <div class="step-label">Step 6. 恢復 DaVinci Resolve 專案</div>
+        <div class="step-desc">先從官網下載安裝 DaVinci Resolve，然後：</div>
+        <div class="code-wrap">
+          <button class="copy-btn" onclick="copyCode(this)">複製</button>
+          <pre><code>mkdir -p ~/Library/Application\ Support/Blackmagic\ Design/
+tar xzf DaVinci_Resolve_backup_20260327.tar.gz -C ~/Library/Application\ Support/Blackmagic\ Design/</code></pre>
+        </div>
+        <div class="check-item"><input type="checkbox" id="c16" data-key="s2_davinci"><label for="c16">DaVinci Resolve 專案恢復完成</label></div>
+      </div>
+
+      <div class="step">
+        <div class="step-label">Step 7. Clone 專案</div>
+        <div class="code-wrap">
+          <button class="copy-btn" onclick="copyCode(this)">複製</button>
+          <pre><code>mkdir -p ~/PyCharmMiscProject
+cd ~/PyCharmMiscProject
+git clone https://github.com/adom-near/research-reports.git 研究報告網站</code></pre>
+        </div>
+        <div class="check-item"><input type="checkbox" id="c17" data-key="s2_clone"><label for="c17">專案 clone 完成</label></div>
+      </div>
+
+      <div class="step">
+        <div class="step-label">Step 8. Python 套件</div>
+        <div class="code-wrap">
+          <button class="copy-btn" onclick="copyCode(this)">複製</button>
+          <pre><code>pip3 install edge-tts</code></pre>
+        </div>
+        <div class="check-item"><input type="checkbox" id="c18" data-key="s2_python_pkg"><label for="c18">Python 套件安裝完成</label></div>
+      </div>
+
+      <div class="step">
+        <div class="step-label">Step 9. 啟動 Discord 連線</div>
+        <div class="code-wrap">
+          <button class="copy-btn" onclick="copyCode(this)">複製</button>
+          <pre><code>cd ~/PyCharmMiscProject
+claude --channels plugin:discord@claude-plugins-official</code></pre>
+        </div>
+        <div class="check-item"><input type="checkbox" id="c19" data-key="s2_discord"><label for="c19">Discord 連線啟動成功</label></div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Section 3: App 安裝清單 -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">3</div>
+      <div class="section-title">App 安裝清單</div>
+    </div>
+    <div class="section-body">
+
+      <div class="cat-title">Adobe 系列（從 Creative Cloud 安裝）</div>
+      <div class="check-item"><input type="checkbox" id="a1" data-key="app_adobe_cc"><label for="a1">Adobe Creative Cloud</label></div>
+      <div class="check-item"><input type="checkbox" id="a2" data-key="app_adobe_ai"><label for="a2">Adobe Illustrator</label></div>
+      <div class="check-item"><input type="checkbox" id="a3" data-key="app_adobe_ps"><label for="a3">Adobe Photoshop</label></div>
+      <div class="check-item"><input type="checkbox" id="a4" data-key="app_adobe_lr"><label for="a4">Adobe Lightroom CC</label></div>
+      <div class="check-item"><input type="checkbox" id="a5" data-key="app_adobe_me"><label for="a5">Adobe Media Encoder</label></div>
+      <div class="check-item"><input type="checkbox" id="a6" data-key="app_adobe_acrobat"><label for="a6">Adobe Acrobat DC</label></div>
+
+      <div class="cat-title">影片 / 音訊</div>
+      <div class="check-item"><input type="checkbox" id="a7" data-key="app_davinci"><label for="a7">DaVinci Resolve（官網免費版）</label></div>
+      <div class="check-item"><input type="checkbox" id="a8" data-key="app_shutter"><label for="a8">Shutter Encoder</label></div>
+      <div class="check-item"><input type="checkbox" id="a9" data-key="app_insta360"><label for="a9">Insta360 Studio + File Repair</label></div>
+      <div class="check-item"><input type="checkbox" id="a10" data-key="app_bm_proxy"><label for="a10">Blackmagic Proxy Generator + RAW</label></div>
+      <div class="check-item"><input type="checkbox" id="a11" data-key="app_macwhisper"><label for="a11">MacWhisper</label></div>
+      <div class="check-item"><input type="checkbox" id="a12" data-key="app_rode"><label for="a12">RODE Central</label></div>
+
+      <div class="cat-title">開發工具</div>
+      <div class="check-item"><input type="checkbox" id="a13" data-key="app_pycharm"><label for="a13">PyCharm</label></div>
+      <div class="check-item"><input type="checkbox" id="a14" data-key="app_docker"><label for="a14">Docker</label></div>
+      <div class="check-item"><input type="checkbox" id="a15" data-key="app_python"><label for="a15">Python 3.14</label></div>
+
+      <div class="cat-title">瀏覽器</div>
+      <div class="check-item"><input type="checkbox" id="a16" data-key="app_chrome"><label for="a16">Google Chrome</label></div>
+      <div class="check-item"><input type="checkbox" id="a17" data-key="app_brave"><label for="a17">Brave Browser</label></div>
+
+      <div class="cat-title">通訊 / 社群</div>
+      <div class="check-item"><input type="checkbox" id="a18" data-key="app_discord"><label for="a18">Discord</label></div>
+      <div class="check-item"><input type="checkbox" id="a19" data-key="app_line"><label for="a19">LINE</label></div>
+      <div class="check-item"><input type="checkbox" id="a20" data-key="app_chatgpt"><label for="a20">ChatGPT（App Store）</label></div>
+      <div class="check-item"><input type="checkbox" id="a21" data-key="app_claude_desktop"><label for="a21">Claude Desktop</label></div>
+      <div class="check-item"><input type="checkbox" id="a22" data-key="app_perplexity"><label for="a22">Perplexity</label></div>
+
+      <div class="cat-title">辦公 / 筆記</div>
+      <div class="check-item"><input type="checkbox" id="a23" data-key="app_word"><label for="a23">Microsoft Word</label></div>
+      <div class="check-item"><input type="checkbox" id="a24" data-key="app_excel"><label for="a24">Microsoft Excel</label></div>
+      <div class="check-item"><input type="checkbox" id="a25" data-key="app_notion"><label for="a25">Notion</label></div>
+      <div class="check-item"><input type="checkbox" id="a26" data-key="app_notion_cal"><label for="a26">Notion Calendar</label></div>
+
+      <div class="cat-title">設計</div>
+      <div class="check-item"><input type="checkbox" id="a27" data-key="app_affinity"><label for="a27">Affinity</label></div>
+
+      <div class="cat-title">系統工具</div>
+      <div class="check-item"><input type="checkbox" id="a28" data-key="app_tailscale"><label for="a28">Tailscale</label></div>
+      <div class="check-item"><input type="checkbox" id="a29" data-key="app_deskin"><label for="a29">DeskIn</label></div>
+      <div class="check-item"><input type="checkbox" id="a30" data-key="app_display_pilot"><label for="a30">Display Pilot 2</label></div>
+      <div class="check-item"><input type="checkbox" id="a31" data-key="app_logi"><label for="a31">Logi Options+</label></div>
+      <div class="check-item"><input type="checkbox" id="a32" data-key="app_unarchiver"><label for="a32">The Unarchiver</label></div>
+      <div class="check-item"><input type="checkbox" id="a33" data-key="app_spotify"><label for="a33">Spotify</label></div>
+
+    </div>
+  </div>
+
+  <!-- Section 4: Homebrew 套件完整清單 -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">4</div>
+      <div class="section-title">Homebrew 套件完整清單</div>
+    </div>
+    <div class="section-body">
+      <div class="step-desc">一次安裝所有 Homebrew 套件：</div>
+      <div class="code-wrap">
+        <button class="copy-btn" onclick="copyCode(this)">複製</button>
+        <pre><code>brew install ffmpeg node gh tmux testdisk poppler sqlite</code></pre>
+      </div>
+      <div class="check-item"><input type="checkbox" id="c20" data-key="s4_brew_all"><label for="c20">Homebrew 套件全部安裝完成</label></div>
+    </div>
+  </div>
+
+  <!-- Section 5: 備用電腦計畫 -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">5</div>
+      <div class="section-title">備用電腦計畫</div>
+    </div>
+    <div class="section-body">
+      <div class="step-desc">備用機跑 Claude + Discord = 24 小時不斷線聊天室。</div>
+      <div class="step-desc">主電腦需要互動時再開 session。</div>
+      <div class="step-desc">兩台不衝突，Discord 訊息送到有連線的那台。</div>
+      <div class="step" style="margin-top:14px">
+        <div class="step-label">備用機指令</div>
+        <div class="code-wrap">
+          <button class="copy-btn" onclick="copyCode(this)">複製</button>
+          <pre><code>cd ~/PyCharmMiscProject
+claude --channels plugin:discord@claude-plugins-official</code></pre>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">建立於 2026-03-29 — 重灌不可怕，這份指南會帶你回來</div>
+</div>
+
+<script>
+(function(){
+  var STORAGE_KEY = 'reinstall_app_checks';
+  var checkboxes = document.querySelectorAll('input[type="checkbox"][data-key]');
+  var progressFill = document.getElementById('progressFill');
+  var progressText = document.getElementById('progressText');
+
+  function loadState(){
+    try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || {}; }
+    catch(e){ return {}; }
+  }
+
+  function saveState(state){
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+  }
+
+  function updateProgress(){
+    var total = checkboxes.length;
+    var done = 0;
+    checkboxes.forEach(function(cb){ if(cb.checked) done++; });
+    var pct = total ? Math.round(done / total * 100) : 0;
+    progressFill.style.width = pct + '%';
+    progressText.textContent = done + ' / ' + total + ' 完成（' + pct + '%）';
+  }
+
+  var state = loadState();
+  checkboxes.forEach(function(cb){
+    var key = cb.getAttribute('data-key');
+    if(state[key]) cb.checked = true;
+    cb.addEventListener('change', function(){
+      var s = loadState();
+      s[this.getAttribute('data-key')] = this.checked;
+      saveState(s);
+      updateProgress();
+    });
+  });
+  updateProgress();
+})();
+
+function copyCode(btn){
+  var pre = btn.parentElement.querySelector('pre code');
+  var text = pre.textContent;
+  navigator.clipboard.writeText(text).then(function(){
+    btn.textContent = '已複製';
+    btn.classList.add('copied');
+    setTimeout(function(){
+      btn.textContent = '複製';
+      btn.classList.remove('copied');
+    }, 1500);
+  });
+}
+</script>
+
+</body>
+</html>
